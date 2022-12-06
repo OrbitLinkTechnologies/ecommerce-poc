@@ -1,0 +1,39 @@
+{% extends 'ecommerce/base.html' %}
+{% load my_tags %}
+{% block content %}
+
+<div class="container">
+    {% for product in page_obj %} 
+    {% if forloop.counter|modulo:4 == 1 %}
+        <div class="row">
+    {% endif %}
+
+        <div class="col-sm-3">
+            <img src="{{ product.product_photos }}" style="height: 80%; width: 80%">
+            Generator_{{ product.product_name }}<i class="fa-solid fa-grip-lines-vertical" style="color: green;"></i>{{ product.generator_classification_type }}<i class="fa-solid fa-grip-lines-vertical" style="color: green;"></i>{{ product.generator_fuel_type }}<i class="fa-solid fa-grip-lines-vertical" style="color: green;"></i>{{ product.product_brand }}<i class="fa-solid fa-grip-lines-vertical" style="color: green;"></i>{{ product.generator_continuous_wattage_value }}<i class="fa-solid fa-w" style="color: green;"></i>
+            {{ product.product_price }}
+        </div>
+
+    {% if forloop.last or forloop.counter|modulo:4 == 0 %}
+        </div>
+    {% endif %}
+
+    {% endfor %}
+    
+    <div class="float-end">
+        <ul class="pagination">
+            {% if page_obj.has_previous %}
+            <li class="page-item"><a href="?page=1" class="page-link">&laquo; first</a></li>
+            <li class="page-item"><a href="?page={{ page_obj.previous_page_number }}" class="page-link">previous</a></li>
+            {% endif %}
+            <li class="page-item"><a href="#" class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</a></li>
+            {% if page_obj.has_next %}
+            <li class="page-item"><a href="?page={{ page_obj.next_page_number }}" class="page-link">next</a></li>
+            <li class="page-item"><a href="?page={{ page_obj.paginator.num_pages }}" class="page-link">last &raquo;</a></li>
+            {% endif %}
+        </ul>
+    </div>
+
+</div>
+
+{% endblock content %}

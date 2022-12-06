@@ -12,11 +12,16 @@
     <!-- Load our custom CSS -->
     <link rel="stylesheet" href="{% static 'css/block-divider.css' %}">
 
+    <!-- Font Awesome Imports -->
+    <script src="{% static 'fontawesomefree/js/fontawesome.js' %}"></script>
+    <script src="{% static 'fontawesomefree/js/solid.js' %}"></script>
+    <script src="{% static 'fontawesomefree/js/brands.js' %}"></script>
+
     <title>Generators, Outdoor Equipment, and More!</title>
   </head>
   <body>
 <!--start nav-->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
       <div class="container-fluid">
         <a class="navbar-brand" href="#">Factory Pure</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -25,44 +30,128 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link active" href="#">Air Control</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Power Equipment</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Water Heaters</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Home & More</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Electronics</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Medical</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">On Sale</a>
+              <a class="nav-link active" href="#">Home</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#">Contact Us</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Company</a>
+              <a class="nav-link" href="#">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Shipping & Returns</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Terms of Use</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Privacy Policy</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Warranty</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Resource Center</a>
             </li>
           </ul>
-          <form class="d-flex">
+          <i class="fa-solid fa-comments" style="color: green;"></i>
+          <strong class="me-5">Support</strong>
+          <i class="fa-solid fa-dolly" style="color: green;"></i>
+          <strong class="me-5">Wholesale</strong>
+          <!--<form class="d-flex">
             <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-success" type="submit">Search</button>
-          </form>
+          </form>-->
         </div>
       </div>
     </nav>
 <!--end nav-->
 
-<div class="b-example-divider">
-  <img src="{% static 'images/factory-pure-logo.avif' %}" class="img-thumbnail b-example-divider" alt="Factory Pure Logo">
+<div class="container">
+  <div class="row mb-3">
+    <div class="col-3">
+      <img src="{% static 'images/factory-pure-logo.avif' %}" class="img-thumbnail" alt="Factory Pure Logo">
+    </div>
+    <div class="col-3">
+      <strong>We're here to help! CALL or TEXT:</strong>
+    </div>
+    <div class="col-3">
+      <i class="fa-solid fa-phone-volume" style="color: green;"></i>
+      <i class="fa-solid fa-comment-sms" style="color: green;"></i>
+      <strong>(888) 978-4993</strong> <em>(M-F 8AM - 5:30 PM CT)</em>
+    </div>
+    <div class="col-3">
+      <i class="fa-solid fa-phone-volume" style="color: green;"></i>
+      <i class="fa-solid fa-comment-sms" style="color: green;"></i>
+      <strong>(888) 999-1522</strong> <em>(After Hours Sales)</em>
+    </div>
+  </div>
+</div>
+
+<!--start nav-->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container">
+    <a class="navbar-brand" href="#">Popular Items</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" href="#">Air Control</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Power Equipment</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Water Heaters</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Home & More</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Electronics</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Medical</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">On Sale</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Contact Us</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Company</a>
+        </li>
+      </ul>
+      <form class="d-flex">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success me-5" type="submit">Search</button>
+      </form>
+      <i class="fa-solid fa-user-plus" style="color: green;"></i>
+      <strong class="me-5">Account</strong>
+      <i class="fa-solid fa-cart-arrow-down" style="color: green;"></i>
+      <strong class="me-5">Cart</strong>
+    </div>
+  </div>
+</nav>
+<!--end nav-->
+
+{% block content %}
+{% endblock content %}
+
+<!-- start logos above the footer -->
+<div class="container">
+  <div class="row mb-3 mt-3">
+    <div class="col-4">
+      <!-- make images 118x110; widthXheight-->
+      <img src="{% static 'images/judgeme.png' %}" class="img-thumbnail" alt="Factory Pure Logo" style="height: 110px; width: 118px">
+      <img src="{% static 'images/shopperapproved.png' %}" class="img-thumbnail" alt="Factory Pure Logo" style="height: 110px; width: 118px">
+      <img src="{% static 'images/Inc-5000-logo.png' %}" class="img-thumbnail" alt="Factory Pure Logo" style="height: 110px; width: 118px">
+    </div>
+  </div>
+  <!-- end logos above the footer -->
 </div>
 
 <!--start footer-->
@@ -72,7 +161,12 @@
       <a href="https://getbootstrap.com/" class="d-flex align-items-center mb-3 link-dark text-decoration-none">
         <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
       </a>
-      <p class="text-muted">© 2022</p>
+      <p class="text-muted">Travis Sauer E-Commerce POC © 2022</p>
+      <!-- make images 118x110; widthXheight-->
+      <img src="{% static 'images/manufacturerseal.png' %}" class="img-thumbnail" alt="Factory Pure Logo" style="height: 110px; width: 118px">
+      <img src="{% static 'images/macafee.avif' %}" class="img-thumbnail" alt="Factory Pure Logo" style="height: 110px; width: 118px">
+      <img src="{% static 'images/comodo_secure_seal.avif' %}" class="img-thumbnail" alt="Factory Pure Logo" style="height: 110px; width: 118px">
+      <img src="{% static 'images/bbbacc.avif' %}" class="img-thumbnail" alt="Factory Pure Logo" style="height: 110px; width: 118px">
     </div>
 
     <div class="col mb-3">
@@ -81,52 +175,52 @@
     <div class="col mb-3">
       <h5>Popular Brands</h5>
       <ul class="nav flex-column">
-        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Generac Generators</a></li>
-        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">DuroMax Portable Generators</a></li>
-        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Kohler Standby Generators</a></li>
-        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Cummins Generators</a></li>
-        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Briggs and Stratton</a></li>
-        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Drolet Wood Stoves</a></li>
-        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Comfortbilt Pellet Stoves</a></li>
-        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Firman Generators</a></li>
-        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Champion Generators</a></li>
-        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">US Stove</a></li>
-        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">EV Rider</a></li>
-        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Marey Tankless Water Heaters</a></li>
-        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">England's Stove Works</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted"><i class="fa-solid fa-info" style="color: green;"></i> Generac Generators</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted"><i class="fa-solid fa-info" style="color: green;"></i> DuroMax Portable Generators</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted"><i class="fa-solid fa-info" style="color: green;"></i> Kohler Standby Generators</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted"><i class="fa-solid fa-info" style="color: green;"></i> Cummins Generators</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted"><i class="fa-solid fa-info" style="color: green;"></i> Briggs and Stratton</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted"><i class="fa-solid fa-info" style="color: green;"></i> Drolet Wood Stoves</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted"><i class="fa-solid fa-info" style="color: green;"></i> Comfortbilt Pellet Stoves</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted"><i class="fa-solid fa-info" style="color: green;"></i> Firman Generators</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted"><i class="fa-solid fa-info" style="color: green;"></i> Champion Generators</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted"><i class="fa-solid fa-info" style="color: green;"></i> US Stove</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted"><i class="fa-solid fa-info" style="color: green;"></i> EV Rider</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted"><i class="fa-solid fa-info" style="color: green;"></i> Marey Tankless Water Heaters</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted"><i class="fa-solid fa-info" style="color: green;"></i> England's Stove Works</a></li>
       </ul>
     </div>
 
     <div class="col mb-3">
       <h5>Categories</h5>
       <ul class="nav flex-column">
-        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Air Conditioners</a></li>
-        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Heaters</a></li>
-        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Air Purifiers</a></li>
-        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Pressure Washers</a></li>
-        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Generators</a></li>
-        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Dehumidifiers</a></li>
-        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Pellet Stoves</a></li>
-        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Electric Skateboards</a></li>
-        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Tankless Water Heaters</a></li>
-        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Refurbished Items</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted"><i class="fa-solid fa-info" style="color: green;"></i> Air Conditioners</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted"><i class="fa-solid fa-info" style="color: green;"></i> Heaters</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted"><i class="fa-solid fa-info" style="color: green;"></i> Air Purifiers</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted"><i class="fa-solid fa-info" style="color: green;"></i> Pressure Washers</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted"><i class="fa-solid fa-info" style="color: green;"></i> Generators</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted"><i class="fa-solid fa-info" style="color: green;"></i> Dehumidifiers</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted"><i class="fa-solid fa-info" style="color: green;"></i> Pellet Stoves</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted"><i class="fa-solid fa-info" style="color: green;"></i> Electric Skateboards</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted"><i class="fa-solid fa-info" style="color: green;"></i> Tankless Water Heaters</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted"><i class="fa-solid fa-info" style="color: green;"></i> Refurbished Items</a></li>
       </ul>
     </div>
 
     <div class="col mb-3">
       <h5>Resources</h5>
       <ul class="nav flex-column">
-        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Air Purifier Buying Guide</a></li>
-        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Dehumidifier Buying Guide</a></li>
-        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Tankless Water Heater Buying Guide</a></li>
-        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Chronic Bronchitis and Emphysema</a></li>
-        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Do Air Purifiers Work?</a></li>
-        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">What Is Asthma?</a></li>
-        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">What Are Allergies?</a></li>
-        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">How to Get Rid of Allergies</a></li>
-        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">How to Get Rid of Smoke Smell</a></li>
-        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">How to Get Rid of Mold</a></li>
-        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">How to Get Rid of Pet Dander</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted"><i class="fa-solid fa-info" style="color: green;"></i> Air Purifier Buying Guide</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted"><i class="fa-solid fa-info" style="color: green;"></i> Dehumidifier Buying Guide</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted"><i class="fa-solid fa-info" style="color: green;"></i> Tankless Water Heater Buying Guide</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted"><i class="fa-solid fa-info" style="color: green;"></i> Chronic Bronchitis and Emphysema</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted"><i class="fa-solid fa-info" style="color: green;"></i> Do Air Purifiers Work?</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted"><i class="fa-solid fa-info" style="color: green;"></i> What Is Asthma?</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted"><i class="fa-solid fa-info" style="color: green;"></i> What Are Allergies?</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted"><i class="fa-solid fa-info" style="color: green;"></i> How to Get Rid of Allergies</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted"><i class="fa-solid fa-info" style="color: green;"></i> How to Get Rid of Smoke Smell</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted"><i class="fa-solid fa-info" style="color: green;"></i> How to Get Rid of Mold</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted"><i class="fa-solid fa-info" style="color: green;"></i> How to Get Rid of Pet Dander</a></li>
       </ul>
     </div>
   </footer>

@@ -1,1 +1,8 @@
-Django
+Django==3.2
+fontawesomefree==6
+psycopg2
+django-jsonfield
+django-extensions
+boto3
+Collectfast
+factory-boy
