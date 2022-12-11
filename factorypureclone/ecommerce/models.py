@@ -1,8 +1,10 @@
 import jsonfield
 from django.db import models
+from django.contrib.auth.models import User
 
 # this is our base product model, which ALL products will have values for
 class BaseProduct(models.Model):
+    product_in_user_cart = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     product_name = models.CharField(max_length=255)
     product_category_choices = (
         ('generator', 'generator'),
@@ -15,6 +17,18 @@ class BaseProduct(models.Model):
         ('air_control', 'air_control')
     )
     product_category = models.CharField(max_length=128, choices=product_category_choices)
+    # had to comment out color choices below until we update our models
+    '''product_color_choices = (
+        ('red', 'red'),
+        ('yelow', 'yellow'),
+        ('blue', 'blue'),
+        ('green', 'green'),
+        ('orange', 'orange'),
+        ('purple', 'purple'),
+        ('black', 'black'),
+        ('grey', 'grey'),
+    )
+    product_color = models.CharField(max_length=32, choices=product_color_choices)'''
     product_manufacturer = models.CharField(max_length=255)
     product_brand = models.CharField(max_length=255)
     product_SKU = models.CharField(max_length=32)
@@ -82,12 +96,13 @@ class Generator(BaseProduct):
     # it is possible that we need to create a one to many model for wattage (wattage needs to be its own model)
     generator_continuous_wattage_value = models.IntegerField()
     # this will set our object name within django admin; dunder methods are overriding methods
+    
     def __str__(self):
         return 'generator_' + self.product_SKU
 
 class ProductReview(models.Model):
     review_title = models.CharField(max_length=255, default=None)
-    review_text_body = models.TextField( default=None)
+    review_text_body = models.TextField(default=None)
     # picture and videos are stored in s3; the fields will be strings which are paths
     # to the location of the assets within the s3 bucket
     picture_s3_url = models.CharField(max_length=128, null=True, blank=True)
@@ -96,6 +111,7 @@ class ProductReview(models.Model):
     customer_email = models.CharField(max_length=128, default=None)
     # this is just going to be a placeholder for now until we figure out how to properly
     # label a review object. a review should have a many to one relationship with a product
+
     def __str__(self):
         return self.review_title
 
@@ -106,5 +122,6 @@ class ProductQuestion(models.Model):
     company_answer_text_body = models.TextField(null=True, blank=True)
     # email should be unique? it might be wise to find a way to to append a SKU # and product type for
     # easier administration, so for now this is just a placeholder
+    
     def __str__(self):
         return 'question_' + self.questions_customer_email

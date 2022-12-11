@@ -58,7 +58,7 @@ ROOT_URLCONF = "factorypureclone.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [os.path.join(BASE_DIR, 'templates')],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -152,3 +152,13 @@ STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Redirect to home URL after login (Default redirects to /accounts/profile/)
+LOGIN_REDIRECT_URL = '/ecomm'
+
+# we are temporarily using this so that the password reset link
+# that is supposed to be sent via email is actually just printed to the
+# console so we can copy and paste. we can use the following link to the django docs
+# to set up this reset link being sent to a user's actual email:
+# https://docs.djangoproject.com/en/4.0/topics/email/
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

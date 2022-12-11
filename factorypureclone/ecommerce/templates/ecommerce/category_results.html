@@ -2,25 +2,121 @@
 {% load my_tags %}
 {% block content %}
 
-<div class="container">
+<!-- start of the filter UI; this is just a placeholder for now, need to flesh it out -->
+<div class="container mb-5">
+    <div
+  class="row justify-content-center"
+  id="filter-sort-example-filters"
+  data-mdb-auto-filter="true"
+>
+  <div class="col-md-4" data-mdb-filter="color">
+    <span class="fa-lg">Filter: Color</span>
+
+    <div class="form-check mt-3">
+      <input
+        class="form-check-input"
+        type="radio"
+        name="filterSortRadioOptions"
+        id="filterSortRadio1"
+        value="black"
+      />
+      <label class="form-check-label" for="filterSortRadio1">Black</label>
+    </div>
+
+    <div class="form-check">
+      <input
+        class="form-check-input"
+        type="radio"
+        name="filterSortRadioOptions"
+        id="filterSortRadio2"
+        value="red"
+      />
+      <label class="form-check-label" for="filterSortRadio2">Red</label>
+    </div>
+
+    <div class="form-check">
+      <input
+        class="form-check-input"
+        type="radio"
+        name="filterSortRadioOptions"
+        id="filterSortRadio3"
+        value="blue"
+      />
+      <label class="form-check-label" for="filterSortRadio3">Blue</label>
+    </div>
+
+    <div class="form-check">
+      <input
+        class="form-check-input"
+        type="radio"
+        name="filterSortRadioOptions"
+        id="filterSortRadio4"
+        value="gray"
+      />
+      <label class="form-check-label" for="filterSortRadio4">Gray</label>
+    </div>
+  </div>
+
+  <div class="col-md-4" data-mdb-filter="sale">
+    <span class="fa-lg mb-5">Filter: Sale</span>
+
+    <div class="form-check mt-3">
+      <input
+        class="form-check-input"
+        type="radio"
+        name="filterSortRadioOptions2"
+        id="filterSortRadio5"
+        value="yes"
+      />
+      <label class="form-check-label" for="filterSortRadio5">Yes</label>
+    </div>
+
+    <div class="form-check">
+      <input
+        class="form-check-input"
+        type="radio"
+        name="filterSortRadioOptions2"
+        id="filterSortRadio6"
+        value="no"
+      />
+      <label class="form-check-label" for="filterSortRadio6">No</label>
+    </div>
+
+    <button type="button" class="btn btn-primary mt-3" id="filterSortReset">
+      Clear all filters
+    </button>
+  </div>
+
+  <div class="col-md-4 my-5">
+    <select class="select" id="filter-sort-select">
+      <option value="" disabled selected>Choose category</option>
+      <option value="1">Product name ascending</option>
+      <option value="2">Product name descending</option>
+      <option value="3">Highest price</option>
+      <option value="4">Lowest price</option>
+    </select>
+    <label class="form-label select-label">Sort</label>
+  </div>
+</div>
+<div class="row text-center" id="filter-sort-example-data"></div>
+</div>
+<!-- end of the filtering UI -->
+
+<div class="container mb-5">
     {% for product in page_obj %} 
     {% if forloop.counter|modulo:4 == 1 %}
-        <div class="row">
+        <div class="row mb-5">
     {% endif %}
 
-        <div class="col-sm-3">
-            <img src="{{ product.product_photos }}" style="height: 80%; width: 80%">
-            Generator_{{ product.product_name }}<i class="fa-solid fa-grip-lines-vertical" style="color: green;"></i>{{ product.generator_classification_type }}<i class="fa-solid fa-grip-lines-vertical" style="color: green;"></i>{{ product.generator_fuel_type }}<i class="fa-solid fa-grip-lines-vertical" style="color: green;"></i>{{ product.product_brand }}<i class="fa-solid fa-grip-lines-vertical" style="color: green;"></i>{{ product.generator_continuous_wattage_value }}<i class="fa-solid fa-w" style="color: green;"></i>
-            {{ product.product_price }}
+        <div class="col-sm-3 mb-5">
+            <a href="/ecomm/item/{{ product.id }}/"><img src="{{ product.product_photos }}" style="height: 80%; width: 80%">
+            Generator_{{ product.product_name }} <i class="fa-solid fa-grip-lines-vertical" style="color: green;"></i> {{ product.generator_classification_type }}<i class="fa-solid fa-grip-lines-vertical" style="color: green;"></i> {{ product.generator_fuel_type }}<i class="fa-solid fa-grip-lines-vertical" style="color: green;"></i> {{ product.product_brand }}<i class="fa-solid fa-grip-lines-vertical" style="color: green;"></i> {{ product.generator_continuous_wattage_value }}<i class="fa-solid fa-w" style="color: green;"></i>
+            {{ product.product_price }}</a>
         </div>
 
     {% if forloop.last or forloop.counter|modulo:4 == 0 %}
-        </div>
-    {% endif %}
-
-    {% endfor %}
-    
-    <div class="float-end">
+    {% if forloop.last %}
+    <div class="float-end mt-5 mb-5">
         <ul class="pagination">
             {% if page_obj.has_previous %}
             <li class="page-item"><a href="?page=1" class="page-link">&laquo; first</a></li>
@@ -33,6 +129,11 @@
             {% endif %}
         </ul>
     </div>
+    {% endif %}
+        </div>
+    {% endif %}
+
+    {% endfor %}
 
 </div>
 

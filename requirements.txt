@@ -4,5 +4,6 @@ psycopg2
 django-jsonfield
 django-extensions
 boto3
-Collectfast
 factory-boy
+pre-commit
+flake8

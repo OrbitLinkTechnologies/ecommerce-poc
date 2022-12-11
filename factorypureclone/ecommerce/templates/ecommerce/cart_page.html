@@ -1,0 +1,197 @@
+{% extends 'ecommerce/base.html' %}
+{% load my_tags %}
+{% block content %}
+
+<!-- Container for demo purpose -->
+<div class="container my-5 py-5">
+
+    <!-- Section: Design block -->
+    <section class="">
+      <div class="row gx-lg-5">
+        <div class="col-lg-8 mb-4 mb-md-0">
+          <!-- Section: Product list -->
+          <section class="mb-5">
+            {% for item in cart_items %}
+            <!-- Single item -->
+            <div class="row border-bottom mb-4">
+              <div class="col-md-2 mb-4 mb-md-0">
+                <div
+                     class="
+                            bg-image
+                            ripple
+                            rounded-5
+                            mb-4
+                            overflow-hidden
+                            d-block
+                            "
+                     data-ripple-color="light"
+                     >
+                  <img
+                       src="{{ item.product_photos }}"
+                       class="w-100"
+                       alt=""
+                       />
+                  <a href="#!">
+                    <div class="hover-overlay">
+                      <div
+                           class="mask"
+                           style="background-color: hsla(0, 0%, 98.4%, 0.2)"
+                           ></div>
+                    </div>
+                  </a>
+                </div>
+              </div>
+  
+              <div class="col-md-8 mb-4 mb-md-0">
+                <p class="fw-bold">Generator_{{ item.product_name }}</p>
+                <p class="mb-1">
+                  <span class="text-muted me-2">{{ item.product_category }} type:</span><span>{{ item.generator_classification_type }}</span>
+                </p>
+                <p>
+                  <span class="text-muted me-2">Fuel Type:</span
+                    ><span>{{ item.generator_fuel_type }}</span>
+                </p>
+  
+                <p class="mb-4">
+                  <a href="/ecomm/remove_item_from_cart/{{ item.id }}/" class="text-muted pe-3 border-end"
+                     ><small
+                             ><i class="fas fa-trash me-2"></i>Remove</small
+                    ></a>
+                  <a href="" class="text-muted ps-3"
+                     ><small
+                             ><i class="fas fa-heart me-2"></i>Move to wish
+                    list</small
+                    ></a
+                    >
+                </p>
+              </div>
+  
+              <div class="col-md-2 mb-4 mb-md-0">
+                <div class="form-outline mb-4">
+                  <input
+                         type="number"
+                         id="typeNumber"
+                         class="form-control"
+                         value="1"
+                         min="1"
+                         />
+                  <label class="form-label" for="typeNumber"
+                         >Quantity</label
+                    >
+                </div>
+  
+                <h5 class="mb-2">
+                  <s class="text-muted me-2 small align-middle">${{ item.product_price }}</s
+                    ><span class="align-middle">{{ item.product_price }}</span>
+                </h5>
+                <p class="text-danger"><small>Product On Sale: {{ item.product_on_sale }}</small></p>
+              </div>
+            </div>
+            <!-- Single item -->
+            {% endfor %}
+          </section>
+          <!-- Section: Product list -->
+  
+          <!-- Section: Details -->
+          <section class="">
+            <div class="mb-5">
+              <p class="text-primary">
+                <i class="fas fa-info-circle mr-1"></i> Do not delay the
+                purchase, adding items to your cart does not mean booking
+                them.
+              </p>
+            </div>
+  
+            <div class="mb-5">
+              <h5 class="mb-4">Expected shipping delivery</h5>
+  
+              <p class="mb-0">Thu., 12.03. - Mon, 16.03.</p>
+            </div>
+  
+            <div>
+              <h5 class="mb-4">We accept</h5>
+  
+              <img
+                   class="mr-2"
+                   width="45px"
+                   src="https://mdbootstrap.com/wp-content/plugins/woocommerce-gateway-stripe/assets/images/visa.svg"
+                   alt="Visa"
+                   />
+              <img
+                   class="mr-2"
+                   width="45px"
+                   src="https://mdbootstrap.com/wp-content/plugins/woocommerce-gateway-stripe/assets/images/amex.svg"
+                   alt="American Express"
+                   />
+              <img
+                   class="mr-2"
+                   width="45px"
+                   src="https://mdbootstrap.com/wp-content/plugins/woocommerce-gateway-stripe/assets/images/mastercard.svg"
+                   alt="Mastercard"
+                   />
+              <img
+                   class="mr-2"
+                   width="45px"
+                   src="https://mdbootstrap.com/wp-content/plugins/woocommerce/includes/gateways/paypal/assets/images/paypal.png"
+                   alt="PayPal acceptance mark"
+                   />
+            </div>
+          </section>
+          <!-- Section: Details -->
+        </div>
+  
+        <div class="col-lg-4 mb-4 mb-md-0">
+          <!-- Section: Summary -->
+          <section class="shadow-4 p-4 rounded-5 mb-4">
+            <h5 class="mb-5">The total amount of</h5>
+  
+            <div class="d-flex justify-content-between mb-3">
+              <span>Temporary amount </span>
+              <span>{{ cart_total }}</span>
+            </div>
+            <div class="d-flex justify-content-between">
+                <!--we need to add a shipping fee to our product model, or potentially even create a shipping model;
+                we need to sit down and re-architect everything -->
+              <span>Shipping </span>
+              <span>Free</span>
+            </div>
+            <hr class="my-4" />
+            <div class="d-flex justify-content-between fw-bold mb-5">
+              <span>Cart Total (including VAT)</span>
+              <span>{{ cart_total }}</span>
+            </div>
+  
+            <button type="button" class="btn btn-primary btn-rounded w-100">
+              Got to checkout
+            </button>
+          </section>
+          <!-- Section: Summary -->
+  
+          <!-- Section: Summary -->
+          <section class="shadow-4 p-4 rounded-5">
+            <h5 class="mb-4">Apply promo code</h5>
+  
+            <div class="d-flex align-items-center">
+              <input
+                     type="text"
+                     class="form-control rounded me-1"
+                     placeholder="Promo code"
+                     />
+              <button
+                      type="button"
+                      class="btn btn-link btn-rounded overflow-visible"
+                      >
+                Apply
+              </button>
+            </div>
+          </section>
+          <!-- Section: Summary -->
+        </div>
+      </div>
+    </section>
+    <!-- Section: Design block -->
+  
+  </div>
+  <!-- Container for demo purpose -->
+
+{% endblock content %}

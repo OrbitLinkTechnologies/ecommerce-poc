@@ -1,0 +1,10 @@
+{% extends 'ecommerce/base.html' %}
+{% load my_tags %}
+{% block content %}
+
+<div class="container">
+    <p>Logged out!</p>
+    <a href="{% url 'login'%}">Click here to login again.</a>
+</div>
+
+{% endblock content %}
