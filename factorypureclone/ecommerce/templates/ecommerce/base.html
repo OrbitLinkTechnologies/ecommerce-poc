@@ -1,77 +1,92 @@
 {% load static %}
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1"
+    />
 
     <!-- Font Awesome -->
     <link
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-    rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
     />
     <!-- Google Fonts -->
     <link
-    href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
-    rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+      rel="stylesheet"
     />
 
     <!-- MDB ESSENTIAL -->
-    <link rel="stylesheet" href="{% static 'md_bstrap/css/mdb.min.css' %}" />
+    <link
+      rel="stylesheet"
+      href="{% static 'md_bstrap/css/mdb.min.css' %}"
+    />
     <!-- MDB PLUGINS -->
-    <link rel="stylesheet" href="{% static 'md_bstrap/plugins/css/all.min.css' %}" />
+    <link
+      rel="stylesheet"
+      href="{% static 'md_bstrap/plugins/css/all.min.css' %}"
+    />
 
     <title>Generators, Outdoor Equipment, and More!</title>
   </head>
   <body class="p-3 mb-2 bg-secondary bg-gradient text-white">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-9">
+      <!-- Container wrapper -->
+      <div class="container-fluid">
+        <!-- Toggle button -->
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-mdb-toggle="collapse"
+          data-mdb-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <i class="fas fa-bars"></i>
+        </button>
 
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light mb-9">
-  <!-- Container wrapper -->
-  <div class="container-fluid">
-    <!-- Toggle button -->
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-mdb-toggle="collapse"
-      data-mdb-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <i class="fas fa-bars"></i>
-    </button>
-
-    <!-- Collapsible wrapper -->
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <!-- Navbar brand -->
-      <a class="navbar-brand mt-2 mt-lg-0" href="#">
-        <img
-          src="{% static 'images/factory-pure-logo.avif' %}"
-          height="120"
-          alt="MDB Logo"
-          loading="lazy"
-        />
-      </a>
-      <!-- Left links -->
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link" href="/ecomm">
-            <ul class="list-group text-black ms-5">
-              <li class="list-group-item">
-            Home
-            </li>
-            </ul>
+        <!-- Collapsible wrapper -->
+        <div
+          class="collapse navbar-collapse"
+          id="navbarSupportedContent"
+        >
+          <!-- Navbar brand -->
+          <a
+            class="navbar-brand mt-2 mt-lg-0"
+            href="#"
+          >
+            <img
+              src="{% static 'images/factory-pure-logo.avif' %}"
+              height="120"
+              alt="MDB Logo"
+              loading="lazy"
+            />
           </a>
-        </li>
-      </ul>
-      <!-- Left links -->
-    </div>
-    <!-- Collapsible wrapper -->
+          <!-- Left links -->
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                href="/ecomm"
+              >
+                <ul class="list-group text-black ms-5">
+                  <li class="list-group-item">Home</li>
+                </ul>
+              </a>
+            </li>
+          </ul>
+          <!-- Left links -->
+        </div>
+        <!-- Collapsible wrapper -->
 
-    <!-- Right elements -->
-    <!--<div class="d-flex align-items-center">
+        <!-- Right elements -->
+        <!--<div class="d-flex align-items-center">
       
       <a class="text-reset me-3" href="#">
         <i class="fas fa-shopping-cart"></i>
@@ -139,245 +154,456 @@
         </ul>
       </div>
     </div>-->
-    <!-- Right elements -->
-    <ul class="list-group text-black">
-      <li class="list-group-item">We're here to help! CALL or TEXT:</li>
-      <li class="list-group-item">(888) 978-4993 (M-F 8AM - 5:30 PM CT)</li>
-      <li class="list-group-item">(888) 999-1522 (After Hours Sales)</li>
-    </ul>
-    <ul class="list-group text-black ms-5">
-     {% if user.is_authenticated %}
-       <li class="list-group-item">User: {{ user.get_username }}</li>
-       <li class="list-group-item"><a href="/ecomm/cart">Cart<i class="fa-solid fa-cart-arrow-down ms-2"></i></a></li>
-       <li class="list-group-item"><a href="{% url 'logout' %}?next={{ request.path }}">Logout</a></li>
-     {% else %}
-       <li class="list-group-item"><a href="{% url 'login' %}?next={{ request.path }}">Login</a></li>
-     {% endif %}
-    </ul>
-  
-    <!-- Right elements -->
-  </div>
-  <!-- Container wrapper -->
-</nav>
-<!-- Navbar -->
-
-{% block content %}
-{% endblock content %}
-
-<!-- Footer -->
-<footer class="text-center text-lg-start bg-light text-muted">
-  <!-- Section: Social media -->
-  <section class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
-    <!-- Left -->
-    <div class="me-5 d-none d-lg-block">
-      <span>Get connected with us on social networks:</span>
-    </div>
-    <!-- Left -->
-
-    <!-- Right -->
-    <div>
-      <a href="" class="me-4 text-reset">
-        <i class="fab fa-facebook-f"></i>
-      </a>
-      <a href="" class="me-4 text-reset">
-        <i class="fab fa-twitter"></i>
-      </a>
-      <a href="" class="me-4 text-reset">
-        <i class="fab fa-google"></i>
-      </a>
-      <a href="" class="me-4 text-reset">
-        <i class="fab fa-instagram"></i>
-      </a>
-      <a href="" class="me-4 text-reset">
-        <i class="fab fa-linkedin"></i>
-      </a>
-      <a href="" class="me-4 text-reset">
-        <i class="fab fa-github"></i>
-      </a>
-    </div>
-    <!-- Right -->
-  </section>
-  <!-- Section: Social media -->
-
-  <!-- Section: Links  -->
-  <section class="">
-    <div class="container text-center text-md-start mt-5">
-      <!-- Grid row -->
-      <div class="row mt-3">
-
-        <!-- Grid column -->
-        <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
-          <!-- Links -->
-          <h6 class="text-uppercase fw-bold mb-4">
-            Popular Brands
-          </h6>
-          <p>
-            <a href="#!" class="text-reset">Generac Generators</a>
-          </p>
-          <p>
-            <a href="#!" class="text-reset">DuroMax Portable Generators</a>
-          </p>
-          <p>
-            <a href="#!" class="text-reset">Kohler Standby Generators</a>
-          </p>
-          <p>
-            <a href="#!" class="text-reset">Cummins Generators</a>
-          </p>
-          <p>
-            <a href="#!" class="text-reset">Briggs and Stratton</a>
-          </p>
-          <p>
-            <a href="#!" class="text-reset">Drolet Wood Stoves</a>
-          </p>
-          <p>
-            <a href="#!" class="text-reset">Comfortbilt Pellet Stoves</a>
-          </p>
-          <p>
-            <a href="#!" class="text-reset">Firman Generators</a>
-          </p>
-          <p>
-            <a href="#!" class="text-reset">Champion Generators</a>
-          </p>
-          <p>
-            <a href="#!" class="text-reset">US Stove</a>
-          </p>
-          <p>
-            <a href="#!" class="text-reset">EV Rider</a>
-          </p>
-          <p>
-            <a href="#!" class="text-reset">Marey Tankless Water Heaters</a>
-          </p>
-          <p>
-            <a href="#!" class="text-reset">England's Stove Works</a>
-          </p>
+        <!-- Right elements -->
+        <div class="alert alert-dismissible fade show me-3 mt-3" role="alert" data-mdb-color="info">
+          We're here to help! <strong>CALL or TEXT:</strong><br>
+          <i class="fa-solid fa-phone-volume me-2"></i><strong>(888) 978-4993 (M-F 8AM - 5:30 PM CT)</strong><br>
+          <i class="fa-solid fa-phone-volume me-2"></i><strong>(888) 999-1522 (After Hours Sales)</strong>
+          <button type="button" class="btn-close" data-mdb-dismiss="alert" aria-label="Close"></button>
         </div>
-        <!-- Grid column -->
+        <ul class="list-group text-black ms-5">
+          {% if user.is_authenticated %}
+          <li class="list-group-item">User: {{ user.get_username }}</li>
+          <li class="list-group-item">
+            <a href="/ecomm/cart"
+              >Cart<i class="fa-solid fa-cart-arrow-down ms-2"></i
+            ></a>
+          </li>
+          <li class="list-group-item">
+            <a href="{% url 'logout' %}?next={{ request.path }}">Logout</a>
+          </li>
+          {% else %}
+          <li class="list-group-item">
+            <a href="{% url 'login' %}?next={{ request.path }}">Login</a>
+          </li>
+          {% endif %}
+        </ul>
 
-        <!-- Grid column -->
-        <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
-          <!-- Links -->
-          <h6 class="text-uppercase fw-bold mb-4">
-            Categories
-          </h6>
-          <p>
-            <a href="#!" class="text-reset">Heaters</a>
-          </p>
-          <p>
-            <a href="#!" class="text-reset">Air Purifiers</a>
-          </p>
-          <p>
-            <a href="#!" class="text-reset">Pressure Washers</a>
-          </p>
-          <p>
-            <a href="#!" class="text-reset">Generators</a>
-          </p>
-          <p>
-            <a href="#!" class="text-reset">Dehumidifiers</a>
-          </p>
-          <p>
-            <a href="#!" class="text-reset">Dehumidifiers</a>
-          </p>
-          <p>
-            <a href="#!" class="text-reset">Electric Skateboards</a>
-          </p>
-          <p>
-            <a href="#!" class="text-reset">Tankless Water Heaters</a>
-          </p>
-          <p>
-            <a href="#!" class="text-reset">Refurbished Items</a>
-          </p>
-        </div>
-        <!-- Grid column -->
-
-        <!-- Grid column -->
-        <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
-          <!-- Links -->
-          <h6 class="text-uppercase fw-bold mb-4">
-            Resources
-          </h6>
-          <p>
-            <a href="#!" class="text-reset">Air Purifier Buying Guide</a>
-          </p>
-          <p>
-            <a href="#!" class="text-reset">Dehumidifier Buying Guide</a>
-          </p>
-          <p>
-            <a href="#!" class="text-reset">Tankless Water Heater Buying Guide</a>
-          </p>
-          <p>
-            <a href="#!" class="text-reset">Chronic Bronchitis and Emphysema</a>
-          </p>
-          <p>
-            <a href="#!" class="text-reset">Do Air Purifiers Work?</a>
-          </p>
-          <p>
-            <a href="#!" class="text-reset">What Is Asthma?</a>
-          </p>
-          <p>
-            <a href="#!" class="text-reset">What Are Allergies?</a>
-          </p>
-          <p>
-            <a href="#!" class="text-reset">How to Get Rid of Allergies</a>
-          </p>
-          <p>
-            <a href="#!" class="text-reset">How to Get Rid of Smoke Smell</a>
-          </p>
-          <p>
-            <a href="#!" class="text-reset">How to Get Rid of Mold</a>
-          </p>
-          <p>
-            <a href="#!" class="text-reset">How to Get Rid of Pet Dander</a>
-          </p>
-        </div>
-        <!-- Grid column -->
-
-        <!-- Grid column -->
-        <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
-          <!-- Links -->
-          <h6 class="text-uppercase fw-bold mb-4">Contact</h6>
-          <p><i class="fas fa-home me-3"></i> San Antonio, Texas, US</p>
-          <p>
-            <i class="fas fa-envelope me-3"></i>
-            tsauer91cs@gmail.com
-          </p>
-          <p><i class="fas fa-phone me-3"></i>(888) 978-4993 (M-F 8AM - 5:30 PM CT)</p>
-          <p><i class="fas fa-print me-3"></i> (888) 999-1522 (After Hours Sales)</p>
-        </div>
-        <!-- Grid column -->
+        <!-- Right elements -->
       </div>
-      <!-- Grid row -->
-    </div>
-  </section>
-  <!-- Section: Links  -->
+      <!-- Container wrapper -->
+    </nav>
+    <!-- Navbar -->
 
-  <!-- Copyright -->
-  <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
-    © 2022 Copyright:
-    <a class="text-reset me-5" href="https://tscompsci.com">Travis e-commerce POC</a>
-    <i class="fa-solid fa-house"></i>
-    <a class="text-reset fw-bold me-2" href="https://tscompsci.com">Home</a>
-    <i class="fa-solid fa-address-book"></i>
-    <a class="text-reset fw-bold me-2" href="https://tscompsci.com">Contact Us</a>
-    <i class="fa-solid fa-address-card"></i>
-    <a class="text-reset fw-bold me-2" href="https://tscompsci.com">About</a>
-    <i class="fa-solid fa-truck-fast"></i>
-    <a class="text-reset fw-bold me-2" href="https://tscompsci.com">Shipping & Returns</a>
-    <i class="fa-solid fa-clipboard-list"></i>
-    <a class="text-reset fw-bold me-2" href="https://tscompsci.com">Terms of Use</a>
-    <i class="fa-solid fa-lock"></i>
-    <a class="text-reset fw-bold me-2" href="https://tscompsci.com">Privacy Policy</a>
-    <i class="fa-solid fa-shield"></i>
-    <a class="text-reset fw-bold me-2" href="https://tscompsci.com">Warranty</a>
-    <i class="fa-solid fa-hotel"></i>
-    <a class="text-reset fw-bold me-2" href="https://tscompsci.com">Resource Center</a>
-  </div>
-  <!-- Copyright -->
-</footer>
-<!-- Footer -->
+    {% block content %} {% endblock content %}
+
+    <!-- Footer -->
+    <footer class="text-center text-lg-start bg-light text-muted">
+      <!-- Section: Social media -->
+      <section
+        class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom"
+      >
+        <!-- Left -->
+        <div class="me-5 d-none d-lg-block">
+          <span>Get connected with us on social networks:</span>
+        </div>
+        <!-- Left -->
+
+        <!-- Right -->
+        <div>
+          <a
+            href=""
+            class="me-4 text-reset"
+          >
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a
+            href=""
+            class="me-4 text-reset"
+          >
+            <i class="fab fa-twitter"></i>
+          </a>
+          <a
+            href=""
+            class="me-4 text-reset"
+          >
+            <i class="fab fa-google"></i>
+          </a>
+          <a
+            href=""
+            class="me-4 text-reset"
+          >
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a
+            href=""
+            class="me-4 text-reset"
+          >
+            <i class="fab fa-linkedin"></i>
+          </a>
+          <a
+            href=""
+            class="me-4 text-reset"
+          >
+            <i class="fab fa-github"></i>
+          </a>
+        </div>
+        <!-- Right -->
+      </section>
+      <!-- Section: Social media -->
+
+      <!-- Section: Links  -->
+      <section class="">
+        <div class="container text-center text-md-start mt-5">
+          <!-- Grid row -->
+          <div class="row mt-3">
+            <!-- Grid column -->
+            <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+              <!-- Links -->
+              <h6 class="text-uppercase fw-bold mb-4">Popular Brands</h6>
+              <p>
+                <a
+                  href="#!"
+                  class="text-reset"
+                  >Generac Generators</a
+                >
+              </p>
+              <p>
+                <a
+                  href="#!"
+                  class="text-reset"
+                  >DuroMax Portable Generators</a
+                >
+              </p>
+              <p>
+                <a
+                  href="#!"
+                  class="text-reset"
+                  >Kohler Standby Generators</a
+                >
+              </p>
+              <p>
+                <a
+                  href="#!"
+                  class="text-reset"
+                  >Cummins Generators</a
+                >
+              </p>
+              <p>
+                <a
+                  href="#!"
+                  class="text-reset"
+                  >Briggs and Stratton</a
+                >
+              </p>
+              <p>
+                <a
+                  href="#!"
+                  class="text-reset"
+                  >Drolet Wood Stoves</a
+                >
+              </p>
+              <p>
+                <a
+                  href="#!"
+                  class="text-reset"
+                  >Comfortbilt Pellet Stoves</a
+                >
+              </p>
+              <p>
+                <a
+                  href="#!"
+                  class="text-reset"
+                  >Firman Generators</a
+                >
+              </p>
+              <p>
+                <a
+                  href="#!"
+                  class="text-reset"
+                  >Champion Generators</a
+                >
+              </p>
+              <p>
+                <a
+                  href="#!"
+                  class="text-reset"
+                  >US Stove</a
+                >
+              </p>
+              <p>
+                <a
+                  href="#!"
+                  class="text-reset"
+                  >EV Rider</a
+                >
+              </p>
+              <p>
+                <a
+                  href="#!"
+                  class="text-reset"
+                  >Marey Tankless Water Heaters</a
+                >
+              </p>
+              <p>
+                <a
+                  href="#!"
+                  class="text-reset"
+                  >England's Stove Works</a
+                >
+              </p>
+            </div>
+            <!-- Grid column -->
+
+            <!-- Grid column -->
+            <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+              <!-- Links -->
+              <h6 class="text-uppercase fw-bold mb-4">Categories</h6>
+              <p>
+                <a
+                  href="#!"
+                  class="text-reset"
+                  >Heaters</a
+                >
+              </p>
+              <p>
+                <a
+                  href="#!"
+                  class="text-reset"
+                  >Air Purifiers</a
+                >
+              </p>
+              <p>
+                <a
+                  href="#!"
+                  class="text-reset"
+                  >Pressure Washers</a
+                >
+              </p>
+              <p>
+                <a
+                  href="#!"
+                  class="text-reset"
+                  >Generators</a
+                >
+              </p>
+              <p>
+                <a
+                  href="#!"
+                  class="text-reset"
+                  >Dehumidifiers</a
+                >
+              </p>
+              <p>
+                <a
+                  href="#!"
+                  class="text-reset"
+                  >Dehumidifiers</a
+                >
+              </p>
+              <p>
+                <a
+                  href="#!"
+                  class="text-reset"
+                  >Electric Skateboards</a
+                >
+              </p>
+              <p>
+                <a
+                  href="#!"
+                  class="text-reset"
+                  >Tankless Water Heaters</a
+                >
+              </p>
+              <p>
+                <a
+                  href="#!"
+                  class="text-reset"
+                  >Refurbished Items</a
+                >
+              </p>
+            </div>
+            <!-- Grid column -->
+
+            <!-- Grid column -->
+            <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+              <!-- Links -->
+              <h6 class="text-uppercase fw-bold mb-4">Resources</h6>
+              <p>
+                <a
+                  href="#!"
+                  class="text-reset"
+                  >Air Purifier Buying Guide</a
+                >
+              </p>
+              <p>
+                <a
+                  href="#!"
+                  class="text-reset"
+                  >Dehumidifier Buying Guide</a
+                >
+              </p>
+              <p>
+                <a
+                  href="#!"
+                  class="text-reset"
+                  >Tankless Water Heater Buying Guide</a
+                >
+              </p>
+              <p>
+                <a
+                  href="#!"
+                  class="text-reset"
+                  >Chronic Bronchitis and Emphysema</a
+                >
+              </p>
+              <p>
+                <a
+                  href="#!"
+                  class="text-reset"
+                  >Do Air Purifiers Work?</a
+                >
+              </p>
+              <p>
+                <a
+                  href="#!"
+                  class="text-reset"
+                  >What Is Asthma?</a
+                >
+              </p>
+              <p>
+                <a
+                  href="#!"
+                  class="text-reset"
+                  >What Are Allergies?</a
+                >
+              </p>
+              <p>
+                <a
+                  href="#!"
+                  class="text-reset"
+                  >How to Get Rid of Allergies</a
+                >
+              </p>
+              <p>
+                <a
+                  href="#!"
+                  class="text-reset"
+                  >How to Get Rid of Smoke Smell</a
+                >
+              </p>
+              <p>
+                <a
+                  href="#!"
+                  class="text-reset"
+                  >How to Get Rid of Mold</a
+                >
+              </p>
+              <p>
+                <a
+                  href="#!"
+                  class="text-reset"
+                  >How to Get Rid of Pet Dander</a
+                >
+              </p>
+            </div>
+            <!-- Grid column -->
+
+            <!-- Grid column -->
+            <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+              <!-- Links -->
+              <h6 class="text-uppercase fw-bold mb-4">Contact</h6>
+              <p><i class="fas fa-home me-3"></i> San Antonio, Texas, US</p>
+              <p>
+                <i class="fas fa-envelope me-3"></i>
+                tsauer91cs@gmail.com
+              </p>
+              <p>
+                <i class="fas fa-phone me-3"></i>(888) 978-4993 (M-F 8AM - 5:30
+                PM CT)
+              </p>
+              <p>
+                <i class="fas fa-print me-3"></i> (888) 999-1522 (After Hours
+                Sales)
+              </p>
+            </div>
+            <!-- Grid column -->
+          </div>
+          <!-- Grid row -->
+        </div>
+      </section>
+      <!-- Section: Links  -->
+
+      <!-- Copyright -->
+      <div
+        class="text-center p-4"
+        style="background-color: rgba(0, 0, 0, 0.05)"
+      >
+        © 2022 Copyright:
+        <a
+          class="text-reset me-5"
+          href="https://tscompsci.com"
+          >Travis e-commerce POC</a
+        >
+        <i class="fa-solid fa-house"></i>
+        <a
+          class="text-reset fw-bold me-2"
+          href="https://tscompsci.com"
+          >Home</a
+        >
+        <i class="fa-solid fa-address-book"></i>
+        <a
+          class="text-reset fw-bold me-2"
+          href="https://tscompsci.com"
+          >Contact Us</a
+        >
+        <i class="fa-solid fa-address-card"></i>
+        <a
+          class="text-reset fw-bold me-2"
+          href="https://tscompsci.com"
+          >About</a
+        >
+        <i class="fa-solid fa-truck-fast"></i>
+        <a
+          class="text-reset fw-bold me-2"
+          href="https://tscompsci.com"
+          >Shipping & Returns</a
+        >
+        <i class="fa-solid fa-clipboard-list"></i>
+        <a
+          class="text-reset fw-bold me-2"
+          href="https://tscompsci.com"
+          >Terms of Use</a
+        >
+        <i class="fa-solid fa-lock"></i>
+        <a
+          class="text-reset fw-bold me-2"
+          href="https://tscompsci.com"
+          >Privacy Policy</a
+        >
+        <i class="fa-solid fa-shield"></i>
+        <a
+          class="text-reset fw-bold me-2"
+          href="https://tscompsci.com"
+          >Warranty</a
+        >
+        <i class="fa-solid fa-hotel"></i>
+        <a
+          class="text-reset fw-bold me-2"
+          href="https://tscompsci.com"
+          >Resource Center</a
+        >
+      </div>
+      <!-- Copyright -->
+    </footer>
+    <!-- Footer -->
 
     <!-- MDB ESSENTIAL -->
-    <script type="text/javascript" src="{% static 'md_bstrap/js/mdb.min.js' %}"></script>
+    <script
+      type="text/javascript"
+      src="{% static 'md_bstrap/js/mdb.min.js' %}"
+    ></script>
     <!-- MDB PLUGINS -->
-    <script type="text/javascript" src="{% static 'md_bstrap/plugins/js/all.min.js' %}"></script>
+    <script
+      type="text/javascript"
+      src="{% static 'md_bstrap/plugins/js/all.min.js' %}"
+    ></script>
+    <!-- top down vstack alerts js import -->
+    <!-- this is not working (we are trying to use it on our login page)-->
+    <!-- we need to revisit this in the future and get this working -->
+    <script
+      type="text/javascript"
+      src="{% static 'md_bstrap/js/top_down_alert.js' %}"
+    ></script>
   </body>
 </html>

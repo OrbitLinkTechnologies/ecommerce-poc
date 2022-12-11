@@ -1,3 +1,6 @@
+# removing prettier config for vscode
+.vscode
+
 # removing all static assets
 factorypureclone/static/**
 

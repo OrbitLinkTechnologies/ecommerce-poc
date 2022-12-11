@@ -125,3 +125,32 @@ class ProductQuestion(models.Model):
     
     def __str__(self):
         return 'question_' + self.questions_customer_email
+
+# this is going to be a one-to-one model to extend the User model
+class Customer(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=128)
+    last_name = models.CharField(max_length=128)
+    phone_number = models.CharField(max_length=14, null=True, blank=True)
+    address = models.CharField(max_length=64, null=True, blank=True)
+    address_extended = models.CharField(max_length=64, null=True, blank=True)
+    city = models.CharField(max_length=128, null=True, blank=True)
+    postal_code = models.IntegerField()
+    country = models.CharField(max_length=128, null=True, blank=True)
+    state_or_province = models.CharField(max_length=128, null=True, blank=True)
+
+# our delivery model is going to be associated with our customer model only for now
+# it is a many to one relationship where we need a foreign key restraint in the table
+# that can only have one of an object from another table; in our case we will create the
+# foreign key restraint in the delivery model
+class Delivery(models.Model):
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=128)
+    last_name = models.CharField(max_length=128)
+    phone_number = models.CharField(max_length=14, null=True, blank=True)
+    address = models.CharField(max_length=64, null=True, blank=True)
+    address_extended = models.CharField(max_length=64, null=True, blank=True)
+    city = models.CharField(max_length=128, null=True, blank=True)
+    postal_code = models.IntegerField()
+    country = models.CharField(max_length=128, null=True, blank=True)
+    state_or_province = models.CharField(max_length=128, null=True, blank=True)

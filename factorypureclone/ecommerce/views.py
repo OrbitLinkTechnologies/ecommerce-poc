@@ -2,14 +2,14 @@ from django.shortcuts import render
 from ecommerce.models import Generator
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.shortcuts import redirect
 
 # Create your views here.
 def base(request):
     return render(request, 'ecommerce/base.html')
 
 def category_results(request):
-    #context = {}
-    #context['dataset'] = Generator.objects.all()
     product_list = Generator.objects.all().order_by('id')
     paginator = Paginator(product_list, 10)
 
@@ -20,10 +20,6 @@ def category_results(request):
 def item_page(request, id):
     item_set = Generator.objects.filter(id=id)
     return render(request, 'ecommerce/item_page.html', {'item_set' : item_set})
-
-'''class CategoryResultsListView(ListView):
-    paginate_by = 2
-    model = Generator'''
 
 @login_required
 def cart_page(request):
@@ -57,4 +53,30 @@ def add_item_to_cart(request, id):
         cart_total += item.product_price
     print('cart_total = ' + str(cart_total))
     return render(request, 'ecommerce/cart_page.html', {'cart_items' : cart_items,
+    'cart_total' : cart_total})
+
+def register_new_user(request):
+    username = request.POST.get('username')
+    password = request.POST.get('password')
+    first_name = request.POST.get('first_name')
+    last_name = request.POST.get('last_name')
+    user = User.objects.create_user(username=username, password=password, first_name=first_name, last_name=last_name)
+    print('user details are: ' + str(user))
+    # if we don't add the / here in front of registartion it will be treated as a relative url
+    # which means that it will append the specified path parameter to the current url path
+    # I had to specify ecomm, where the route "register_done" is which calls the
+    # view stored under ecommerce templates at ecommerce/register_done.html
+    return redirect('/ecomm/register_done', username=username)
+
+def register_done(request):
+    return render(request, 'ecommerce/register_done.html')
+
+@login_required
+def user_checkout(request):
+    cart_items = Generator.objects.filter(product_in_user_cart=request.user)
+    cart_total = 0
+    for item in cart_items:
+        cart_total += item.product_price
+    print('cart_total = ' + str(cart_total))
+    return render(request, 'ecommerce/checkout_page.html', {'cart_items' : cart_items,
     'cart_total' : cart_total})
