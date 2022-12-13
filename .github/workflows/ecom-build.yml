@@ -1,6 +1,7 @@
 name: Build automation for ecommerce poc
 run-name: This project was built by ${{ github.actor }} 🚀
-on: 
+on:
+  push:
   workflow_dispatch:
 
 jobs:
