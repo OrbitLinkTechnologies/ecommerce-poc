@@ -85,7 +85,7 @@ DATABASES = {
         'NAME': 'factory_pure_poc',
         'USER': 'postgres',
         'PASSWORD': 'fp12ww15',
-        'HOST': '127.0.0.1',
+        'HOST': 'localhost',
         'PORT': '5432',
     }
 }
