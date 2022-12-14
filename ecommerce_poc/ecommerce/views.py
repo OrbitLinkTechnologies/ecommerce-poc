@@ -27,7 +27,6 @@ def cart_page(request):
     cart_total = 0
     for item in cart_items:
         cart_total += item.product_price
-    print('cart_total = ' + str(cart_total))
     return render(request, 'ecommerce/cart_page.html', {'cart_items' : cart_items,
     'cart_total' : cart_total})
 
@@ -39,7 +38,6 @@ def remove_item_from_cart(request, product_in_user_cart):
     cart_total = 0
     for item in cart_items:
         cart_total += item.product_price
-    print('cart_total = ' + str(cart_total))
     return render(request, 'ecommerce/cart_page.html', {'cart_items' : cart_items,
     'cart_total' : cart_total})
 

@@ -36,3 +36,11 @@ class GeneratorTestCase(TestCase):
     self.assertEqual(None, generator_1.product_videos)
     self.assertFalse(generator_1.product_discounted)
     self.assertEqual(None, generator_1.product_discounted_rate)
+
+    # here is an example of testing field length of a django model
+    max_length = generator_1.__meta.get_field("product_name").max_length
+    self.assertEqual(255, max_length)
+
+    # Get the metadata for the required field and use it to query the required field data
+    field_label = generator_1.__meta.get_field('product_name').verbose_name
+    self.assertEqual(field_label, "Trusted Name")
