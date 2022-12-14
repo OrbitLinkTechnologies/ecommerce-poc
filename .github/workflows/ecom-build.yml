@@ -41,6 +41,7 @@ jobs:
 
       - name: run migrations
         run: |
+          cd ecommerce_poc
           python manage.py migrate
 
       - name: run model tests
