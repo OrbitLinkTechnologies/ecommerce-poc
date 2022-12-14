@@ -52,4 +52,4 @@ jobs:
       - name: test runserver
         run: |
           cd ecommerce_poc
-          python manage.py runserver &
+          python manage.py runserver && sleep 20
