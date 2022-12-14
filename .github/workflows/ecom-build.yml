@@ -49,7 +49,9 @@ jobs:
           cd ecommerce_poc
           python manage.py test
 
+      # in order to test that our django app starts and works correctly
+      # we should test all url paths in our app
       - name: test runserver
         run: |
           cd ecommerce_poc
-          python manage.py runserver && sleep 20
+          python manage.py runserver &
