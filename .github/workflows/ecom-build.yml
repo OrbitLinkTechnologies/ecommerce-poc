@@ -26,6 +26,9 @@ jobs:
       - name: install dependencies
         run: |
           pip install -r requirements.txt
+      - uses: harmon758/postgresql-action@v1
+        with:
+          postgresql version: '11'
 
       - name: run model tests
         run: |
