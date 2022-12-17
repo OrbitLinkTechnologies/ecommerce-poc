@@ -1,5 +1,10 @@
 from django.urls import path
 from . import views
+from .views import (
+  CreateCheckoutSessionView,
+  SuccessView,
+  CancelView
+)
 
 app_name = 'ecommerce'
 
@@ -11,5 +16,8 @@ urlpatterns = [
     path('add_item_to_cart/<int:id>/', views.add_item_to_cart, name='add_item_to_cart'),
     path('register_new_user/', views.register_new_user, name='register_new_user'),
     path('register_done/', views.register_done, name='register_done'),
-    path('user_checkout/', views.user_checkout, name='user_checkout')
+    path('user_checkout/', views.user_checkout, name='user_checkout'),
+    path('create-checkout-session/', CreateCheckoutSessionView.as_view(), name='create-checkout-session'),
+    path('payment_success/', SuccessView.as_view(), name='payment_success'),
+    path('payment_cancel/', CancelView.as_view(), name='payment_cancel'),
 ]

@@ -38,6 +38,7 @@ class BaseProduct(models.Model):
         ('refurbished', 'refurbished')
     )
     product_condition = models.CharField(max_length=64, choices=product_condition_choices)
+    # we need to remove product price, as we are only using stripe product price
     product_price = models.DecimalField(decimal_places=2,max_digits=8)
     product_reviews = models.ForeignKey('ProductReview', on_delete=models.CASCADE, null=True, blank=True)
     product_in_stock = models.BooleanField(default=True)
@@ -69,6 +70,8 @@ class BaseProduct(models.Model):
     product_package_contents = jsonfield.JSONField(null=True, blank=True)
     product_created_at = models.DateTimeField(auto_now_add=True)
     product_updated_at = models.DateTimeField(auto_now=True)
+    stripe_product_id = models.CharField(max_length=100, default='price_1MFnyKJeoQWEr4BM36XT0Q5y')
+    product_count_in_user_cart = models.IntegerField(default=0)
 
     # we use meta inner class to set abstract to true; this means that when we run makemigrations
     # and migrate, django will not add this abstract class to the database
@@ -138,6 +141,12 @@ class Customer(models.Model):
     postal_code = models.IntegerField()
     country = models.CharField(max_length=128, null=True, blank=True)
     state_or_province = models.CharField(max_length=128, null=True, blank=True)
+    # we need to restructure our models, we need to do away with our abstract
+    # BaseProduct model and instead go with basic inheritance;
+    # i.e., Generator IS a Product, Scooter IS a Product, etc
+    # I would also like to re-name all foreign key references according
+    # to the following: name_here_FK
+    product_count_FK = models.ForeignKey(Generator, on_delete=models.CASCADE, default=None)
 
 # our delivery model is going to be associated with our customer model only for now
 # it is a many to one relationship where we need a foreign key restraint in the table
@@ -154,3 +163,13 @@ class Delivery(models.Model):
     postal_code = models.IntegerField()
     country = models.CharField(max_length=128, null=True, blank=True)
     state_or_province = models.CharField(max_length=128, null=True, blank=True)
+
+class Price(models.Model):
+  product = models.ForeignKey(Generator, on_delete=models.CASCADE)
+  stripe_price_id = models.CharField(max_length=100)
+  # we need to figure out how to remove price from our BaseProduct model
+  # and tie our Stripe Price to our BaseProduct model
+  price = models.IntegerField(default = 0)
+
+  def get_display_price(self):
+    return "{0:.2f}".format(self.price / 100)

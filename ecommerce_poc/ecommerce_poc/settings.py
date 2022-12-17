@@ -150,3 +150,7 @@ LOGIN_REDIRECT_URL = '/ecomm'
 # to set up this reset link being sent to a user's actual email:
 # https://docs.djangoproject.com/en/4.0/topics/email/
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# stripe api keys
+STRIPE_PUBLIC_KEY = config('STRIPE_PUBLIC_KEY')
+STRIPE_SECRET_KEY = config('STRIPE_SECRET_KEY')

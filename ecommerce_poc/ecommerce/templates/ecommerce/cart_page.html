@@ -72,7 +72,7 @@
                          type="number"
                          id="typeNumber"
                          class="form-control"
-                         value="1"
+                         value="{{ item.product_count_in_user_cart }}"
                          min="1"
                          />
                   <label class="form-label" for="typeNumber"
@@ -81,8 +81,8 @@
                 </div>
   
                 <h5 class="mb-2">
-                  <s class="text-muted me-2 small align-middle">${{ item.product_price }}</s
-                    ><span class="align-middle">{{ item.product_price }}</span>
+                  <s class="text-muted me-2 small align-middle">${{ item|stripe_price:item.stripe_product_id }}</s
+                    ><span class="align-middle">${{ item|stripe_price:item.stripe_product_id }}</span>
                 </h5>
                 <p class="text-danger"><small>Product On Sale: {{ item.product_on_sale }}</small></p>
               </div>
@@ -150,7 +150,7 @@
   
             <div class="d-flex justify-content-between mb-3">
               <span>Temporary amount </span>
-              <span>{{ cart_total }}</span>
+              <span>${{ cart_total }}</span>
             </div>
             <div class="d-flex justify-content-between">
                 <!--we need to add a shipping fee to our product model, or potentially even create a shipping model;
@@ -161,7 +161,7 @@
             <hr class="my-4" />
             <div class="d-flex justify-content-between fw-bold mb-5">
               <span>Cart Total (including VAT)</span>
-              <span>{{ cart_total }}</span>
+              <span>${{ cart_total }}</span>
             </div>
   
             <a class="btn btn-primary btn-rounded w-100" href="/ecomm/user_checkout/">

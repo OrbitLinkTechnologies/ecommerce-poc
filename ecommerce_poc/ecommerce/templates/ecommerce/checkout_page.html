@@ -1,4 +1,5 @@
 {% extends "ecommerce/base.html" %}
+{% load my_tags %}
 {% block content %}
 
 <!-- Container for demo purpose -->
@@ -129,6 +130,7 @@
         </div>
         <h5 class="mb-4">Payment</h5>
         <div class="accordion accordion-flush mb-4" id="accordionFlushExampleX0">
+          <!--remove card collection details-->
           <div class="accordion-item border-0">
             <div class="form-check mb-2">
               <input class="form-check-input collapsed" type="radio" name="flexRadioDefault6x0"
@@ -165,6 +167,7 @@
               </div>
             </div>
           </div>
+          <!--end remove card collection details-->
           <div class="accordion-item">
             <div class="form-check">
               <input class="form-check-input collapsed" type="radio" name="flexRadioDefault6x0"
@@ -181,7 +184,10 @@
           </div>
         </div>
         <div class="pt-1 mb-3">
-          <button class="btn btn-dark btn-lg px-5">Pay order</button>
+          <form action="/ecomm/create-checkout-session/" method="POST">
+            {% csrf_token %}
+          <button type="submit" class="btn btn-dark btn-lg px-5">Pay order</button>
+          </form>
           <p class="small text-muted mt-4 mb-0">By clicking "Proceed to PayPal" I confirm I have read <a
               href="#!">Privacy Notice</a> and <a href="#!">Cookie Notice</a>. I agree to the <a href="#!">terms &
               conditions</a> of the store. "I also accept that the store will process my personal data to manage my
@@ -204,13 +210,13 @@
           <div class="flex-grow-1 ms-md-3 d-flex justify-content-between h-100">
             <div>
               <p class="h6 mb-2">Generator_{{ item.product_name }}</p>
-              <p class="mb-1">{{ item.product_price }}</p>
+              <p class="mb-1">${{ item|stripe_price:item.stripe_product_id }}</p>
               <p class="mb-0">Quantity: <span>1</span></p>
             </div>
             <div class="d-flex flex-column ms-3">
               <p class="mb-0"><a href="#!">Edit</a><span class="mx-2" style="color: hsl(0,0%,90%);">|</span><a
                   href="#!">Remove</a></p>
-              <p class="mt-auto mb-0">{{ item.product_price }}</p>
+              <p class="mt-auto mb-0">${{ item|stripe_price:item.stripe_product_id }}</p>
             </div>
           </div>
         </div>
@@ -218,7 +224,7 @@
         {% endfor %}
         <div class="d-flex justify-content-between">
           <p class="mb-2">Order value</p>
-          <p class="mb-2">{{ cart_total }}</p>
+          <p class="mb-2">${{ cart_total }}</p>
         </div>
         <div class="d-flex justify-content-between border-bottom border-2 pb-2 mb-4"
           style="border-color: hsl(0,0%, 96%) !important;">
@@ -227,7 +233,7 @@
         </div>
         <div class="d-flex justify-content-between">
           <p class="h5 mb-5">Total</p>
-          <p class="h5 mb-5">{{ cart_total }}</p>
+          <p class="h5 mb-5">${{ cart_total }}</p>
         </div>
         <div class="small">
           <p class="text-muted mb-4">Our returns are free and easy. If something isn't quite right, you have 14 days to

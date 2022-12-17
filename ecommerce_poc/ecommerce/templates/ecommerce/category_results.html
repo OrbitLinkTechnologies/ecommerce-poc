@@ -9,7 +9,7 @@
   id="filter-sort-example-filters"
   data-mdb-auto-filter="true"
 >
-  <div class="col-md-4" data-mdb-filter="color">
+  <div class="col-md-4 mb-5" data-mdb-filter="color">
     <span class="fa-lg">Filter: Color</span>
 
     <div class="form-check mt-3">
@@ -111,7 +111,7 @@
         <div class="col-sm-3 mb-5">
             <a href="/ecomm/item/{{ product.id }}/"><img src="{{ product.product_photos }}" style="height: 80%; width: 80%">
             Generator_{{ product.product_name }} <i class="fa-solid fa-grip-lines-vertical" style="color: green;"></i> {{ product.generator_classification_type }}<i class="fa-solid fa-grip-lines-vertical" style="color: green;"></i> {{ product.generator_fuel_type }}<i class="fa-solid fa-grip-lines-vertical" style="color: green;"></i> {{ product.product_brand }}<i class="fa-solid fa-grip-lines-vertical" style="color: green;"></i> {{ product.generator_continuous_wattage_value }}<i class="fa-solid fa-w" style="color: green;"></i>
-            {{ product.product_price }}</a>
+            ${{ product|single_product_price:product.stripe_product_id }}</a>
         </div>
 
     {% if forloop.last or forloop.counter|modulo:4 == 0 %}
