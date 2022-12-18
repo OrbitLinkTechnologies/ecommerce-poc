@@ -11,3 +11,4 @@ django-html
 Beautify
 python-decouple
 stripe
+django-environ
