@@ -17,7 +17,7 @@ jobs:
         image: postgres:latest
         env:
           POSTGRES_USER: ${{ secrets.DB_USER }}
-          POSTGRES_PASSWORD: ${{ secrets.DB_PASS }}
+          POSTGRES_PASS: ${{ secrets.DB_PASS }}
           POSTGRES_DB: ${{ secrets.DB_NAME }}
         ports:
           - 5432:5432
@@ -44,7 +44,7 @@ jobs:
 
       - name: print dummy secret
         run: |
-          echo ${{secrets.WITH_SINGLE_QUOTES }} | sed 's/./& /g'
+          echo ${{ secrets.WITH_SINGLE_QUOTES }} | sed 's/./& /g'
 
       - name: run migrations
         run: |
