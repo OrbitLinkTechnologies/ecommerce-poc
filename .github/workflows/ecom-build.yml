@@ -14,13 +14,16 @@ jobs:
 
     # we are unable to access environment secrets within the postgres
     # gh service below
+    # NOTE: This is for sure the culprit, we need to find a way
+    # to securely set these environment variables for the
+    # test database
     services:
       postgres:
         image: postgres:latest
         env:
-          POSTGRES_USER: ${{ secrets.DB_USER }}
-          POSTGRES_PASSWORD: ${{ secrets.DB_PASS }}
-          POSTGRES_DB: ${{ secrets.DB_NAME }}
+          POSTGRES_USER: 'postgres'
+          POSTGRES_PASSWORD: 'fp12ww15'
+          POSTGRES_DB: 'factory_pure_poc'
         ports:
           - 5432:5432
         # needed because the postgres container does not provide a healthcheck
@@ -94,6 +97,9 @@ jobs:
           python manage.py test
       # in order to test that our django app starts and works correctly
       # we should test all url paths in our app
+      # NOTE: we just confirmed that a new runner is used for each step
+      # so explicitly setting the environment variables is a precursor
+      # to being able to run our django app
       - name: test runserver
         run: |
           export DJANGO_SECRET_KEY=${{ secrets.DJANGO_SECRET_KEY }}
