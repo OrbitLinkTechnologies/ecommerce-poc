@@ -44,6 +44,9 @@ jobs:
         run: |
           pip install -r requirements.txt
 
+      # setting the environment variables on the gh runner seems to
+      # work for the run migrations step, however read the
+      # description below for the run model tests step
       - name: run migrations
         run: |
           export DJANGO_SECRET_KEY=${{ secrets.DJANGO_SECRET_KEY }}
@@ -62,6 +65,16 @@ jobs:
           cd ecommerce_poc
           python manage.py migrate
 
+      # as described above, setting environment variables on the
+      # runner seems to work, so one would assume that you would
+      # need to do the same for the next step?
+      # but if we don't set the environment variables as done
+      # below in run model tests, everything still seems to work fine
+      # I'm assuming that is because the same runner
+      # is used across the entire job (and not a new runner spawned each step),
+      # but it is also possible, however unlikely, that none of these
+      # environment variables are used for the run model tests step
+      # actually scratch that I guess a new runner is used for each step
       - name: run model tests
         run: |
           export DJANGO_SECRET_KEY=${{ secrets.DJANGO_SECRET_KEY }}
@@ -83,5 +96,18 @@ jobs:
       # we should test all url paths in our app
       - name: test runserver
         run: |
+          export DJANGO_SECRET_KEY=${{ secrets.DJANGO_SECRET_KEY }}
+          export STRIPE_PUBLIC_KEY=${{ secrets.STRIPE_PUBLIC_KEY }}
+          export STRIPE_SECRET_KEY=${{ secrets.STRIPE_SECRET_KEY }}
+          export DB_ENGINE=${{ secrets.DB_ENGINE }}
+          export DB_HOST=${{ secrets.DB_HOST }}
+          export DB_NAME=${{ secrets.DB_NAME }}
+          export DB_PASS=${{ secrets.DB_PASS }}
+          export DB_PORT=${{ secrets.DB_PORT }}
+          export DB_USER=${{ secrets.DB_USER }}
+          export AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
+          export AWS_LOCATION=${{ secrets.AWS_LOCATION }}
+          export AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          export AWS_STORAGE_BUCKET_NAME=${{ secrets.AWS_STORAGE_BUCKET_NAME }}
           cd ecommerce_poc
           python manage.py runserver &
