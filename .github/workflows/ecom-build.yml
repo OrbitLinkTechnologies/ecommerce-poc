@@ -66,7 +66,7 @@ jobs:
           export DJANGO_SECRET_KEY=${{ secrets.DJANGO_SECRET_KEY }}
           export STRIPE_PUBLIC_KEY=${{ secrets.STRIPE_PUBLIC_KEY }}
           export STRIPE_SECRET_KEY=${{ secrets.STRIPE_SECRET_KEY }}
-          export DB_ENGINE=${{ secrets.DB_ENGINE }}
+          export DB_ENGINE='django.db.backends.postgresql'
           export DB_HOST=${{ secrets.DB_HOST }}
           export DB_NAME=${{ secrets.DB_NAME }}
           export DB_PASS=${{ secrets.DB_PASS }}
