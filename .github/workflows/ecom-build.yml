@@ -4,21 +4,6 @@ on:
 
   workflow_dispatch:
 
-env:
-  DJANGO_SECRET_KEY=${{ secrets.DJANGO_SECRET_KEY }}
-  STRIPE_PUBLIC_KEY=${{ secrets.STRIPE_PUBLIC_KEY }}
-  STRIPE_SECRET_KEY=${{ secrets.STRIPE_SECRET_KEY }}
-  DB_ENGINE=${{ secrets.DB_ENGINE }}
-  DB_HOST=${{ secrets.DB_HOST }}
-  DB_NAME=${{ secrets.DB_NAME }}
-  DB_PASS=${{ secrets.DB_PASS }}
-  DB_PORT=${{ secrets.DB_PORT }}
-  DB_USER=${{ secrets.DB_USER }}
-  AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
-  AWS_LOCATION=${{ secrets.AWS_LOCATION }}
-  AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  AWS_STORAGE_BUCKET_NAME=${{ secrets.AWS_STORAGE_BUCKET_NAME }}
-
 jobs:
 
   run-tests-and-build:
@@ -44,9 +29,6 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
-
-      - name: print the env (should be set for the entire job)
-        run: env
 
       - name: set up python
         uses: actions/setup-python@v4
