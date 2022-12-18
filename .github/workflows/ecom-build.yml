@@ -1,24 +1,25 @@
 name: Build automation for ecommerce poc
 on:
+
   workflow_dispatch:
 
 jobs:
+
   run-tests-and-build:
     
     runs-on: ubuntu-latest
 
-    env:
-      DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
-      DB_ENGINE : ${{ secrets.DB_ENGINE }}
-      DB_NAME : ${{ secrets.DB_NAME }}
-      DB_USER : ${{ secrets.DB_USER }}
-      DB_PASS : ${{ secrets.DB_PASS }}
-      DB_HOST : ${{ secrets.DB_HOST }}
-      DB_PORT : ${{ secrets.DB_PORT }}
-      AWS_ACCESS_KEY_ID : ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY : ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      AWS_STORAGE_BUCKET_NAME : ${{ secrets.AWS_STORAGE_BUCKET_NAME }}
-      AWS_LOCATION : ${{ secrets.AWS_LOCATION }}
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_USER: ${{ secrets.DB_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.DB_PASS }}
+          POSTGRES_DB: ${{ secrets.DB_NAME }}
+        ports:
+          - ${{ secrets.DB_PORT }}:${{ secrets.DB_PORT }}
+        # needed because the postgres container does not provide a healthcheck
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
       - name: Check out repository code
@@ -32,17 +33,20 @@ jobs:
       - name: List files in the repository
         run: |
           ls ${{ github.workspace }}
-
       # we need to cache these dependencies
       - name: install dependencies
         run: |
           pip install -r requirements.txt
-
-      #- name: run model tests
-        #run: |
-          #cd ecommerce_poc
-          #python manage.py test
-
+      - name: run migrations
+        run: |
+          cd ecommerce_poc
+          python manage.py migrate
+      - name: run model tests
+        run: |
+          cd ecommerce_poc
+          python manage.py test
+      # in order to test that our django app starts and works correctly
+      # we should test all url paths in our app
       - name: test runserver
         run: |
           cd ecommerce_poc
