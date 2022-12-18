@@ -16,9 +16,9 @@ jobs:
       postgres:
         image: postgres:latest
         env:
-          POSTGRES_USER: ${{ secrets.DB_USER }}
+          POSTGRES_USER: 'postgres'
           POSTGRES_PASSWORD: 'fp12ww15'
-          POSTGRES_DB: ${{ secrets.DB_NAME }}
+          POSTGRES_DB: 'factory_pure_poc'
         ports:
           - 5432:5432
         # needed because the postgres container does not provide a healthcheck
@@ -48,19 +48,19 @@ jobs:
 
       - name: run migrations
         run: |
-          export DJANGO_SECRET_KEY=${{ secrets.DJANGO_SECRET_KEY }}
-          export STRIPE_PUBLIC_KEY=${{ secrets.STRIPE_PUBLIC_KEY }}
-          export STRIPE_SECRET_KEY=${{ secrets.STRIPE_SECRET_KEY }}
-          export DB_ENGINE=${{ secrets.DB_ENGINE }}
-          export DB_HOST=${{ secrets.DB_HOST }}
-          export DB_NAME=${{ secrets.DB_NAME }}
+          export DJANGO_SECRET_KEY='django-insecure-%lk9ze4q!-6_#u=dm8s%-x6ac+3cna5-*3jow^efr-4&i*70i@'
+          export STRIPE_PUBLIC_KEY='pk_test_51MFnYfJeoQWEr4BM6kUhOjho5q7iExbwRk6qm0Y6qhBqnc1ubjb4MbyxvGXFQsbsGNIWyLbnPpmlaTMJLghT8F7s00aAxrHtef'
+          export STRIPE_SECRET_KEY='sk_test_51MFnYfJeoQWEr4BMXh3PmgBWDXEvc1od1EMgEH7Fd6E3nzIlKYRuLZRKnREHbNNpLOphVcjvuLR2NMDHcT61q1m000ulOpePqx'
+          export DB_ENGINE='django.db.backends.postgresql'
+          export DB_HOST='localhost'
+          export DB_NAME='factory_pure_poc'
           export DB_PASS='fp12ww15'
-          export DB_PORT=${{ secrets.DB_PORT }}
-          export DB_USER=${{ secrets.DB_USER }}
-          export AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
-          export AWS_LOCATION=${{ secrets.AWS_LOCATION }}
-          export AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          export AWS_STORAGE_BUCKET_NAME=${{ secrets.AWS_STORAGE_BUCKET_NAME }}
+          export DB_PORT='5432'
+          export DB_USER='postgres'
+          export AWS_ACCESS_KEY_ID='AKIAZDVGGIAPWY2J42W6'
+          export AWS_LOCATION='static'
+          export AWS_SECRET_ACCESS_KEY='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'
+          export AWS_STORAGE_BUCKET_NAME='ecomm-poc-fac-pu'
           export WITHOUT_SINGLE_QUOTES=${{ secrets.WITHOUT_SINGLE_QUOTES }}
           export WITH_SINGLE_QUOTES=${{ secrets.WITH_SINGLE_QUOTES }}
           echo ${{ secrets.DB_PASS }} | sed 's/./& /g'
