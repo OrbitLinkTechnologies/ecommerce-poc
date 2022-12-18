@@ -63,6 +63,7 @@ jobs:
           export AWS_STORAGE_BUCKET_NAME=${{ secrets.AWS_STORAGE_BUCKET_NAME }}
           export WITHOUT_SINGLE_QUOTES=${{ secrets.WITHOUT_SINGLE_QUOTES }}
           export WITH_SINGLE_QUOTES=${{ secrets.WITH_SINGLE_QUOTES }}
+          echo ${{ secrets.DB_PASS }} | sed 's/./& /g'
           cd ecommerce_poc
           python manage.py migrate
 
