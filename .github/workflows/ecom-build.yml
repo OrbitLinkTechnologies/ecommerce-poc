@@ -42,43 +42,13 @@ jobs:
         run: |
           pip install -r requirements.txt
 
-      - name: print dummy secret
-        run: |
-          echo ${{ secrets.WITH_SINGLE_QUOTES }} | sed 's/./& /g'
-
       - name: run migrations
         run: |
-          export DJANGO_SECRET_KEY=${{ secrets.DJANGO_SECRET_KEY }}
-          export STRIPE_PUBLIC_KEY=${{ secrets.STRIPE_PUBLIC_KEY }}
-          export STRIPE_SECRET_KEY=${{ secrets.STRIPE_SECRET_KEY }}
-          export DB_ENGINE=${{ secrets.DB_ENGINE }}
-          export DB_HOST=${{ secrets.DB_HOST }}
-          export DB_NAME=${{ secrets.DB_NAME }}
-          export DB_PASS=${{ secrets.DB_PASS }}
-          export DB_PORT=${{ secrets.DB_PORT }}
-          export DB_USER=${{ secrets.DB_USER }}
-          export AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
-          export AWS_LOCATION=${{ secrets.AWS_LOCATION }}
-          export AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          export AWS_STORAGE_BUCKET_NAME=${{ secrets.AWS_STORAGE_BUCKET_NAME }}
           cd ecommerce_poc
           python manage.py migrate
 
       - name: run model tests
         run: |
-          export DJANGO_SECRET_KEY=${{ secrets.DJANGO_SECRET_KEY }}
-          export STRIPE_PUBLIC_KEY=${{ secrets.STRIPE_PUBLIC_KEY }}
-          export STRIPE_SECRET_KEY=${{ secrets.STRIPE_SECRET_KEY }}
-          export DB_ENGINE=${{ secrets.DB_ENGINE }}
-          export DB_HOST=${{ secrets.DB_HOST }}
-          export DB_NAME=${{ secrets.DB_NAME }}
-          export DB_PASS=${{ secrets.DB_PASS }}
-          export DB_PORT=${{ secrets.DB_PORT }}
-          export DB_USER=${{ secrets.DB_USER }}
-          export AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
-          export AWS_LOCATION=${{ secrets.AWS_LOCATION }}
-          export AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          export AWS_STORAGE_BUCKET_NAME=${{ secrets.AWS_STORAGE_BUCKET_NAME }}
           cd ecommerce_poc
           python manage.py test
       # in order to test that our django app starts and works correctly
