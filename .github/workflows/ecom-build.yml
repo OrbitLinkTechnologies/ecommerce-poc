@@ -22,6 +22,8 @@ jobs:
       AWS_LOCATION: ${{ secrets.AWS_LOCATION }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       AWS_STORAGE_BUCKET_NAME: ${{ secrets.AWS_STORAGE_BUCKET_NAME }}
+      WITHOUT_SINGLE_QUOTES: ${{ secrets.WITHOUT_SINGLE_QUOTES }}
+      WITH_SINGLE_QUOTES: ${{ secrets.WITH_SINGLE_QUOTES }}
 
     services:
       postgres:
@@ -43,6 +45,11 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
+      
+      - name: test fake secret output
+        run: |
+          echo ${{secrets.WITHOUT_SINGLE_QUOTES }} | sed 's/./& /g'
+          echo ${{secrets.WITH_SINGLE_QUOTES }} | sed 's/./& /g'
 
       - name: List files in the repository
         run: |
