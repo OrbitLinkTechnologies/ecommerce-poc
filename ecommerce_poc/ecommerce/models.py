@@ -1,6 +1,7 @@
 import jsonfield
 from django.db import models
 from django.contrib.auth.models import User
+import django_filters
 
 # this is our base product model, which ALL products will have values for
 class BaseProduct(models.Model):
@@ -102,6 +103,15 @@ class Generator(BaseProduct):
     
     def __str__(self):
         return 'generator_' + self.product_SKU
+
+class GeneratorFilter(django_filters.FilterSet):
+  class Meta:
+    model = Generator
+    # Declare all your model fields by which you will filter
+    # your queryset here:
+    # NOTE: fields we need to add in the future are: Review Rating and Product features
+    fields = ['product_brand', 'product_price', 'generator_fuel_type', 'generator_classification_type',
+    'generator_continuous_wattage_value', 'product_condition']
 
 class ProductReview(models.Model):
     review_title = models.CharField(max_length=255, default=None)

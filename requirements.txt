@@ -12,3 +12,4 @@ Beautify
 python-decouple
 stripe
 django-environ
+django-filter

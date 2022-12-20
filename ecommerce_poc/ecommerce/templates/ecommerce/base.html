@@ -31,6 +31,17 @@
       href="{% static 'md_bstrap/plugins/css/all.min.css' %}"
     />
 
+    <!-- we need to be able to asynchronously update our product category results page -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script> 
+
+    <!-- currently only need this section to make a horizontally expanding
+          dropdown menu -->
+    <style>
+      .dropdown-menu{
+        min-width: 500px;
+      }
+    </style>
+
     <title>Generators, Outdoor Equipment, and More!</title>
   </head>
   <body class="p-3 mb-2 bg-secondary bg-gradient text-white">
@@ -73,7 +84,7 @@
             <li class="nav-item">
               <a
                 class="nav-link"
-                href="/ecomm"
+                href="/ecomm/filter_results_page"
               >
                 <ul class="list-group text-black ms-5">
                   <li class="list-group-item">Home</li>

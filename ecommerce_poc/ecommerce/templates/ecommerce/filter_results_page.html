@@ -1,0 +1,98 @@
+{% extends 'ecommerce/base.html' %}
+{% load my_tags %}
+{% block content %}
+
+<div class="container mb-5">
+  <!--start drop-down filter 1-->
+  <div class="dropdown">
+    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
+    data-mdb-toggle="dropdown" aria-expanded="false">
+    Product Brand
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+      {% for product in all_product_brands %}
+        <!-- start dynamic search criteria -->
+        <li class="page-item">
+            <a id="{{ product.product_brand }}-id" class="dropdown-item">
+                <div class="form-check">
+                    <input onclick="changeHref(this)" class="form-check-input" type="checkbox" name="{{ product.product_brand }}-name"  value="{{ product.product_brand }}" id="Checkme{{ forloop.counter }}" 
+                    {% if product.product_brand in product_brand %} checked {% else %} "" {% endif %}
+                    />
+                    <label class="form-check-label" for="Checkme{{ forloop.counter }}">{{ product.product_brand }}</label>
+                </div>
+            </a>
+        </li>
+        <!-- end dynamic search criteria -->
+        {% endfor %}
+        <!-- start script for filter search criteria -->
+        <script>
+          function changeHref(element){
+            console.log(element.id)
+            if(document.getElementById(element.id).checked){
+              document.getElementById(element.id).href="?page={{ response.number }}&product_brand=" + element.value
+              /*
+                for whatever reason, we had to use window location to get our filter to work,
+                even though we had it working with just straight onclick and href manipulation
+                in single and dual use cases
+              */
+              window.location="?page={{ response.number }}&product_brand=" + element.value
+              console.log(document.getElementById(element.id).href)
+            }
+            if(!document.getElementById(element.id).checked){
+              /*
+                we spent hours trying to debug this little thing here;
+                DO NOT PUT AN EMPTY REFERENCE, i.e. href="" tag,
+                because it will just reload to the same page;
+                we need to figure out a way to remove the filter
+                criteria from the query string parameters, without
+                affecting the other filter criteria
+              */
+              document.getElementById(element.id).href="?page={{ response.number }}"
+              window.location = "?page={{ response.number }}"
+              console.log(document.getElementById(element.id).href="?page={{ response.number }}")
+            }
+          }
+        </script>
+        <!-- end script for filter search criteria -->
+        <!--<li><hr class="dropdown-divider" /></li>-->
+    </ul>
+  </div>
+  <!--end drop-down filter 1-->
+</div>
+
+<div class="container mb-5">
+    {% for product in response %} 
+    {% if forloop.counter|modulo:4 == 1 %}
+        <div class="row mb-5">
+    {% endif %}
+
+        <div class="col-sm-3 mb-5">
+            <a href="/ecomm/item/{{ product.id }}/"><img src="{{ product.product_photos }}" style="height: 80%; width: 80%">
+            Generator_{{ product.product_name }} <i class="fa-solid fa-grip-lines-vertical" style="color: green;"></i> {{ product.generator_classification_type }}<i class="fa-solid fa-grip-lines-vertical" style="color: green;"></i> {{ product.generator_fuel_type }}<i class="fa-solid fa-grip-lines-vertical" style="color: green;"></i> {{ product.product_brand }}<i class="fa-solid fa-grip-lines-vertical" style="color: green;"></i> {{ product.generator_continuous_wattage_value }}<i class="fa-solid fa-w" style="color: green;"></i>
+            ${{ product|single_product_price:product.stripe_product_id }}</a>
+        </div>
+
+    {% if forloop.last or forloop.counter|modulo:4 == 0 %}
+    {% if forloop.last %}
+    <div class="float-end mt-5 mb-5">
+        <ul class="pagination">
+            {% if response.has_previous %}
+            <li class="page-item"><a href="?page=1" class="page-link">&laquo; first</a></li>
+            <li class="page-item"><a href="?page={{ response.previous_page_number }}" class="page-link">previous</a></li>
+            {% endif %}
+            <li class="page-item"><a href="#" class="page-link">Page {{ response.number }} of {{ response.paginator.num_pages }}</a></li>
+            {% if response.has_next %}
+            <li class="page-item"><a href="?page={{ response.next_page_number }}" class="page-link">next</a></li>
+            <li class="page-item"><a href="?page={{ response.paginator.num_pages }}" class="page-link">last &raquo;</a></li>
+            {% endif %}
+        </ul>
+    </div>
+    {% endif %}
+        </div>
+    {% endif %}
+
+    {% endfor %}
+
+</div>
+
+{% endblock content %}

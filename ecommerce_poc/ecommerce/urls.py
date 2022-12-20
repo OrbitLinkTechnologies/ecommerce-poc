@@ -20,4 +20,6 @@ urlpatterns = [
     path('create-checkout-session/', CreateCheckoutSessionView.as_view(), name='create-checkout-session'),
     path('payment_success/', SuccessView.as_view(), name='payment_success'),
     path('payment_cancel/', CancelView.as_view(), name='payment_cancel'),
+    path('filter_results_page/', views.filter_results_page, name='filter_results_page'),
+    path('ajax_filter_results/', views.ajax_filter_results, name='ajax_filter_results'),
 ]
