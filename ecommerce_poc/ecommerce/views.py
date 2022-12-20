@@ -50,7 +50,8 @@ def filter_results_page(request):
   # I don't think that it's a good idea to query the entire
   # dataset each time we want to return all the possible filters
   # we need to find some way to cache this?
-  all_product_brands = Generator.objects.only('product_brand').distinct()
+  all_product_brands = Generator.objects.values('product_brand').distinct().order_by()
+  print(all_product_brands.count())
   filtered_qs = GeneratorFilter(
     request.GET,
     queryset = Generator.objects.all().order_by('id')

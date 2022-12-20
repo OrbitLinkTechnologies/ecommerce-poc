@@ -9,7 +9,8 @@ from .views import (
 app_name = 'ecommerce'
 
 urlpatterns = [
-    path('', views.category_results, name='category_results'),
+    # path('', views.category_results, name='category_results'),
+    path('', views.filter_results_page, name='filter_results_page_home'),
     path('item/<int:id>/', views.item_page, name='item_page'),
     path('cart/', views.cart_page, name='cart_page'),
     path('remove_item_from_cart/<int:product_in_user_cart>/', views.remove_item_from_cart, name='remove_item_from_cart'),
