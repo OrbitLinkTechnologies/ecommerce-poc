@@ -47,32 +47,65 @@ def ajax_filter_results(request):
 # REMOVE THE FOLLOWING LINE IN PRODUCTION!
 @csrf_exempt
 def filter_results_page(request):
+  
   # I don't think that it's a good idea to query the entire
   # dataset each time we want to return all the possible filters
   # we need to find some way to cache this?
   all_product_brands = Generator.objects.values('product_brand').distinct().order_by()
-  print(all_product_brands.count())
+  all_product_fuel_types = Generator.objects.values('generator_fuel_type').distinct().order_by()
+  all_product_classification_types = Generator.objects.values('generator_classification_type').distinct().order_by()
+  all_product_condition_types = Generator.objects.values('product_condition').distinct().order_by()
+
+  # store all of our get variables so we have access to them in the template
+  param_list = []
+  if request.GET:
+    for param in request.GET:
+      print(param + ' = ' + str(request.GET.get(param)))
+      param_list.append({
+        param : request.GET.get(param)
+      })
+
   filtered_qs = GeneratorFilter(
     request.GET,
     queryset = Generator.objects.all().order_by('id')
   ).qs
+  
   paginator = Paginator(filtered_qs, 10)
   page = request.GET.get('page')
+
+  # get the values for the filters
   product_brand = request.GET.get('product_brand')
+  generator_fuel_type = request.GET.get('generator_fuel_type')
+  generator_classification_type = request.GET.get('generator_classification_type')
+  product_condition = request.GET.get('product_condition')
+
   try:
     response = paginator.page(page)
   except PageNotAnInteger:
     response = paginator.page(1)
   except EmptyPage:
     response = paginator.page(paginator.num_pages)
-  print('product_brand = ' + str(product_brand))
+
   return render(
     request, 'ecommerce/filter_results_page.html', 
     {
       'response' : response,
+      'param_list' : param_list,
       'all_product_brands' : all_product_brands,
+      'all_product_fuel_types' : all_product_fuel_types,
+      'all_product_classification_types' : all_product_classification_types,
+      'all_product_condition_types' : all_product_condition_types,
       'product_brand' : [
         product_brand
+      ],
+      'generator_fuel_type' : [
+        generator_fuel_type
+      ],
+      'generator_classification_type' : [
+        generator_classification_type
+      ],
+      'product_condition' : [
+        product_condition
       ]
     }
   )

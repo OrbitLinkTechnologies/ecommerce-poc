@@ -209,7 +209,7 @@
           </div>
           <div class="flex-grow-1 ms-md-3 d-flex justify-content-between h-100">
             <div>
-              <p class="h6 mb-2">Generator_{{ item.product_name }}</p>
+              <p class="h6 mb-2">{{ item.product_name }}</p>
               <p class="mb-1">${{ item|stripe_price:item.stripe_product_id }}</p>
               <p class="mb-0">Quantity: <span>1</span></p>
             </div>
