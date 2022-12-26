@@ -81,8 +81,8 @@
                 </div>
   
                 <h5 class="mb-2">
-                  <s class="text-muted me-2 small align-middle">${{ item|stripe_price:item.stripe_product_id }}</s
-                    ><span class="align-middle">${{ item|stripe_price:item.stripe_product_id }}</span>
+                  <s class="text-muted me-2 small align-middle">${{ item.price_set.get.price|divide:100 }}</s
+                    ><span class="align-middle">${{ item.price_set.get.price|divide:100 }}</span>
                 </h5>
                 <p class="text-danger"><small>Product On Sale: {{ item.product_on_sale }}</small></p>
               </div>

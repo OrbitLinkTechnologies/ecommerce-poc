@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import ProductReview, ProductQuestion, Generator, Customer, Price
+from .models import ProductReview, ProductQuestion, Generator, Customer, Price, BaseProduct, Generator, HomeDecor
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import User
 
@@ -32,3 +32,7 @@ class ProductAdmin(admin.ModelAdmin):
 
 admin.site.unregister(Generator)
 admin.site.register(Generator, ProductAdmin)
+
+admin.site.register(BaseProduct, ProductAdmin)
+
+admin.site.register(HomeDecor, ProductAdmin)

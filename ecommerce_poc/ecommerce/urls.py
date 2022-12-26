@@ -9,7 +9,10 @@ from .views import (
 app_name = 'ecommerce'
 
 urlpatterns = [
-    # path('', views.category_results, name='category_results'),
+    path('contact_us_page_success/', views.contact_us_page_success, name='send_customer_question'),
+    path('send_customer_question/', views.send_customer_question, name='send_customer_question'),
+    path('contact_us/', views.contact_us_page, name='contact_us_page'),
+    path('about/', views.about_page, name='about_page'),
     path('', views.filter_results_page, name='filter_results_page_home'),
     path('item/<int:id>/', views.item_page, name='item_page'),
     path('cart/', views.cart_page, name='cart_page'),
@@ -21,6 +24,6 @@ urlpatterns = [
     path('create-checkout-session/', CreateCheckoutSessionView.as_view(), name='create-checkout-session'),
     path('payment_success/', SuccessView.as_view(), name='payment_success'),
     path('payment_cancel/', CancelView.as_view(), name='payment_cancel'),
-    path('filter_results_page/', views.filter_results_page, name='filter_results_page'),
+    path('filter_results_page/<str:category>/', views.filter_results_page, name='filter_results_page'),
     path('ajax_filter_results/', views.ajax_filter_results, name='ajax_filter_results'),
 ]

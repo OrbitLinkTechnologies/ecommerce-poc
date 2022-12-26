@@ -44,7 +44,7 @@
 
     <title>Sauer Websites!</title>
   </head>
-  <body class="p-3 mb-2 bg-secondary bg-gradient text-white">
+  <body class="p-3 bg-secondary bg-gradient text-white">
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light mb-9">
       <!-- Container wrapper -->
@@ -84,10 +84,50 @@
             <li class="nav-item">
               <a
                 class="nav-link"
-                href="/ecomm/filter_results_page"
+                href="/ecomm/about"
               >
-                <ul class="list-group text-black ms-5">
-                  <li class="list-group-item">Home</li>
+                <ul class="list-group text-black">
+                  <li class="list-group-item">About</li>
+                </ul>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                href="/ecomm/contact_us"
+              >
+                <ul class="list-group text-black">
+                  <li class="list-group-item">Contact Us</li>
+                </ul>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                href="/ecomm/filter_results_page/generator"
+              >
+                <ul class="list-group text-black">
+                  <li class="list-group-item">Generators</li>
+                </ul>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                href="/ecomm/filter_results_page/game_console"
+              >
+                <ul class="list-group text-black">
+                  <li class="list-group-item">Game Consoles</li>
+                </ul>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                href="/ecomm/filter_results_page/home_decor"
+              >
+                <ul class="list-group text-black">
+                  <li class="list-group-item">Home Decor</li>
                 </ul>
               </a>
             </li>
@@ -166,13 +206,13 @@
       </div>
     </div>-->
         <!-- Right elements -->
-        <div class="alert alert-dismissible fade show me-3 mt-3" role="alert" data-mdb-color="info">
+        <div class="alert alert-dismissible fade show me-3 mt-1" role="alert" data-mdb-color="info">
           We Always monitor our communications!!! <strong>Email, Text, or Call:</strong><br>
           <i class="fa-solid fa-phone-volume me-2"></i><strong>(888) 888-8888 (Business Hours)</strong><br>
           <i class="fa-solid fa-phone-volume me-2"></i><strong>(888) 888-8888 (After Hours)</strong>
           <button type="button" class="btn-close" data-mdb-dismiss="alert" aria-label="Close"></button>
         </div>
-        <ul class="list-group text-black ms-5">
+        <ul class="list-group text-black">
           {% if user.is_authenticated %}
           <li class="list-group-item">User: {{ user.get_username }}</li>
           <li class="list-group-item">

@@ -210,13 +210,13 @@
           <div class="flex-grow-1 ms-md-3 d-flex justify-content-between h-100">
             <div>
               <p class="h6 mb-2">{{ item.product_name }}</p>
-              <p class="mb-1">${{ item|stripe_price:item.stripe_product_id }}</p>
+              <p class="mb-1">${{ item.price_set.get.price|divide:100 }}</p>
               <p class="mb-0">Quantity: <span>1</span></p>
             </div>
             <div class="d-flex flex-column ms-3">
               <p class="mb-0"><a href="#!">Edit</a><span class="mx-2" style="color: hsl(0,0%,90%);">|</span><a
                   href="#!">Remove</a></p>
-              <p class="mt-auto mb-0">${{ item|stripe_price:item.stripe_product_id }}</p>
+              <p class="mt-auto mb-0">${{ item.price_set.get.price|divide:100 }}</p>
             </div>
           </div>
         </div>

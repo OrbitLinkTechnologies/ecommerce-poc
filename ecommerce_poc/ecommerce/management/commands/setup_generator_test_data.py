@@ -8,10 +8,23 @@ from ecommerce.management.commands.factories import (
     GeneratorFactory
 )
 
-object_count = 100
+product = GeneratorFactory()
+product.product_name
+product.product_category
+product.product_manufacturer
+product.product_brand
+product.product_SKU
+product.product_condition
+product.product_quantity
+product.product_photos
+product.generator_classification_type
+product.generator_fuel_type
+product.generator_continuous_wattage_value
+
+object_count = 5
 
 class Command(BaseCommand):
-    help = "Generates test data"
+    help = "Generates generator test data"
 
     @transaction.atomic
     def handle(self, *args, **kwargs):
@@ -21,7 +34,7 @@ class Command(BaseCommand):
             m.objects.all().delete()
 
         self.stdout.write("Creating new data...")
-        # Create all the users
+        # Create all the generators
         generators = []
         for _ in range(object_count):
             generator = GeneratorFactory()

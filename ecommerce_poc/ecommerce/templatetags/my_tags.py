@@ -39,3 +39,10 @@ def param_replace(context, **kwargs):
   for k in [k for k, v in d.items() if not v]:
     del d[k]
   return d.urlencode()
+
+@register.filter
+def divide(numerator, denominator):
+  try:
+    return int(numerator) / int(denominator)
+  except (ValueError, ZeroDivisionError):
+    return 'There was an error with the divide by 100 filter'

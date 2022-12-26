@@ -137,7 +137,7 @@
         <div class="col-md-6 mb-4 mb-md-0">
           <!-- Details -->
           <div>
-            <h1 class="fw-bold mb-3 h5">Generator_{{ item.product_name }}</h1>
+            <h1 class="fw-bold mb-3 h5">{{ item.product_name }}</h1>
             <a href="" class="text-muted mb-3"
                ><p class="mb-2 text-uppercase small">{{ item.product_category }}</p></a
               >
@@ -181,8 +181,8 @@
             </div>
   
             <h5 class="mb-3">
-              <s class="text-muted me-2 small align-middle">${{ item|single_product_price:item.stripe_product_id }}</s
-                ><span class="align-middle">${{ item|single_product_price:item.stripe_product_id }}</span>
+              <s class="text-muted me-2 small align-middle">${{ item.price_set.get.price|divide:100 }}</s
+                ><span class="align-middle">${{ item.price_set.get.price|divide:100 }}</span>
             </h5>
   
             <p class="text-muted">

@@ -1,0 +1,12 @@
+{% extends "ecommerce/base.html" %}
+{% block content %}
+<div class="container mb-5">
+  <section>
+    <p>
+        Thank you {{ name }} for your email! <br><br>
+        Your message has been sent to {{ email_from }}!
+    </p>
+    <a href="/ecomm/contact_us/">Test again</a>
+  </section>
+</div>
+{% endblock %}

@@ -74,6 +74,8 @@
   </div>
   <!--end drop-down filter 1-->
   <!--start drop-down filter 2-->
+  <!-- start generator fuel type conditional -->
+  {% if category == 'generator' %}
   <div class="dropdown">
     <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
     data-mdb-toggle="dropdown" aria-expanded="false">
@@ -97,8 +99,10 @@
         <!--<li><hr class="dropdown-divider" /></li>-->
     </ul>
   </div>
+  {% endif %}
+  <!-- end generator fuel type conditional -->
   <!--end drop-down filter 2-->
-  <!--start drop-down filter 3-->
+  <!--start GENERIC TYPE drop-down filter 3-->
   <div class="dropdown">
     <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
     data-mdb-toggle="dropdown" aria-expanded="false">
@@ -108,12 +112,12 @@
         {% for product in all_product_classification_types %}
         <!-- start dynamic search criteria -->
         <li class="page-item">
-          <a id="{{ product.generator_classification_type }}-id" class="dropdown-item">
+          <a id="{{ product.product_classification_type }}-id" class="dropdown-item">
               <div class="form-check">
-                  <input onclick="changeHref(this)" class="form-check-input" type="checkbox" name="generator_classification_type"  value="{{ product.generator_classification_type }}" id="{{ product.generator_classification_type }}{{ forloop.counter }}" 
-                  {% if product.generator_classification_type in generator_classification_type %} checked {% else %} "" {% endif %}
+                  <input onclick="changeHref(this)" class="form-check-input" type="checkbox" name="{{ category }}_classification_type"  value="{{ product.product_classification_type }}" id="{{ product.product_classification_type }}{{ forloop.counter }}" 
+                  {% if product.product_classification_type in product_classification_type %} checked {% else %} "" {% endif %}
                   />
-                  <label class="form-check-label" for="{{ product.generator_classification_type }}{{ forloop.counter }}">{{ product.generator_classification_type }}</label>
+                  <label class="form-check-label" for="{{ product.product_classification_type }}{{ forloop.counter }}">{{ product.product_classification_type }}</label>
               </div>
           </a>
         </li>
@@ -122,8 +126,8 @@
         <!--<li><hr class="dropdown-divider" /></li>-->
     </ul>
   </div>
-  <!--end drop-down filter 3-->
-    <!--start drop-down filter 3-->
+  <!--end GENERIC TYPE drop-down filter 3-->
+    <!--start drop-down filter 4-->
     <div class="dropdown">
       <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
       data-mdb-toggle="dropdown" aria-expanded="false">
@@ -147,7 +151,7 @@
           <!--<li><hr class="dropdown-divider" /></li>-->
       </ul>
     </div>
-    <!--end drop-down filter 3-->
+    <!--end drop-down filter 4-->
     <!-- start clear all filters button -->
     <a class="btn btn-warning" type="button" id="clearAllFiltersButton" onclick="clearAllFilters(this)">
       Clear All Filters
@@ -162,12 +166,45 @@
         <div class="row mb-5">
     {% endif %}
 
+    <!-- start we need to make these elements more dynamic, like we did with the filters above -->
+
+        <!-- start generator query condition -->
+        {% if product.product_category == 'generator' %}
         <div class="col-sm-3 mb-5">
-            <a href="/ecomm/item/{{ product.id }}/"><img src="{{ product.product_photos }}" style="height: 80%; width: 80%">
+            <a href="/ecomm/item/{{ product.id }}/"><img src="{{ product.product_photos }}" style="height: 260px; width: 260px">
             <br>
             {{ product.product_name }} <i class="fa-solid fa-grip-lines-vertical" style="color: green;"></i> {{ product.generator_classification_type }} <i class="fa-solid fa-grip-lines-vertical" style="color: green;"></i> {{ product.generator_fuel_type }} <i class="fa-solid fa-grip-lines-vertical" style="color: green;"></i> {{ product.product_brand }} <i class="fa-solid fa-grip-lines-vertical" style="color: green;"></i> {{ product.generator_continuous_wattage_value }} <i class="fa-solid fa-w" style="color: green;"></i>
-            ${{ product.product_price }}</a> <!-- price is just temporary right now to test filtering -->
+            ${{ product.price_set.get.price|divide:100 }}</a> <!-- notice how we access the related name field (foreign key, which is price) by using
+            the Model Name, in this case "Price" with _set and using .get to grab the price field -->
         </div>
+        {% endif %}
+        <!-- end generator query condition -->
+
+        <!-- start game_console query condition -->
+        {% if product.product_category == 'game_console' %}
+        <div class="col-sm-3 mb-5">
+            <a href="/ecomm/item/{{ product.id }}/"><img src="{{ product.product_photos }}" style="height: 260px; width: 260px">
+            <br>
+            {{ product.product_name }} <i class="fa-solid fa-grip-lines-vertical" style="color: green;"></i> {{ product.game_console_classification_type }} <i class="fa-solid fa-grip-lines-vertical" style="color: green;"></i> {{ product.product_brand }} <i class="fa-solid fa-w" style="color: green;"></i>
+            ${{ product.price_set.get.price|divide:100 }}</a> <!-- notice how we access the related name field (foreign key, which is price) by using
+            the Model Name, in this case "Price" with _set and using .get to grab the price field -->
+        </div>
+        {% endif %}
+        <!-- end game_console query condition -->
+
+        <!-- start home_decor query condition -->
+        {% if product.product_category == 'home_decor' %}
+        <div class="col-sm-3 mb-5">
+            <a href="/ecomm/item/{{ product.id }}/"><img src="{{ product.product_photos }}" style="height: 260px; width: 260px">
+            <br>
+            {{ product.product_name }} <i class="fa-solid fa-grip-lines-vertical" style="color: green;"></i> {{ product.game_console_classification_type }} <i class="fa-solid fa-grip-lines-vertical" style="color: green;"></i> {{ product.product_brand }} <i class="fa-solid fa-w" style="color: green;"></i>
+            ${{ product.price_set.get.price|divide:100 }}</a> <!-- notice how we access the related name field (foreign key, which is price) by using
+            the Model Name, in this case "Price" with _set and using .get to grab the price field -->
+        </div>
+        {% endif %}
+        <!-- end home_decor query condition -->
+
+        <!-- end we need to make these elements more dynamic, like we did with the filters above -->
 
     {% if forloop.last or forloop.counter|modulo:4 == 0 %}
     {% if forloop.last %}

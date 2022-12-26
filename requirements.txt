@@ -1,4 +1,5 @@
 Django==3.2
+setuptools
 fontawesomefree==6
 psycopg2
 django-jsonfield
@@ -13,3 +14,4 @@ python-decouple
 stripe
 django-environ
 django-filter
+sendgrid

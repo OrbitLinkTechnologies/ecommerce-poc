@@ -40,7 +40,7 @@ class BaseProduct(models.Model):
     )
     product_condition = models.CharField(max_length=64, choices=product_condition_choices)
     # we need to remove product price, as we are only using stripe product price
-    product_price = models.DecimalField(decimal_places=2,max_digits=8)
+    # product_price = models.DecimalField(decimal_places=2,max_digits=8)
     product_reviews = models.ForeignKey('ProductReview', on_delete=models.CASCADE, null=True, blank=True)
     product_in_stock = models.BooleanField(default=True)
     product_quantity = models.IntegerField()
@@ -71,13 +71,21 @@ class BaseProduct(models.Model):
     product_package_contents = jsonfield.JSONField(null=True, blank=True)
     product_created_at = models.DateTimeField(auto_now_add=True)
     product_updated_at = models.DateTimeField(auto_now=True)
-    stripe_product_id = models.CharField(max_length=100, default='price_1MFnyKJeoQWEr4BM36XT0Q5y')
+    stripe_product_id = models.CharField(max_length=100, blank=True, null=True)
     product_count_in_user_cart = models.IntegerField(default=0)
 
     # we use meta inner class to set abstract to true; this means that when we run makemigrations
     # and migrate, django will not add this abstract class to the database
     class Meta:
-        abstract = True
+        abstract = False
+
+    # since we are using regular inheritance, we need this here to easily distinguish
+    # our products in the baseproduct admin view;
+    # NOTE: we do not need to run makemigrations or migrate if we override or change
+    # our existing overriding string method; it is only used by django internally
+    # and doesn't affect our database schema
+    def __str__(self):
+        return self.product_name + '_' + self.product_SKU
 
 class Generator(BaseProduct):
     # we may to need make this an enum with values: portable, standby, inverter
@@ -102,7 +110,7 @@ class Generator(BaseProduct):
     # this will set our object name within django admin; dunder methods are overriding methods
     
     def __str__(self):
-        return 'generator_' + self.product_SKU
+        return self.product_name + '_' + self.product_SKU
 
 class GeneratorFilter(django_filters.FilterSet):
   class Meta:
@@ -110,8 +118,55 @@ class GeneratorFilter(django_filters.FilterSet):
     # Declare all your model fields by which you will filter
     # your queryset here:
     # NOTE: fields we need to add in the future are: Review Rating and Product features
-    fields = ['product_brand', 'product_price', 'generator_fuel_type', 'generator_classification_type',
+    fields = ['product_brand', 'stripe_product_id', 'generator_fuel_type', 'generator_classification_type',
     'generator_continuous_wattage_value', 'product_condition']
+
+class GameConsole(BaseProduct):
+  
+  game_console_classification_type_choices = (
+    ('PlayStation', 'PlayStation'),
+    ('Xbox', 'Xbox'),
+    ('Nintendo', 'Nintendo'),
+    ('PC', 'PC'),
+    ('Laptop', 'Laptop'),
+    ('VR', 'VR')
+  )
+  game_console_classification_type = models.CharField(max_length=64, choices=game_console_classification_type_choices)
+
+  def __str__(self):
+        return self.product_name + '_' + self.product_SKU
+
+class GameConsoleFilter(django_filters.FilterSet):
+  class Meta:
+    model = GameConsole
+    fields = ['product_brand', 'stripe_product_id', 'game_console_classification_type', 'product_condition']
+
+class HomeDecor(BaseProduct):
+  
+  home_decor_classification_type_choices = (
+    ('Furniture', 'Furniture'),
+    ('Outdoor_and_Garden', 'Outdoor_and_Garden'),
+    ('Bedding', 'Bedding'),
+    ('Bath', 'Bath'),
+    ('Lighting', 'Lighting'),
+    ('Rugs', 'Rugs'),
+    ('Windows', 'Windows'),
+    ('Pillows_and_Decor', 'Pillows_and_Decor'),
+    ('Art_and_Mirrors', 'Art_and_Mirrors'),
+    ('Tabletop_and_Bar', 'Tabletop_and_Bar'),
+    ('Storage', 'Storage'),
+    ('Holidays', 'Holidays'),
+    ('Gifts', 'Gifts')
+  )
+  home_decor_classification_type = models.CharField(max_length=64, choices=home_decor_classification_type_choices)
+
+  def __str__(self):
+        return self.product_name + '_' + self.product_SKU
+
+class HomeDecorFilter(django_filters.FilterSet):
+  class Meta:
+    model = HomeDecor
+    fields = ['product_brand', 'stripe_product_id', 'home_decor_classification_type', 'product_condition']
 
 class ProductReview(models.Model):
     review_title = models.CharField(max_length=255, default=None)
@@ -175,7 +230,7 @@ class Delivery(models.Model):
     state_or_province = models.CharField(max_length=128, null=True, blank=True)
 
 class Price(models.Model):
-  product = models.ForeignKey(Generator, on_delete=models.CASCADE)
+  product = models.ForeignKey(BaseProduct, on_delete=models.CASCADE)
   stripe_price_id = models.CharField(max_length=100)
   # we need to figure out how to remove price from our BaseProduct model
   # and tie our Stripe Price to our BaseProduct model
@@ -183,3 +238,20 @@ class Price(models.Model):
 
   def get_display_price(self):
     return "{0:.2f}".format(self.price / 100)
+
+# it is possible that we need to change our architecture in the future, but here
+# is my reasoning for creating separate Price Models for each one of our
+# Product Models: I don't want to slow down our queries with Polymorphic Django queries
+# and I don't necessarily want to introduce the complexity of using a Generic foreign key
+# both of which are described in this SO thread: https://stackoverflow.com/questions/30343212/foreignkey-field-related-to-abstract-model-in-django
+# I believe we are going to go with the route of turning our BaseProduct Abstract Class into
+# a IS-A relationship for regular base-class inheritance
+'''class GameConsolePrice(models.Model):
+  product = models.ForeignKey(Generator, on_delete=models.CASCADE)
+  stripe_price_id = models.CharField(max_length=500)
+  # we need to figure out how to remove price from our BaseProduct model
+  # and tie our Stripe Price to our BaseProduct model
+  price = models.IntegerField(default = 0)
+
+  def get_display_price(self):
+    return "{0:.2f}".format(self.price / 100)'''

@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from ecommerce.models import Generator, GeneratorFilter
+from ecommerce.models import Generator, GeneratorFilter, Price, GameConsole, GameConsoleFilter, HomeDecor, HomeDecorFilter
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -12,6 +12,10 @@ from django.views.generic import TemplateView
 from django.db.models import F
 # this is temporary to get our ajax function working to do some testing, do not do this in production!
 from django.views.decorators.csrf import csrf_exempt
+from django.core.mail import send_mail
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
+import os
 import stripe
 stripe.api_key = config('STRIPE_SECRET_KEY')
 
@@ -46,7 +50,13 @@ def ajax_filter_results(request):
 # I eventually want this to replace category results page
 # REMOVE THE FOLLOWING LINE IN PRODUCTION!
 @csrf_exempt
-def filter_results_page(request):
+def filter_results_page(request, category):
+
+  if category == 'game_console':
+    return game_console_filter_results_page(request, category)
+  
+  if category == 'home_decor':
+    return home_decor_filter_results_page(request, category)
   
   # I don't think that it's a good idea to query the entire
   # dataset each time we want to return all the possible filters
@@ -86,14 +96,24 @@ def filter_results_page(request):
   except EmptyPage:
     response = paginator.page(paginator.num_pages)
 
+  generic_product_classification_types = []
+
+  for object in all_product_classification_types:
+    generic_product_classification_types.append(
+      {
+        'product_classification_type' : object[category + '_classification_type']
+      }
+    )
+
   return render(
     request, 'ecommerce/filter_results_page.html', 
     {
+      'category' : category,
       'response' : response,
       'param_list' : param_list,
       'all_product_brands' : all_product_brands,
       'all_product_fuel_types' : all_product_fuel_types,
-      'all_product_classification_types' : all_product_classification_types,
+      'all_product_classification_types' : generic_product_classification_types,
       'all_product_condition_types' : all_product_condition_types,
       'product_brand' : [
         product_brand
@@ -101,8 +121,144 @@ def filter_results_page(request):
       'generator_fuel_type' : [
         generator_fuel_type
       ],
-      'generator_classification_type' : [
+      'product_classification_type' : [
         generator_classification_type
+      ],
+      'product_condition' : [
+        product_condition
+      ]
+    }
+  )
+
+def game_console_filter_results_page(request, category):
+
+  # I don't think that it's a good idea to query the entire
+  # dataset each time we want to return all the possible filters
+  # we need to find some way to cache this?
+  all_product_brands = GameConsole.objects.values('product_brand').distinct().order_by()
+  all_product_classification_types = GameConsole.objects.values('game_console_classification_type').distinct().order_by()
+  all_product_condition_types = GameConsole.objects.values('product_condition').distinct().order_by()
+
+  # store all of our get variables so we have access to them in the template
+  param_list = []
+  if request.GET:
+    for param in request.GET:
+      print(param + ' = ' + str(request.GET.get(param)))
+      param_list.append({
+        param : request.GET.get(param)
+      })
+
+  filtered_qs = GameConsoleFilter(
+    request.GET,
+    queryset = GameConsole.objects.all().order_by('id')
+  ).qs
+  
+  paginator = Paginator(filtered_qs, 10)
+  page = request.GET.get('page')
+
+  # get the values for the filters
+  product_brand = request.GET.get('product_brand')
+  game_console_classification_type = request.GET.get('game_console_classification_type')
+  product_condition = request.GET.get('product_condition')
+
+  try:
+    response = paginator.page(page)
+  except PageNotAnInteger:
+    response = paginator.page(1)
+  except EmptyPage:
+    response = paginator.page(paginator.num_pages)
+
+  generic_product_classification_types = []
+
+  for object in all_product_classification_types:
+    generic_product_classification_types.append(
+      {
+        'product_classification_type' : object[category + '_classification_type']
+      }
+    )
+
+  return render(
+    request, 'ecommerce/filter_results_page.html', 
+    {
+      'category' : category,
+      'response' : response,
+      'param_list' : param_list,
+      'all_product_brands' : all_product_brands,
+      'all_product_classification_types' : generic_product_classification_types,
+      'all_product_condition_types' : all_product_condition_types,
+      'product_brand' : [
+        product_brand
+      ],
+      'product_classification_type' : [
+        game_console_classification_type
+      ],
+      'product_condition' : [
+        product_condition
+      ]
+    }
+  )
+
+def home_decor_filter_results_page(request, category):
+
+  # I don't think that it's a good idea to query the entire
+  # dataset each time we want to return all the possible filters
+  # we need to find some way to cache this?
+  all_product_brands = HomeDecor.objects.values('product_brand').distinct().order_by()
+  all_product_classification_types = HomeDecor.objects.values('home_decor_classification_type').distinct().order_by()
+  all_product_condition_types = HomeDecor.objects.values('product_condition').distinct().order_by()
+
+  # store all of our get variables so we have access to them in the template
+  param_list = []
+  if request.GET:
+    for param in request.GET:
+      print(param + ' = ' + str(request.GET.get(param)))
+      param_list.append({
+        param : request.GET.get(param)
+      })
+
+  filtered_qs = HomeDecorFilter(
+    request.GET,
+    queryset = HomeDecor.objects.all().order_by('id')
+  ).qs
+  
+  paginator = Paginator(filtered_qs, 10)
+  page = request.GET.get('page')
+
+  # get the values for the filters
+  product_brand = request.GET.get('product_brand')
+  home_decor_classification_type = request.GET.get('home_decor_classification_type')
+  product_condition = request.GET.get('product_condition')
+
+  try:
+    response = paginator.page(page)
+  except PageNotAnInteger:
+    response = paginator.page(1)
+  except EmptyPage:
+    response = paginator.page(paginator.num_pages)
+
+  generic_product_classification_types = []
+
+  for object in all_product_classification_types:
+    generic_product_classification_types.append(
+      {
+        'product_classification_type' : object[category + '_classification_type']
+      }
+    )
+
+  return render(
+    request, 'ecommerce/filter_results_page.html', 
+    {
+      'category' : category,
+      'response' : response,
+      'param_list' : param_list,
+      'all_product_brands' : all_product_brands,
+      'all_product_classification_types' : generic_product_classification_types,
+      'all_product_condition_types' : all_product_condition_types,
+      'product_brand' : [
+        product_brand
+      ],
+      'product_classification_type' : [
+        home_decor_classification_type
       ],
       'product_condition' : [
         product_condition
@@ -127,7 +283,9 @@ def cart_page(request):
     cart_items = Generator.objects.filter(product_in_user_cart=request.user)
     cart_total = 0
     for item in cart_items:
-        cart_total += stripe.Price.retrieve(item.stripe_product_id).unit_amount * item.product_count_in_user_cart
+        price = Price.objects.filter(product=item)
+        for object in price:
+          cart_total += object.price * item.product_count_in_user_cart
     return render(request, 'ecommerce/cart_page.html', {'cart_items' : cart_items,
     'cart_total' : cart_total / 100})
 
@@ -147,7 +305,9 @@ def remove_item_from_cart(request, product_in_user_cart):
     cart_items = Generator.objects.filter(product_in_user_cart=request.user)
     cart_total = 0
     for item in cart_items:
-        cart_total += stripe.Price.retrieve(item.stripe_product_id).unit_amount * item.product_count_in_user_cart
+        price = Price.objects.filter(product=item)
+        for object in price:
+          cart_total += object.price * item.product_count_in_user_cart
     return render(request, 'ecommerce/cart_page.html', {'cart_items' : cart_items,
     'cart_total' : cart_total / 100})
 
@@ -159,7 +319,9 @@ def add_item_to_cart(request, id):
     cart_items = Generator.objects.filter(product_in_user_cart=request.user)
     cart_total = 0
     for item in cart_items:
-        cart_total += stripe.Price.retrieve(item.stripe_product_id).unit_amount * item.product_count_in_user_cart
+        price = Price.objects.filter(product=item)
+        for object in price:
+          cart_total += object.price * item.product_count_in_user_cart
     return render(request, 'ecommerce/cart_page.html', {'cart_items' : cart_items,
     'cart_total' : cart_total / 100})
 
@@ -183,7 +345,9 @@ def user_checkout(request):
     cart_items = Generator.objects.filter(product_in_user_cart=request.user)
     cart_total = 0
     for item in cart_items:
-        cart_total += stripe.Price.retrieve(item.stripe_product_id).unit_amount * item.product_count_in_user_cart
+        price = Price.objects.filter(product=item)
+        for object in price:
+          cart_total += object.price * item.product_count_in_user_cart
     return render(request, 'ecommerce/checkout_page.html', {'cart_items' : cart_items,
     'cart_total' : cart_total / 100})
 
@@ -192,7 +356,9 @@ class CreateCheckoutSessionView(View):
     cart_items = Generator.objects.filter(product_in_user_cart=request.user)
     list_of_line_items = []
     for item in cart_items:
-      price = item.stripe_product_id
+      price_query_set = Price.objects.filter(product=item)
+      for unit_amount in price_query_set:
+        price = unit_amount.stripe_price_id
       quantity = item.product_count_in_user_cart
       list_of_line_items.append(
         {
@@ -219,3 +385,35 @@ class SuccessView(TemplateView):
 
 class CancelView(TemplateView):
   template_name = 'payment_cancel.html'
+
+def about_page(request):
+  return render(request, 'ecommerce/about_page.html')
+
+def contact_us_page(request):
+  return render(request, 'ecommerce/contact_us_page.html')
+
+def send_customer_question(request):
+  send_mail = Mail(
+    from_email= os.environ.get("FROM_EMAIL"),
+    to_emails= os.environ.get("TO_EMAIL"),
+    subject=request.POST['subject'],
+    html_content= 'You have a message from ' + request.POST['name'] + '!<br><br>' +
+    'Please respond to them @ ' + request.POST['email'] + '!<br><br>' +
+    'Message Body: <br><br>' + request.POST['message']
+  )
+  try:
+    sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+    response = sg.send(send_mail)
+    print(response.status_code)
+    print(response.body)
+    print(response.headers)
+
+  except Exception as e:
+    print(e.message)
+
+  return redirect('/ecomm/contact_us_page_success', name = request.POST['name'])
+
+def contact_us_page_success(request):
+  return render(request, 'ecommerce/contact_us_page_success.html', { 
+    'email_from' : 'Travis\' Primary Contact Email'
+    })
