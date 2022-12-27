@@ -131,6 +131,26 @@
                 </ul>
               </a>
             </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                href="/ecomm/filter_results_page/sports_nutrition"
+              >
+                <ul class="list-group text-black">
+                  <li class="list-group-item">Sports Nutrition</li>
+                </ul>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                href="/ecomm/filter_results_page/kitchen_and_home_appliance"
+              >
+                <ul class="list-group text-black">
+                  <li class="list-group-item">Kitchen & Home Appliances</li>
+                </ul>
+              </a>
+            </li>
           </ul>
           <!-- Left links -->
         </div>
@@ -216,7 +236,7 @@
           {% if user.is_authenticated %}
           <li class="list-group-item">User: {{ user.get_username }}</li>
           <li class="list-group-item">
-            <a href="/ecomm/cart/{{ user.id }}/"
+            <a href="/ecomm/cart/"
               >Cart<i class="fa-solid fa-cart-arrow-down ms-2"></i
             ></a>
           </li>

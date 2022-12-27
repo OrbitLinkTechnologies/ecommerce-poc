@@ -197,12 +197,36 @@
         <div class="col-sm-3 mb-5">
             <a href="/ecomm/item/{{ product.id }}/{{ category }}/"><img src="{{ product.product_photos }}" style="height: 260px; width: 260px">
             <br>
-            {{ product.product_name }} <i class="fa-solid fa-grip-lines-vertical" style="color: green;"></i> {{ product.game_console_classification_type }} <i class="fa-solid fa-grip-lines-vertical" style="color: green;"></i> {{ product.product_brand }} <i class="fa-solid fa-w" style="color: green;"></i>
+            {{ product.product_name }} <i class="fa-solid fa-grip-lines-vertical" style="color: green;"></i> {{ product.home_decor_classification_type }} <i class="fa-solid fa-grip-lines-vertical" style="color: green;"></i> {{ product.product_brand }} <i class="fa-solid fa-w" style="color: green;"></i>
             ${{ product.price_set.get.price|divide:100 }}</a> <!-- notice how we access the related name field (foreign key, which is price) by using
             the Model Name, in this case "Price" with _set and using .get to grab the price field -->
         </div>
         {% endif %}
         <!-- end home_decor query condition -->
+
+         <!-- start sports_nutrition query condition -->
+         {% if product.product_category == 'sports_nutrition' %}
+         <div class="col-sm-3 mb-5">
+             <a href="/ecomm/item/{{ product.id }}/{{ category }}/"><img src="{{ product.product_photos }}" style="height: 260px; width: 260px">
+             <br>
+             {{ product.product_name }} <i class="fa-solid fa-grip-lines-vertical" style="color: green;"></i> {{ product.sporsts_nutrition_classification_type }} <i class="fa-solid fa-grip-lines-vertical" style="color: green;"></i> {{ product.product_brand }} <i class="fa-solid fa-w" style="color: green;"></i>
+             ${{ product.price_set.get.price|divide:100 }}</a> <!-- notice how we access the related name field (foreign key, which is price) by using
+             the Model Name, in this case "Price" with _set and using .get to grab the price field -->
+         </div>
+         {% endif %}
+         <!-- end sports_nutrition query condition -->
+
+         <!-- start kitchen_and_home_appliance query condition -->
+         {% if product.product_category == 'kitchen_and_home_appliance' %}
+         <div class="col-sm-3 mb-5">
+             <a href="/ecomm/item/{{ product.id }}/{{ category }}/"><img src="{{ product.product_photos }}" style="height: 260px; width: 260px">
+             <br>
+             {{ product.product_name }} <i class="fa-solid fa-grip-lines-vertical" style="color: green;"></i> {{ product.kitchen_and_home_appliance_classification_type }} <i class="fa-solid fa-grip-lines-vertical" style="color: green;"></i> {{ product.product_brand }} <i class="fa-solid fa-w" style="color: green;"></i>
+             ${{ product.price_set.get.price|divide:100 }}</a> <!-- notice how we access the related name field (foreign key, which is price) by using
+             the Model Name, in this case "Price" with _set and using .get to grab the price field -->
+         </div>
+         {% endif %}
+         <!-- end kitchen_and_home_appliance query condition -->
 
         <!-- end we need to make these elements more dynamic, like we did with the filters above -->
 

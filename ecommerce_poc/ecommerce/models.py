@@ -168,6 +168,55 @@ class HomeDecorFilter(django_filters.FilterSet):
     model = HomeDecor
     fields = ['product_brand', 'stripe_product_id', 'home_decor_classification_type', 'product_condition']
 
+class SportsNutrition(BaseProduct):
+  
+  sports_nutrition_classification_type_choices = (
+    ('Supplements', 'Supplements'),
+    ('Vitamins', 'Vitamins'),
+    ('Keto', 'Keto'),
+    ('Weight_Support', 'Weight_Support'),
+    ('Energy', 'Energy'),
+    ('Cleanse', 'Cleanse'),
+    ('Muscle_Support', 'Muscle_Support'),
+    ('Digestive_Support', 'Digestive_Support'),
+    ('Gel', 'Gel'),
+    ('Powder', 'Powder'),
+    ('Capsule', 'Capsule'),
+  )
+  sports_nutrition_classification_type = models.CharField(max_length=64, choices=sports_nutrition_classification_type_choices)
+
+  def __str__(self):
+        return self.product_name + '_' + self.product_SKU + '_pk=' + str(self.pk)
+
+class SportsNutritionFilter(django_filters.FilterSet):
+  class Meta:
+    model = SportsNutrition
+    fields = ['product_brand', 'stripe_product_id', 'sports_nutrition_classification_type', 'product_condition']
+
+class KitchenAndHomeAppliance(BaseProduct):
+  
+  kitchen_and_home_appliance_classification_type_choices = (
+    ('Air Fryer', 'Air Fryer'),
+    ('Oven', 'Oven'),
+    ('Toaster', 'Toaster'),
+    ('Microwave', 'Microwave'),
+    ('Coffee Maker', 'Coffee Maker'),
+    ('Air Conditioner', 'Air Conditioner'),
+    ('Dishwasher', 'Dishwasher'),
+    ('Washing Machine', 'Washing Machine'),
+    ('Drying Machine', 'Drying Machine'),
+    ('Water Heater', 'Water Heater'),
+  )
+  kitchen_and_home_appliance_classification_type = models.CharField(max_length=64, choices=kitchen_and_home_appliance_classification_type_choices)
+
+  def __str__(self):
+        return self.product_name + '_' + self.product_SKU + '_pk=' + str(self.pk)
+
+class KitchenAndHomeApplianceFilter(django_filters.FilterSet):
+  class Meta:
+    model = KitchenAndHomeAppliance
+    fields = ['product_brand', 'stripe_product_id', 'kitchen_and_home_appliance_classification_type', 'product_condition']
+
 class ProductReview(models.Model):
     review_title = models.CharField(max_length=255, default=None)
     review_text_body = models.TextField(default=None)
@@ -245,21 +294,12 @@ class Price(models.Model):
 # both of which are described in this SO thread: https://stackoverflow.com/questions/30343212/foreignkey-field-related-to-abstract-model-in-django
 # I believe we are going to go with the route of turning our BaseProduct Abstract Class into
 # a IS-A relationship for regular base-class inheritance
-'''class GameConsolePrice(models.Model):
-  product = models.ForeignKey(Generator, on_delete=models.CASCADE)
-  stripe_price_id = models.CharField(max_length=500)
-  # we need to figure out how to remove price from our BaseProduct model
-  # and tie our Stripe Price to our BaseProduct model
-  price = models.IntegerField(default = 0)
-
-  def get_display_price(self):
-    return "{0:.2f}".format(self.price / 100)'''
 
 class CartItem(models.Model):
   datetime_added = models.DateTimeField(auto_now_add=True)
   datetime_updated = models.DateTimeField(auto_now=True)
   quantity = models.IntegerField(default=1)
-  product = models.ForeignKey(BaseProduct, unique=True, on_delete=models.PROTECT)
+  product = models.OneToOneField(BaseProduct, unique=True, on_delete=models.PROTECT)
   user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
   orderDone = models.BooleanField(default=False)
 

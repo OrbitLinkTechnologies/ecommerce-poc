@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from ecommerce.models import BaseProduct, Generator, GeneratorFilter, Price, GameConsole, GameConsoleFilter, HomeDecor, HomeDecorFilter, CartItem
+from ecommerce.models import KitchenAndHomeAppliance, KitchenAndHomeApplianceFilter, SportsNutrition, SportsNutritionFilter, BaseProduct, Generator, GeneratorFilter, Price, GameConsole, GameConsoleFilter, HomeDecor, HomeDecorFilter, CartItem
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -42,6 +42,12 @@ def filter_results_page(request, category='generator'):
   
   if category == 'home_decor':
     return home_decor_filter_results_page(request, category)
+
+  if category == 'sports_nutrition':
+    return sports_nutrition_filter_results_page(request, category)
+
+  if category == 'kitchen_and_home_appliance':
+    return kitchen_and_home_appliance_filter_results_page(request, category)
   
   # I don't think that it's a good idea to query the entire
   # dataset each time we want to return all the possible filters
@@ -251,6 +257,142 @@ def home_decor_filter_results_page(request, category):
     }
   )
 
+def sports_nutrition_filter_results_page(request, category):
+
+  # I don't think that it's a good idea to query the entire
+  # dataset each time we want to return all the possible filters
+  # we need to find some way to cache this?
+  all_product_brands = SportsNutrition.objects.values('product_brand').distinct().order_by()
+  all_product_classification_types = SportsNutrition.objects.values('sports_nutrition_classification_type').distinct().order_by()
+  all_product_condition_types = SportsNutrition.objects.values('product_condition').distinct().order_by()
+
+  # store all of our get variables so we have access to them in the template
+  param_list = []
+  if request.GET:
+    for param in request.GET:
+      print(param + ' = ' + str(request.GET.get(param)))
+      param_list.append({
+        param : request.GET.get(param)
+      })
+
+  filtered_qs = SportsNutritionFilter(
+    request.GET,
+    queryset = SportsNutrition.objects.all().order_by('id')
+  ).qs
+  
+  paginator = Paginator(filtered_qs, 10)
+  page = request.GET.get('page')
+
+  # get the values for the filters
+  product_brand = request.GET.get('product_brand')
+  sports_nutrition_classification_type = request.GET.get('sports_nutrition_classification_type')
+  product_condition = request.GET.get('product_condition')
+
+  try:
+    response = paginator.page(page)
+  except PageNotAnInteger:
+    response = paginator.page(1)
+  except EmptyPage:
+    response = paginator.page(paginator.num_pages)
+
+  generic_product_classification_types = []
+
+  for object in all_product_classification_types:
+    generic_product_classification_types.append(
+      {
+        'product_classification_type' : object[category + '_classification_type']
+      }
+    )
+
+  return render(
+    request, 'ecommerce/filter_results_page.html', 
+    {
+      'category' : category,
+      'response' : response,
+      'param_list' : param_list,
+      'all_product_brands' : all_product_brands,
+      'all_product_classification_types' : generic_product_classification_types,
+      'all_product_condition_types' : all_product_condition_types,
+      'product_brand' : [
+        product_brand
+      ],
+      'product_classification_type' : [
+        sports_nutrition_classification_type
+      ],
+      'product_condition' : [
+        product_condition
+      ]
+    }
+  )
+
+def kitchen_and_home_appliance_filter_results_page(request, category):
+
+  # I don't think that it's a good idea to query the entire
+  # dataset each time we want to return all the possible filters
+  # we need to find some way to cache this?
+  all_product_brands = KitchenAndHomeAppliance.objects.values('product_brand').distinct().order_by()
+  all_product_classification_types = KitchenAndHomeAppliance.objects.values('kitchen_and_home_appliance_classification_type').distinct().order_by()
+  all_product_condition_types = KitchenAndHomeAppliance.objects.values('product_condition').distinct().order_by()
+
+  # store all of our get variables so we have access to them in the template
+  param_list = []
+  if request.GET:
+    for param in request.GET:
+      print(param + ' = ' + str(request.GET.get(param)))
+      param_list.append({
+        param : request.GET.get(param)
+      })
+
+  filtered_qs = KitchenAndHomeApplianceFilter(
+    request.GET,
+    queryset = KitchenAndHomeAppliance.objects.all().order_by('id')
+  ).qs
+  
+  paginator = Paginator(filtered_qs, 10)
+  page = request.GET.get('page')
+
+  # get the values for the filters
+  product_brand = request.GET.get('product_brand')
+  kitchen_and_home_appliance_classification_type = request.GET.get('kitchen_and_home_appliance_classification_type')
+  product_condition = request.GET.get('product_condition')
+
+  try:
+    response = paginator.page(page)
+  except PageNotAnInteger:
+    response = paginator.page(1)
+  except EmptyPage:
+    response = paginator.page(paginator.num_pages)
+
+  generic_product_classification_types = []
+
+  for object in all_product_classification_types:
+    generic_product_classification_types.append(
+      {
+        'product_classification_type' : object[category + '_classification_type']
+      }
+    )
+
+  return render(
+    request, 'ecommerce/filter_results_page.html', 
+    {
+      'category' : category,
+      'response' : response,
+      'param_list' : param_list,
+      'all_product_brands' : all_product_brands,
+      'all_product_classification_types' : generic_product_classification_types,
+      'all_product_condition_types' : all_product_condition_types,
+      'product_brand' : [
+        product_brand
+      ],
+      'product_classification_type' : [
+        kitchen_and_home_appliance_classification_type
+      ],
+      'product_condition' : [
+        product_condition
+      ]
+    }
+  )
+
 def getModel(category):
   if category == 'generator':
     return Generator
@@ -258,6 +400,10 @@ def getModel(category):
     return HomeDecor
   elif category == 'game_console':
      return GameConsole
+  elif category == 'sports_nutrition':
+    return SportsNutrition
+  elif category == 'kitchen_and_home_appliance':
+    return KitchenAndHomeAppliance
   else:
     return ObjectDoesNotExist
 
@@ -269,7 +415,7 @@ def item_page(request, id, category='generator'):
     'category' : category})
 
 @login_required
-def cart_page(request, user_id):
+def cart_page(request):
     list_of_cart_items = CartItem.objects.filter(user=User.objects.get(id=request.user.id))
     cart_total = 0
     cart_items = []
@@ -284,7 +430,6 @@ def cart_page(request, user_id):
       current_item_to_append.cart_item_total = price.price * item.quantity
       cart_items.append(current_item_to_append)
       cart_total += price.price * item.quantity
-      print(current_item_to_append.quantity)
     return render(request, 'ecommerce/cart_page.html', {'cart_items' : cart_items,
     'cart_total' : cart_total / 100, 'quantities' : list_of_item_quantities})
 
@@ -293,9 +438,11 @@ def remove_item_from_cart(request, id):
     cart_item_query_set = CartItem.objects.filter(product=BaseProduct.objects.get(id=id), user=User.objects.get(id=request.user.id))
     if cart_item_query_set.exists():
       cart_item_query_set.update(quantity=F('quantity') - 1)
+      if cart_item_query_set.first().quantity <= 0:
+        cart_item_query_set.first().delete()
     else:
       CartItem.objects.create(product=BaseProduct.objects.get(id=id), user=User.objects.get(id=request.user.id))
-    return redirect('/ecomm/cart/' + str(request.user.id) + '/')
+    return redirect('/ecomm/cart/')
 
 @login_required
 def add_item_to_cart(request, id):
@@ -304,7 +451,7 @@ def add_item_to_cart(request, id):
       cart_item_query_set.update(quantity=F('quantity') + 1)
     else:
       CartItem.objects.create(product=BaseProduct.objects.get(id=id), user=User.objects.get(id=request.user.id))
-    return redirect('/ecomm/cart/' + str(request.user.id) + '/')
+    return redirect('/ecomm/cart/')
 
 def register_new_user(request):
     username = request.POST.get('username')
@@ -322,7 +469,7 @@ def register_done(request):
     return render(request, 'ecommerce/register_done.html')
 
 @login_required
-def user_checkout(request, user_id):
+def user_checkout(request):
     list_of_cart_items = CartItem.objects.filter(user=User.objects.get(id=request.user.id))
     cart_total = 0
     cart_items = []
@@ -338,7 +485,6 @@ def user_checkout(request, user_id):
       current_item_to_append.price = price.price
       cart_items.append(current_item_to_append)
       cart_total += price.price * item.quantity
-      print(current_item_to_append.quantity)
     return render(request, 'ecommerce/checkout_page.html', {'cart_items' : cart_items,
     'cart_total' : cart_total / 100, 'quantities' : list_of_item_quantities})
 

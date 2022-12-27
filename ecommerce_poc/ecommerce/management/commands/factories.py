@@ -3,7 +3,7 @@ from factory.django import DjangoModelFactory
 from faker import Faker
 fake = Faker()
 import factory.fuzzy
-from ecommerce.models import Generator, HomeDecor, GameConsole
+from ecommerce.models import Generator, HomeDecor, GameConsole, SportsNutrition, KitchenAndHomeAppliance
 from decouple import config
 import stripe
 stripe.api_key = config('STRIPE_SECRET_KEY')
@@ -331,4 +331,200 @@ class HomeDecorFactory(DjangoModelFactory):
     'Storage',
     'Holidays',
     'Gifts'
+  ])
+
+class SportsNutritionFactory(DjangoModelFactory):
+  class Meta:
+    model = SportsNutrition
+
+  product_name = factory.fuzzy.FuzzyChoice([
+    'Arma Sport Reload: Whey Protein',
+    'BulletProof Greens',
+    'Sport Formula Powder Vitamin',
+    'Vitamin Capsules with BCAA Amino Acids & Digestive',
+    'GNC Mega Men Sport 180 Capsules',
+    'All Sport Multi-Vitamin',
+    'Blaze Fat Burner Supplements',
+    'First Endurance Liquid Shot',
+    'Spring Energy Canaberry',
+    'GU Roctane Energy Gel',
+    'Amino Aid BCAAs 100 tablets',
+    'Biotics Probiotic Supplements',
+    'Perfect Keto Collagen Protein Powder',
+    'Myogenix Myovite Multivitamin',
+    'Omega 3 Supplements - 90 Day',
+    'BioSteel Sport Greens Pineapple',
+    'Wilderness Athlete Green Infusion',
+  ])
+
+  product_category = 'sports_nutrition'
+
+  product_manufacturer = factory.fuzzy.FuzzyChoice([
+      'Cheap Design LLC',
+      'Light Weight LLC',
+      'Tip Top LLC',
+      'Slow Repairs LLC',
+      'Across the Atlantic LLC',
+      'Domestic Imports LLC',
+      'Made Well LLC',
+      'Cheap Wads LLC',
+      'City Slickers LLC',
+      'Above and Beyond LLC',
+      'Aim High Shoot Low LLC',
+      'Alpha Dog LLC',
+      'Once Upon a Time LLC',
+      'Sports Nutrition Tycoons LLC',
+      'Amid the Great LLC',
+      'Firm in Our Quality LLC',
+      'Poor Quantity Great Quality LLC',
+    ])
+
+  product_brand = factory.fuzzy.FuzzyChoice([
+      'GU',
+      'NOW',
+      'Clif Bar & Company',
+      'Pure Encapsulations',
+      'WEIDER',
+      'USN',
+      'Trace Minerals Research',
+    ])
+  # we need the SKU to be unique
+  product_SKU = fake.ean(length=13)
+  product_condition = factory.fuzzy.FuzzyChoice([
+      'new',
+      'refurbished'
+    ])
+  product_quantity = factory.fuzzy.FuzzyInteger(1, 30)
+  product_photos = factory.fuzzy.FuzzyChoice([
+      'https://s3.amazonaws.com/ecomm-poc-fac-pu/static/images/sn_1.jpg',
+      'https://s3.amazonaws.com/ecomm-poc-fac-pu/static/images/sn_2.jpg',
+      'https://s3.amazonaws.com/ecomm-poc-fac-pu/static/images/sn_3.jpg',
+      'https://s3.amazonaws.com/ecomm-poc-fac-pu/static/images/sn_4.jpg',
+      'https://s3.amazonaws.com/ecomm-poc-fac-pu/static/images/sn_5.jpg',
+      'https://s3.amazonaws.com/ecomm-poc-fac-pu/static/images/sn_6.jpg',
+      'https://s3.amazonaws.com/ecomm-poc-fac-pu/static/images/sn_7.jpg',
+      'https://s3.amazonaws.com/ecomm-poc-fac-pu/static/images/sn_8.jpg',
+      'https://s3.amazonaws.com/ecomm-poc-fac-pu/static/images/sn_9.jpg',
+      'https://s3.amazonaws.com/ecomm-poc-fac-pu/static/images/sn_10.jpg',
+      'https://s3.amazonaws.com/ecomm-poc-fac-pu/static/images/sn_11.jpg',
+      'https://s3.amazonaws.com/ecomm-poc-fac-pu/static/images/sn_12.jpg',
+    ])
+  sports_nutrition_classification_type = factory.fuzzy.FuzzyChoice([
+    ('Supplements'),
+    ('Vitamins'),
+    ('Keto'),
+    ('Weight_Support'),
+    ('Energy'),
+    ('Cleanse'),
+    ('Muscle_Support'),
+    ('Digestive_Support'),
+    ('Gel'),
+    ('Powder'),
+    ('Capsule'),
+  ])
+
+class KitchenAndHomeApplianceFactory(DjangoModelFactory):
+  class Meta:
+    model = KitchenAndHomeAppliance
+
+  product_name = factory.fuzzy.FuzzyChoice([
+    'Foodi 8 Quart 6-in-1 DualZone 2-Basket Air Fryer',
+    'Mini Smart Toaster Oven',
+    'Smart Oven Pro Toaster Oven',
+    'Countertop Toaster Oven & Pizza Maker Large 4-Slice Capacity',
+    '22-Quart Roaster Oven',
+    'Clear View Toaster: Extra Wide Slot Toaster with See Through Window',
+    '7 in 1 Convection Toaster Oven Cooker',
+    'Mini Maker Electric Round Griddle',
+    'Window-Mounted Room Air Conditioner',
+    'Pure Chill Evaporative Air Cooler',
+    'Portable Electric Air Conditioner Unit',
+    '24" Stainless Steel Built-In Dishwasher',
+    'Smart Dial Front Load Washer',
+    'Graphite Smart wi-fi Enabled Top Load Washer',
+    'Smart Dial Electric Dryer with FlexDry',
+    'Electric Compact Portable Clothes Laundry Dryer with Stainless Steel Tub',
+    'Electric Kettle with Stainless Steel Filter and Inner Lid',
+    'Glass Electric Tea Kettle, Water Boiler & Heater'
+  ])
+
+  product_category = 'kitchen_and_home_appliance'
+
+  product_manufacturer = factory.fuzzy.FuzzyChoice([
+      'Cheap Design LLC',
+      'Light Weight LLC',
+      'Tip Top LLC',
+      'Slow Repairs LLC',
+      'Across the Atlantic LLC',
+      'Domestic Imports LLC',
+      'Made Well LLC',
+      'Cheap Wads LLC',
+      'City Slickers LLC',
+      'Above and Beyond LLC',
+      'Aim High Shoot Low LLC',
+      'Alpha Dog LLC',
+      'Once Upon a Time LLC',
+      'Kitchen and Home Appliance Tycoons LLC',
+      'Amid the Great LLC',
+      'Firm in Our Quality LLC',
+      'Poor Quantity Great Quality LLC',
+    ])
+
+  product_brand = factory.fuzzy.FuzzyChoice([
+      'Hamilton Beach',
+      'DASH',
+      'Cuisinart',
+      'KitchenAid',
+      'Instant Pot',
+      'Ninja',
+      'Nostalgia',
+      'Oster',
+      'Frigidaire',
+      'Breville',
+      'Antarctic Star',
+      'Arctic Air',
+      'Kenmore',
+      'SAMSUNG',
+      'LG',
+      'Panda',
+      'COSORI',
+    ])
+  # we need the SKU to be unique
+  product_SKU = fake.ean(length=13)
+  product_condition = factory.fuzzy.FuzzyChoice([
+      'new',
+      'refurbished'
+    ])
+  product_quantity = factory.fuzzy.FuzzyInteger(1, 30)
+  product_photos = factory.fuzzy.FuzzyChoice([
+      'https://s3.amazonaws.com/ecomm-poc-fac-pu/static/images/kha_1.jpg',
+      'https://s3.amazonaws.com/ecomm-poc-fac-pu/static/images/kha_2.jpg',
+      'https://s3.amazonaws.com/ecomm-poc-fac-pu/static/images/kha_3.jpg',
+      'https://s3.amazonaws.com/ecomm-poc-fac-pu/static/images/kha_4.jpg',
+      'https://s3.amazonaws.com/ecomm-poc-fac-pu/static/images/kha_5.jpg',
+      'https://s3.amazonaws.com/ecomm-poc-fac-pu/static/images/kha_6.jpg',
+      'https://s3.amazonaws.com/ecomm-poc-fac-pu/static/images/kha_7.jpg',
+      'https://s3.amazonaws.com/ecomm-poc-fac-pu/static/images/kha_8.jpg',
+      'https://s3.amazonaws.com/ecomm-poc-fac-pu/static/images/kha_9.jpg',
+      'https://s3.amazonaws.com/ecomm-poc-fac-pu/static/images/kha_10.jpg',
+      'https://s3.amazonaws.com/ecomm-poc-fac-pu/static/images/kha_11.jpg',
+      'https://s3.amazonaws.com/ecomm-poc-fac-pu/static/images/kha_12.jpg',
+      'https://s3.amazonaws.com/ecomm-poc-fac-pu/static/images/kha_13.jpg',
+      'https://s3.amazonaws.com/ecomm-poc-fac-pu/static/images/kha_14.jpg',
+      'https://s3.amazonaws.com/ecomm-poc-fac-pu/static/images/kha_15.jpg',
+      'https://s3.amazonaws.com/ecomm-poc-fac-pu/static/images/kha_16.jpg',
+      'https://s3.amazonaws.com/ecomm-poc-fac-pu/static/images/kha_17.jpg',
+      'https://s3.amazonaws.com/ecomm-poc-fac-pu/static/images/kha_18.jpg',
+    ])
+  kitchen_and_home_appliance_classification_type = factory.fuzzy.FuzzyChoice([
+    ('Air Fryer'),
+    ('Oven'),
+    ('Toaster'),
+    ('Microwave'),
+    ('Coffee Maker'),
+    ('Air Conditioner'),
+    ('Dishwasher'),
+    ('Washing Machine'), 
+    ('Drying Machine'),
+    ('Water Heater'), 
   ])
