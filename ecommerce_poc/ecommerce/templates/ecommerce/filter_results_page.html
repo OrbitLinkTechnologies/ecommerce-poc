@@ -171,7 +171,7 @@
         <!-- start generator query condition -->
         {% if product.product_category == 'generator' %}
         <div class="col-sm-3 mb-5">
-            <a href="/ecomm/item/{{ product.id }}/"><img src="{{ product.product_photos }}" style="height: 260px; width: 260px">
+            <a href="/ecomm/item/{{ product.id }}/{{ category }}/"><img src="{{ product.product_photos }}" style="height: 260px; width: 260px">
             <br>
             {{ product.product_name }} <i class="fa-solid fa-grip-lines-vertical" style="color: green;"></i> {{ product.generator_classification_type }} <i class="fa-solid fa-grip-lines-vertical" style="color: green;"></i> {{ product.generator_fuel_type }} <i class="fa-solid fa-grip-lines-vertical" style="color: green;"></i> {{ product.product_brand }} <i class="fa-solid fa-grip-lines-vertical" style="color: green;"></i> {{ product.generator_continuous_wattage_value }} <i class="fa-solid fa-w" style="color: green;"></i>
             ${{ product.price_set.get.price|divide:100 }}</a> <!-- notice how we access the related name field (foreign key, which is price) by using
@@ -183,7 +183,7 @@
         <!-- start game_console query condition -->
         {% if product.product_category == 'game_console' %}
         <div class="col-sm-3 mb-5">
-            <a href="/ecomm/item/{{ product.id }}/"><img src="{{ product.product_photos }}" style="height: 260px; width: 260px">
+            <a href="/ecomm/item/{{ product.id }}/{{ category }}/"><img src="{{ product.product_photos }}" style="height: 260px; width: 260px">
             <br>
             {{ product.product_name }} <i class="fa-solid fa-grip-lines-vertical" style="color: green;"></i> {{ product.game_console_classification_type }} <i class="fa-solid fa-grip-lines-vertical" style="color: green;"></i> {{ product.product_brand }} <i class="fa-solid fa-w" style="color: green;"></i>
             ${{ product.price_set.get.price|divide:100 }}</a> <!-- notice how we access the related name field (foreign key, which is price) by using
@@ -195,7 +195,7 @@
         <!-- start home_decor query condition -->
         {% if product.product_category == 'home_decor' %}
         <div class="col-sm-3 mb-5">
-            <a href="/ecomm/item/{{ product.id }}/"><img src="{{ product.product_photos }}" style="height: 260px; width: 260px">
+            <a href="/ecomm/item/{{ product.id }}/{{ category }}/"><img src="{{ product.product_photos }}" style="height: 260px; width: 260px">
             <br>
             {{ product.product_name }} <i class="fa-solid fa-grip-lines-vertical" style="color: green;"></i> {{ product.game_console_classification_type }} <i class="fa-solid fa-grip-lines-vertical" style="color: green;"></i> {{ product.product_brand }} <i class="fa-solid fa-w" style="color: green;"></i>
             ${{ product.price_set.get.price|divide:100 }}</a> <!-- notice how we access the related name field (foreign key, which is price) by using

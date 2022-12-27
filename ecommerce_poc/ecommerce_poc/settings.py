@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     "ecommerce",
     'fontawesomefree',
     'django_extensions',
+    'polymorphic',
 ]
 
 MIDDLEWARE = [

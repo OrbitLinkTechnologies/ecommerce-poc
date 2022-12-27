@@ -15,3 +15,4 @@ stripe
 django-environ
 django-filter
 sendgrid
+django-polymorphic

@@ -45,11 +45,11 @@
               <div class="col-md-8 mb-4 mb-md-0">
                 <p class="fw-bold">{{ item.product_name }}</p>
                 <p class="mb-1">
-                  <span class="text-muted me-2">{{ item.product_category }} type:</span><span>{{ item.generator_classification_type }}</span>
+                  <span class="text-muted me-2">category: </span><span>{{ item.product_category }}</span>
                 </p>
                 <p>
-                  <span class="text-muted me-2">Fuel Type:</span
-                    ><span>{{ item.generator_fuel_type }}</span>
+                  <span class="text-muted me-2">brand: </span
+                    ><span>{{ item.product_brand }}</span>
                 </p>
   
                 <p class="mb-4">
@@ -72,7 +72,7 @@
                          type="number"
                          id="typeNumber"
                          class="form-control"
-                         value="{{ item.product_count_in_user_cart }}"
+                         value="{{ item.quantity }}"
                          min="1"
                          />
                   <label class="form-label" for="typeNumber"
@@ -81,8 +81,8 @@
                 </div>
   
                 <h5 class="mb-2">
-                  <s class="text-muted me-2 small align-middle">${{ item.price_set.get.price|divide:100 }}</s
-                    ><span class="align-middle">${{ item.price_set.get.price|divide:100 }}</span>
+                  <s class="text-muted me-2 small align-middle">${{ item.cart_item_total|divide:100 }}</s
+                    ><span class="align-middle">${{ item.cart_item_total|divide:100 }}</span>
                 </h5>
                 <p class="text-danger"><small>Product On Sale: {{ item.product_on_sale }}</small></p>
               </div>
@@ -164,8 +164,8 @@
               <span>${{ cart_total }}</span>
             </div>
   
-            <a class="btn btn-primary btn-rounded w-100" href="/ecomm/user_checkout/">
-              Got to checkout
+            <a class="btn btn-primary btn-rounded w-100" href="/ecomm/user_checkout/{{ user.id }}/">
+              Go to checkout
             </a>
           </section>
           <!-- Section: Summary -->

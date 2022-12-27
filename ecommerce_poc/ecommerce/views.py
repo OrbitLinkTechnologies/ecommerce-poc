@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from ecommerce.models import Generator, GeneratorFilter, Price, GameConsole, GameConsoleFilter, HomeDecor, HomeDecorFilter
+from ecommerce.models import BaseProduct, Generator, GeneratorFilter, Price, GameConsole, GameConsoleFilter, HomeDecor, HomeDecorFilter, CartItem
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -16,6 +16,8 @@ from django.core.mail import send_mail
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 import os
+from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.contenttypes.models import ContentType
 import stripe
 stripe.api_key = config('STRIPE_SECRET_KEY')
 
@@ -23,34 +25,17 @@ stripe.api_key = config('STRIPE_SECRET_KEY')
 def base(request):
     return render(request, 'ecommerce/base.html')
 
-# I'm thinking that we should create a specific function for our ajax
-# requests, so that we can return JUST the filtered data and NOT
-# the entire HTML document
-@csrf_exempt
-def ajax_filter_results(request):
-  filtered_qs = GeneratorFilter(
-    request.GET,
-    queryset = Generator.objects.all().order_by('id')
-  ).qs
-  paginator = Paginator(filtered_qs, 10)
-  for filtered in filtered_qs:
-    print('filtered_qs = ' + str(filtered))
-  page = request.GET.get('page')
-  try:
-    response = paginator.page(page)
-  except PageNotAnInteger:
-    response = paginator.page(1)
-  except EmptyPage:
-    response = paginator.page(paginator.num_pages)
-  return redirect(
-    '/ecomm/filter_results_page/?page=' + page +'&product_brand=Love-Kerr', {'response' : response}
-  )
-
 # we are adding filtration to our category results page
 # I eventually want this to replace category results page
 # REMOVE THE FOLLOWING LINE IN PRODUCTION!
-@csrf_exempt
-def filter_results_page(request, category):
+# NOTE: SUPER IMPORTANT!!!
+# We spent around a hour to debug this;
+# category did not have a default value, therefore we were getting
+# a positional argument missing, since in the url
+# when we go to the empty url '' (which is just localhost:8000/ecomm/)
+# has no parameter set such as 'localhost:8000/ecomm/generator/'
+# that matches the url parameter catcher 'localhost:8000/ecomm/<str:category>/
+def filter_results_page(request, category='generator'):
 
   if category == 'game_console':
     return game_console_filter_results_page(request, category)
@@ -266,64 +251,60 @@ def home_decor_filter_results_page(request, category):
     }
   )
 
-def category_results(request):
-    product_list = Generator.objects.all().order_by('id')
-    paginator = Paginator(product_list, 10)
+def getModel(category):
+  if category == 'generator':
+    return Generator
+  elif category == 'home_decor':
+    return HomeDecor
+  elif category == 'game_console':
+     return GameConsole
+  else:
+    return ObjectDoesNotExist
 
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-    return render(request, 'ecommerce/category_results.html', {'page_obj': page_obj})
-
-def item_page(request, id):
-    item_set = Generator.objects.filter(id=id)
-    return render(request, 'ecommerce/item_page.html', {'item_set' : item_set})
+# we want to set the default value here to avoid problems explained
+# above the filter_results_page method
+def item_page(request, id, category='generator'):
+    item_set = getModel(category).objects.filter(id=id)
+    return render(request, 'ecommerce/item_page.html', {'item_set' : item_set,
+    'category' : category})
 
 @login_required
-def cart_page(request):
-    cart_items = Generator.objects.filter(product_in_user_cart=request.user)
+def cart_page(request, user_id):
+    list_of_cart_items = CartItem.objects.filter(user=User.objects.get(id=request.user.id))
     cart_total = 0
-    for item in cart_items:
-        price = Price.objects.filter(product=item)
-        for object in price:
-          cart_total += object.price * item.product_count_in_user_cart
+    cart_items = []
+    list_of_item_quantities = []
+    for item in list_of_cart_items:
+      list_of_item_quantities.append(item.quantity)
+      price = Price.objects.get(product=item.product)
+      current_item_to_append = getModel(item.product.product_category).objects.get(id=item.product.id)
+      # quick little hack to add our per item total and quantity to the current
+      # list's item so that we can easily access these items on the cart page
+      current_item_to_append.quantity = item.quantity
+      current_item_to_append.cart_item_total = price.price * item.quantity
+      cart_items.append(current_item_to_append)
+      cart_total += price.price * item.quantity
+      print(current_item_to_append.quantity)
     return render(request, 'ecommerce/cart_page.html', {'cart_items' : cart_items,
-    'cart_total' : cart_total / 100})
+    'cart_total' : cart_total / 100, 'quantities' : list_of_item_quantities})
 
 @login_required
-def remove_item_from_cart(request, product_in_user_cart):
-    # item_to_remove = Generator.objects.filter(id=product_in_user_cart).update(product_in_user_cart=None)
-    item_to_remove = Generator.objects.filter(id=product_in_user_cart).first()
-    if item_to_remove.product_count_in_user_cart == 1:
-      item_to_remove.product_in_user_cart=None
-      item_to_remove.product_count_in_user_cart = 0
-      item_to_remove.save()
+def remove_item_from_cart(request, id):
+    cart_item_query_set = CartItem.objects.filter(product=BaseProduct.objects.get(id=id), user=User.objects.get(id=request.user.id))
+    if cart_item_query_set.exists():
+      cart_item_query_set.update(quantity=F('quantity') - 1)
     else:
-      if item_to_remove.product_count_in_user_cart > 1:
-        # decrement the count for the item in the user's cart
-        item_to_remove.product_count_in_user_cart=F('product_count_in_user_cart') - 1
-        item_to_remove.save()
-    cart_items = Generator.objects.filter(product_in_user_cart=request.user)
-    cart_total = 0
-    for item in cart_items:
-        price = Price.objects.filter(product=item)
-        for object in price:
-          cart_total += object.price * item.product_count_in_user_cart
-    return render(request, 'ecommerce/cart_page.html', {'cart_items' : cart_items,
-    'cart_total' : cart_total / 100})
+      CartItem.objects.create(product=BaseProduct.objects.get(id=id), user=User.objects.get(id=request.user.id))
+    return redirect('/ecomm/cart/' + str(request.user.id) + '/')
 
 @login_required
 def add_item_to_cart(request, id):
-    item_to_add = Generator.objects.filter(id=id).update(product_in_user_cart=request.user)
-    # increment the count for the item in the user's cart
-    Generator.objects.filter(id=id).update(product_count_in_user_cart=F('product_count_in_user_cart') + 1)
-    cart_items = Generator.objects.filter(product_in_user_cart=request.user)
-    cart_total = 0
-    for item in cart_items:
-        price = Price.objects.filter(product=item)
-        for object in price:
-          cart_total += object.price * item.product_count_in_user_cart
-    return render(request, 'ecommerce/cart_page.html', {'cart_items' : cart_items,
-    'cart_total' : cart_total / 100})
+    cart_item_query_set = CartItem.objects.filter(product=BaseProduct.objects.get(id=id), user=User.objects.get(id=request.user.id))
+    if cart_item_query_set.exists():
+      cart_item_query_set.update(quantity=F('quantity') + 1)
+    else:
+      CartItem.objects.create(product=BaseProduct.objects.get(id=id), user=User.objects.get(id=request.user.id))
+    return redirect('/ecomm/cart/' + str(request.user.id) + '/')
 
 def register_new_user(request):
     username = request.POST.get('username')
@@ -341,29 +322,36 @@ def register_done(request):
     return render(request, 'ecommerce/register_done.html')
 
 @login_required
-def user_checkout(request):
-    cart_items = Generator.objects.filter(product_in_user_cart=request.user)
+def user_checkout(request, user_id):
+    list_of_cart_items = CartItem.objects.filter(user=User.objects.get(id=request.user.id))
     cart_total = 0
-    for item in cart_items:
-        price = Price.objects.filter(product=item)
-        for object in price:
-          cart_total += object.price * item.product_count_in_user_cart
+    cart_items = []
+    list_of_item_quantities = []
+    for item in list_of_cart_items:
+      list_of_item_quantities.append(item.quantity)
+      price = Price.objects.get(product=item.product)
+      current_item_to_append = getModel(item.product.product_category).objects.get(id=item.product.id)
+      # quick little hack to add our per item total and quantity to the current
+      # list's item so that we can easily access these items on the cart page
+      current_item_to_append.quantity = item.quantity
+      current_item_to_append.cart_item_total = price.price * item.quantity
+      current_item_to_append.price = price.price
+      cart_items.append(current_item_to_append)
+      cart_total += price.price * item.quantity
+      print(current_item_to_append.quantity)
     return render(request, 'ecommerce/checkout_page.html', {'cart_items' : cart_items,
-    'cart_total' : cart_total / 100})
+    'cart_total' : cart_total / 100, 'quantities' : list_of_item_quantities})
 
 class CreateCheckoutSessionView(View):
   def post(self, request, *args, **kwargs):
-    cart_items = Generator.objects.filter(product_in_user_cart=request.user)
+    list_of_cart_items = CartItem.objects.filter(user=User.objects.get(id=request.user.id))
     list_of_line_items = []
-    for item in cart_items:
-      price_query_set = Price.objects.filter(product=item)
-      for unit_amount in price_query_set:
-        price = unit_amount.stripe_price_id
-      quantity = item.product_count_in_user_cart
+    for item in list_of_cart_items:
+      
       list_of_line_items.append(
         {
-          'price' : price,
-          'quantity' : quantity
+          'price' : Price.objects.get(product=item.product).stripe_price_id,
+          'quantity' : item.quantity
         }
       )
     # price = Generator.objects.get(id=1)

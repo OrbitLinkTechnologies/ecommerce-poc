@@ -2,10 +2,11 @@ import jsonfield
 from django.db import models
 from django.contrib.auth.models import User
 import django_filters
+from django.contrib.auth import get_user_model
+from polymorphic.models import PolymorphicModel
 
 # this is our base product model, which ALL products will have values for
-class BaseProduct(models.Model):
-    product_in_user_cart = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+class BaseProduct(PolymorphicModel):
     product_name = models.CharField(max_length=255)
     product_category_choices = (
         ('generator', 'generator'),
@@ -72,7 +73,6 @@ class BaseProduct(models.Model):
     product_created_at = models.DateTimeField(auto_now_add=True)
     product_updated_at = models.DateTimeField(auto_now=True)
     stripe_product_id = models.CharField(max_length=100, blank=True, null=True)
-    product_count_in_user_cart = models.IntegerField(default=0)
 
     # we use meta inner class to set abstract to true; this means that when we run makemigrations
     # and migrate, django will not add this abstract class to the database
@@ -85,7 +85,7 @@ class BaseProduct(models.Model):
     # our existing overriding string method; it is only used by django internally
     # and doesn't affect our database schema
     def __str__(self):
-        return self.product_name + '_' + self.product_SKU
+        return self.product_name + '_' + self.product_SKU + '_pk=' + str(self.pk)
 
 class Generator(BaseProduct):
     # we may to need make this an enum with values: portable, standby, inverter
@@ -110,7 +110,7 @@ class Generator(BaseProduct):
     # this will set our object name within django admin; dunder methods are overriding methods
     
     def __str__(self):
-        return self.product_name + '_' + self.product_SKU
+        return self.product_name + '_' + self.product_SKU + '_pk=' + str(self.pk)
 
 class GeneratorFilter(django_filters.FilterSet):
   class Meta:
@@ -134,7 +134,7 @@ class GameConsole(BaseProduct):
   game_console_classification_type = models.CharField(max_length=64, choices=game_console_classification_type_choices)
 
   def __str__(self):
-        return self.product_name + '_' + self.product_SKU
+        return self.product_name + '_' + self.product_SKU + '_pk=' + str(self.pk)
 
 class GameConsoleFilter(django_filters.FilterSet):
   class Meta:
@@ -161,7 +161,7 @@ class HomeDecor(BaseProduct):
   home_decor_classification_type = models.CharField(max_length=64, choices=home_decor_classification_type_choices)
 
   def __str__(self):
-        return self.product_name + '_' + self.product_SKU
+        return self.product_name + '_' + self.product_SKU + '_pk=' + str(self.pk)
 
 class HomeDecorFilter(django_filters.FilterSet):
   class Meta:
@@ -211,7 +211,6 @@ class Customer(models.Model):
     # i.e., Generator IS a Product, Scooter IS a Product, etc
     # I would also like to re-name all foreign key references according
     # to the following: name_here_FK
-    product_count_FK = models.ForeignKey(Generator, on_delete=models.CASCADE, default=None)
 
 # our delivery model is going to be associated with our customer model only for now
 # it is a many to one relationship where we need a foreign key restraint in the table
@@ -255,3 +254,14 @@ class Price(models.Model):
 
   def get_display_price(self):
     return "{0:.2f}".format(self.price / 100)'''
+
+class CartItem(models.Model):
+  datetime_added = models.DateTimeField(auto_now_add=True)
+  datetime_updated = models.DateTimeField(auto_now=True)
+  quantity = models.IntegerField(default=1)
+  product = models.ForeignKey(BaseProduct, unique=True, on_delete=models.PROTECT)
+  user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+  orderDone = models.BooleanField(default=False)
+
+  def __str__(self):
+        return self.user.get_username() + '_' + self.product.product_name + self.product.product_SKU

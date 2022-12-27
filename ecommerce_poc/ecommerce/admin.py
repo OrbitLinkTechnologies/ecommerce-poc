@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import ProductReview, ProductQuestion, Generator, Customer, Price, BaseProduct, Generator, HomeDecor
+from .models import GameConsole, ProductReview, ProductQuestion, Generator, Customer, Price, BaseProduct, Generator, HomeDecor, CartItem
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import User
 
@@ -36,3 +36,7 @@ admin.site.register(Generator, ProductAdmin)
 admin.site.register(BaseProduct, ProductAdmin)
 
 admin.site.register(HomeDecor, ProductAdmin)
+
+admin.site.register(CartItem)
+
+admin.site.register(GameConsole, ProductAdmin)

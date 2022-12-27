@@ -216,7 +216,7 @@
           {% if user.is_authenticated %}
           <li class="list-group-item">User: {{ user.get_username }}</li>
           <li class="list-group-item">
-            <a href="/ecomm/cart"
+            <a href="/ecomm/cart/{{ user.id }}/"
               >Cart<i class="fa-solid fa-cart-arrow-down ms-2"></i
             ></a>
           </li>
