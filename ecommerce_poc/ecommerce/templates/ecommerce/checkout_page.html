@@ -22,18 +22,19 @@
     </style>
     <div class="row">
       <div class="col-lg-6 pe-lg-4 mb-5 mb-lg-0">
-        <h5 class="mb-4">Your information</h5>
-        <form>
+        <h5 class="mb-4">Delivery information</h5>
+        <form action="/ecomm/create-checkout-session/" method="POST">
+          {% csrf_token %}
           <div class="row">
             <div class="col-md-6">
               <div class="form-outline mb-4">
-                <input type="text" id="input0x" class="form-control" />
+                <input type="text" id="input0x" class="form-control" value="{{ user.first_name }}" name="first_name"/>
                 <label class="form-label" for="input0x">First name</label>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-outline mb-4">
-                <input type="text" id="input1x" class="form-control" />
+                <input type="text" id="input1x" class="form-control" value="{{ user.last_name }}" name="last_name"/>
                 <label class="form-label" for="input1x">Last name</label>
               </div>
             </div>
@@ -41,13 +42,13 @@
           <div class="row">
             <div class="col-md-6">
               <div class="form-outline mb-4">
-                <input type="email" id="input2x" class="form-control" />
+                <input type="email" id="input2x" class="form-control" value="{{ user.username }}" name="email"/>
                 <label class="form-label" for="input2x">Email</label>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-outline mb-4">
-                <input type="tel" id="input3x" class="form-control" />
+                <input type="tel" id="input3x" class="form-control" name="phone_number"/>
                 <label class="form-label" for="input3x">Phone</label>
               </div>
             </div>
@@ -55,34 +56,40 @@
           <div class="row">
             <div class="col-md-6">
               <div class="form-outline mb-4">
-                <input type="text" id="input4x" class="form-control" />
+                <input type="text" id="input4x" class="form-control" name="address"/>
                 <label class="form-label" for="input4x">Address</label>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-outline mb-4">
-                <input type="text" id="input5x" class="form-control" />
-                <label class="form-label" for="input5x">Apartment, suit, etc.</label>
+                <input type="text" id="input5x" class="form-control" name="address_extended"/>
+                <label class="form-label" for="input5x">Apartment, suite, etc.</label>
               </div>
             </div>
           </div>
           <div class="row">
             <div class="col-md-6">
               <div class="form-outline mb-4">
-                <input type="text" id="input6x" class="form-control" />
+                <input type="text" id="input6x" class="form-control" name="city"/>
                 <label class="form-label" for="input6x">City</label>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-outline mb-4">
-                <input type="text" id="input7x" class="form-control" />
+                <input type="text" id="input7x" class="form-control" name="postal_code"/>
                 <label class="form-label" for="input7x">Postal code</label>
               </div>
             </div>
           </div>
-          <div class="row mb-5">
-            <div class="col-12">
-              <select class="select">
+          <div class="row mb-5 pb-4 mb-4 border-bottom border-2" style="border-color: hsl(0,0%, 96%) !important;">
+            <div class="col-md-6">
+              <div class="form-outline mb-4">
+                <input type="text" id="input8x" class="form-control" name="state_or_province"/>
+                <label class="form-label" for="input8x">State, province, etc.</label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <select class="select" name="country">
                 <option value="1">Italy</option>
                 <option value="2">Germany</option>
                 <option value="3">France</option>
@@ -93,12 +100,7 @@
               <label class="form-label select-label">Country</label>
             </div>
           </div>
-        </form>
-        <h5 class="mb-4">Delivery</h5>
-        <div class="form-check pb-4 mb-4 border-bottom border-2" style="border-color: hsl(0,0%, 96%) !important;">
-          <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked0x" checked />
-          <label class="form-check-label" for="flexCheckChecked0x">Same address as above</label>
-        </div>
+
         <div class="mb-5">
           <div class="form-check mb-3">
             <input class="form-check-input" type="radio" name="flexRadioDefault0X" id="radio0x" checked />
@@ -130,7 +132,7 @@
         </div>
         <h5 class="mb-4">Payment</h5>
         <div class="accordion accordion-flush mb-4" id="accordionFlushExampleX0">
-          <!--remove card collection details-->
+
           <div class="accordion-item border-0">
             <div class="form-check mb-2">
               <input class="form-check-input collapsed" type="radio" name="flexRadioDefault6x0"
@@ -139,35 +141,12 @@
               <label class="form-check-label" for="flexRadioDefault17x0">
                 <div>
                   <p class="mb-1">Card</p>
-                  <p class="text-muted mb-0">Credit or debit card</p>
                 </div>
               </label>
             </div>
-            <div id="flush-collapseOnex0" class="accordion-collapse collapse" aria-labelledby="flush-headingOnex0"
-              data-mdb-parent="#accordionFlushExampleX0">
-              <div class="accordion-body">
-                <div class="form-outline mb-4">
-                  <input type="text" id="cardNuumber1u" class="form-control" />
-                  <label class="form-label" for="cardNuumber1u">Card number</label>
-                </div>
-                <div class="row">
-                  <div class="col-md-8">
-                    <div class="form-outline mb-4">
-                      <input type="text" id="cardExp2u5" class="form-control" />
-                      <label class="form-label" for="cardExp2u5">Expiration date (MM/YY)</label>
-                    </div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="form-outline mb-4">
-                      <input type="text" id="cardCVC2u5" class="form-control" />
-                      <label class="form-label" for="cardCVC2u5">CVC</label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
-          <!--end remove card collection details-->
+
+          <!-- start paypal payment -->
           <div class="accordion-item">
             <div class="form-check">
               <input class="form-check-input collapsed" type="radio" name="flexRadioDefault6x0"
@@ -175,17 +154,11 @@
                 aria-expanded="false" aria-controls="flush-collapseTwox0" />
               <label class="form-check-label" for="flexRadioDefault16x0"> PayPal </label>
             </div>
-            <div id="flush-collapseTwox0" class="accordion-collapse collapse" aria-labelledby="flush-headingTwox0"
-              data-mdb-parent="#accordionFlushExampleX0">
-              <div class="accordion-body">
-                <p class="mb-0">PayPal External Payment Method</p>
-              </div>
-            </div>
           </div>
+          <!-- end paypal payment -->
+          
         </div>
         <div class="pt-1 mb-3">
-          <form action="/ecomm/create-checkout-session/" method="POST">
-            {% csrf_token %}
           <button type="submit" class="btn btn-dark btn-lg px-5">Pay order</button>
           </form>
           <p class="small text-muted mt-4 mb-0">By clicking "Proceed to PayPal" I confirm I have read <a
@@ -214,8 +187,8 @@
               <p class="mb-0">Quantity: <span>{{ item.quantity }}</span></p>
             </div>
             <div class="d-flex flex-column ms-3">
-              <p class="mb-0"><a href="#!">Edit</a><span class="mx-2" style="color: hsl(0,0%,90%);">|</span><a
-                  href="#!">Remove</a></p>
+              <p class="mb-0"><a href="/ecomm/cart/">Edit</a><span class="mx-2" style="color: hsl(0,0%,90%);">|</span><a
+                  href="/ecomm/remove_item_from_cart/{{ item.id }}/?current_view=user_checkout">Remove</a></p>
               <p class="mt-auto mb-0">${{ item.cart_item_total|divide:100 }}</p>
             </div>
           </div>

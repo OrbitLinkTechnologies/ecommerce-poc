@@ -177,7 +177,7 @@
                      ></i>
                 </li>
               </ul>
-              <a href=""><strong class="me-2">4/5</strong>(2 reviews)</a>
+              <a href=""><strong class="me-2">4.5/5</strong>(2 reviews)</a>
             </div>
   
             <h5 class="mb-3">
@@ -231,6 +231,7 @@
                            class="form-control"
                            value="1"
                            min="1"
+                           name="item_page_quantity_to_add"
                            />
                     <label class="form-label" for="typeNumber"
                            >Quantity</label
@@ -239,16 +240,16 @@
                 </div>
                 <!-- Size -->
                 <!-- this is just a placeholder for now, obviously a particular item will have only one fuel type -->
-                <div class="col-md-6 mb-4">
+                <!-- <div class="col-md-6 mb-4">
                   <select class="select">
                     <option value="1">Gasoline</option>
                     <option value="2">Electric</option>
                   </select>
                   <label class="form-label select-label">Fuel Type</label>
-                </div>
+                </div> -->
                 <!-- we need to add color choice to our product model, so this is just a placeholder for now -->
                 <!-- Colors -->
-                <div class="col-md-6 mb-4">
+                <!-- <div class="col-md-6 mb-4">
                   <div class="">
                     <input
                            type="radio"
@@ -343,16 +344,16 @@
                            for="color-info"
                            ></label>
                   </div>
-                </div>
+                </div> -->
               </div>
   
               <input
                       type="submit"
                       class="btn btn-primary btn-rounded me-2"
                       value="Add to cart"
-                      >
-                <i class="fas fa-cart-plus me-2"></i>
-              <button
+                      /> <!-- added the self closing tag here; originally it was just a <input> tag instead of <input/> -->
+              <!-- commented this out for simplicity, can consider implementing a favoriting feature in the future -->
+              <!-- <button
                       href="#!"
                       type="button"
                       class="btn btn-danger btn-floating"
@@ -360,7 +361,7 @@
                       title="Add to wishlist"
                       >
                 <i class="fas fa-heart"></i>
-              </button>
+              </button> -->
             </form>
           </div>
           <!-- Details -->

@@ -2,13 +2,14 @@ from django.urls import path
 from . import views
 from .views import (
   CreateCheckoutSessionView,
-  SuccessView,
   CancelView
 )
 
 app_name = 'ecommerce'
 
 urlpatterns = [
+    path('send_receipt/', views.send_receipt, name='send_receipt'),
+    path('collect_delivery_info/', views.collect_delivery_info, name='collect_delivery_info'),
     path('contact_us_page_success/', views.contact_us_page_success, name='send_customer_question'),
     path('send_customer_question/', views.send_customer_question, name='send_customer_question'),
     path('contact_us/', views.contact_us_page, name='contact_us_page'),
@@ -22,7 +23,7 @@ urlpatterns = [
     path('register_done/', views.register_done, name='register_done'),
     path('user_checkout/', views.user_checkout, name='user_checkout'),
     path('create-checkout-session/', CreateCheckoutSessionView.as_view(), name='create-checkout-session'),
-    path('payment_success/', SuccessView.as_view(), name='payment_success'),
+    path('payment_success/', views.successful_payment, name='payment_success'),
     path('payment_cancel/', CancelView.as_view(), name='payment_cancel'),
     path('filter_results_page/<str:category>/', views.filter_results_page, name='filter_results_page'),
 ]

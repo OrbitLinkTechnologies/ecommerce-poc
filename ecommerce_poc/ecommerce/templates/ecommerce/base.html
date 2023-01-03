@@ -6,8 +6,7 @@
     <meta charset="utf-8" />
     <meta
       name="viewport"
-      content="width=device-width, initial-scale=1"
-    />
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
 
     <!-- Font Awesome -->
     <link
@@ -31,8 +30,9 @@
       href="{% static 'md_bstrap/plugins/css/all.min.css' %}"
     />
 
-    <!-- we need to be able to asynchronously update our product category results page -->
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script> 
+    <!-- make the page viewport responsive -->
+    <link rel="stylesheet" href="{% static 'md_bstrap/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'md_bstrap/css/bootstrap-responsive.css' %}">
 
     <!-- currently only need this section to make a horizontally expanding
           dropdown menu -->
@@ -44,127 +44,78 @@
 
     <title>Sauer Websites!</title>
   </head>
+  <!-- we changed the background color here, so that our site was easier to look at during development -->
   <body class="p-3 bg-secondary bg-gradient text-white">
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-9">
-      <!-- Container wrapper -->
-      <div class="container-fluid">
-        <!-- Toggle button -->
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-mdb-toggle="collapse"
-          data-mdb-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <i class="fas fa-bars"></i>
-        </button>
+    
+    <!--it seems like 14 is the largest space coefficient, at least for margin-bottom -->
+    <div class="mb-14">
+      <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <!-- Container wrapper -->
+  <div class="container-fluid">
+    <!-- Toggle button -->
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-mdb-toggle="collapse"
+      data-mdb-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <i class="fas fa-bars"></i>
+    </button>
 
-        <!-- Collapsible wrapper -->
-        <div
-          class="collapse navbar-collapse"
-          id="navbarSupportedContent"
-        >
-          <!-- Navbar brand -->
-          <a
-            class="navbar-brand mt-2 mt-lg-0"
-            href="#"
-          >
-            <img
-              src="{% static 'images/company_logo_ex.png' %}"
-              height="120"
-              alt="MDB Logo"
-              loading="lazy"
-            />
-          </a>
-          <!-- Left links -->
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a
-                class="nav-link"
-                href="/ecomm/about"
-              >
-                <ul class="list-group text-black">
-                  <li class="list-group-item">About</li>
-                </ul>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a
-                class="nav-link"
-                href="/ecomm/contact_us"
-              >
-                <ul class="list-group text-black">
-                  <li class="list-group-item">Contact Us</li>
-                </ul>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a
-                class="nav-link"
-                href="/ecomm/filter_results_page/generator"
-              >
-                <ul class="list-group text-black">
-                  <li class="list-group-item">Generators</li>
-                </ul>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a
-                class="nav-link"
-                href="/ecomm/filter_results_page/game_console"
-              >
-                <ul class="list-group text-black">
-                  <li class="list-group-item">Game Consoles</li>
-                </ul>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a
-                class="nav-link"
-                href="/ecomm/filter_results_page/home_decor"
-              >
-                <ul class="list-group text-black">
-                  <li class="list-group-item">Home Decor</li>
-                </ul>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a
-                class="nav-link"
-                href="/ecomm/filter_results_page/sports_nutrition"
-              >
-                <ul class="list-group text-black">
-                  <li class="list-group-item">Sports Nutrition</li>
-                </ul>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a
-                class="nav-link"
-                href="/ecomm/filter_results_page/kitchen_and_home_appliance"
-              >
-                <ul class="list-group text-black">
-                  <li class="list-group-item">Kitchen & Home Appliances</li>
-                </ul>
-              </a>
-            </li>
-          </ul>
-          <!-- Left links -->
-        </div>
-        <!-- Collapsible wrapper -->
+    <!-- Collapsible wrapper -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <!-- Navbar brand -->
+      <a class="navbar-brand mt-2 mt-lg-0" href="https://tscompsci.com">
+        <img
+          src="{% static 'images/company_logo_ex.png' %}"
+          height="70"
+          width="180"
+          alt="Sauer Websites"
+          loading="lazy"
+        />
+      </a>
+      <!-- Left links -->
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" href="/ecomm/filter_results_page/generator">Generators</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/ecomm/filter_results_page/game_console">Game Consoles</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/ecomm/filter_results_page/home_decor">Home Decor</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/ecomm/filter_results_page/sports_nutrition">Sports Nutrition</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/ecomm/filter_results_page/kitchen_and_home_appliance">Kitchen And Home Appliances</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/ecomm/about">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/ecomm/contact_us">Contact Us</a>
+        </li>
+      </ul>
+      <!-- Left links -->
+    </div>
+    <!-- Collapsible wrapper -->
 
-        <!-- Right elements -->
-        <!--<div class="d-flex align-items-center">
-      
-      <a class="text-reset me-3" href="#">
-        <i class="fas fa-shopping-cart"></i>
+    <!-- Right elements -->
+    <div class="d-flex align-items-center">
+      <!-- Icon -->
+      <a class="text-reset me-3" href="/ecomm/cart/">
+        <i class="fas fa-shopping-cart fa-3x"></i>
       </a>
 
-      
-      <div class="dropdown">
+      <!-- Notifications -->
+      <!-- commenting out for now, might use again in the future -->
+      <!-- <div class="dropdown">
         <a
           class="text-reset me-3 dropdown-toggle hidden-arrow"
           href="#"
@@ -190,8 +141,9 @@
             <a class="dropdown-item" href="#">Something else here</a>
           </li>
         </ul>
-      </div>
-      
+      </div> -->
+
+      <!-- Avatar -->
       <div class="dropdown">
         <a
           class="dropdown-toggle d-flex align-items-center hidden-arrow"
@@ -201,11 +153,15 @@
           data-mdb-toggle="dropdown"
           aria-expanded="false"
         >
+          <!-- we want to show the default profile pic if someone isn't logged in
+               and show a different default picture if they are logged in OR
+               they have uploaded an image of themself -->
           <img
-            src="{% static 'images/factory-pure-logo.avif' %}"
+            src="{% static 'images/profile_1.webp' %}"
             class="rounded-circle"
-            height="25"
-            alt="Black and White Portrait of a Man"
+            height="45"
+            width="60"
+            alt="Default User Profile Picture"
             loading="lazy"
           />
         </a>
@@ -213,50 +169,39 @@
           class="dropdown-menu dropdown-menu-end"
           aria-labelledby="navbarDropdownMenuAvatar"
         >
+        {% if user.is_authenticated %}
+        <li>
+          <a class="dropdown-item" href="{% url 'logout' %}?next={{ request.path }}">Logout</a>
+        </li>
+        {% else %}
+        <li>
+          <a class="dropdown-item" href="{% url 'login' %}?next={{ request.path }}">Login</a>
+        </li>
+        {% endif %}
           <li>
             <a class="dropdown-item" href="#">My profile</a>
           </li>
           <li>
             <a class="dropdown-item" href="#">Settings</a>
           </li>
-          <li>
-            <a class="dropdown-item" href="#">Logout</a>
-          </li>
         </ul>
       </div>
-    </div>-->
-        <!-- Right elements -->
-        <div class="alert alert-dismissible fade show me-3 mt-1" role="alert" data-mdb-color="info">
-          We Always monitor our communications!!! <strong>Email, Text, or Call:</strong><br>
-          <i class="fa-solid fa-phone-volume me-2"></i><strong>(888) 888-8888 (Business Hours)</strong><br>
-          <i class="fa-solid fa-phone-volume me-2"></i><strong>(888) 888-8888 (After Hours)</strong>
-          <button type="button" class="btn-close" data-mdb-dismiss="alert" aria-label="Close"></button>
-        </div>
-        <ul class="list-group text-black">
-          {% if user.is_authenticated %}
-          <li class="list-group-item">User: {{ user.get_username }}</li>
-          <li class="list-group-item">
-            <a href="/ecomm/cart/"
-              >Cart<i class="fa-solid fa-cart-arrow-down ms-2"></i
-            ></a>
-          </li>
-          <li class="list-group-item">
-            <a href="{% url 'logout' %}?next={{ request.path }}">Logout</a>
-          </li>
-          {% else %}
-          <li class="list-group-item">
-            <a href="{% url 'login' %}?next={{ request.path }}">Login</a>
-          </li>
-          {% endif %}
-        </ul>
-
-        <!-- Right elements -->
-      </div>
-      <!-- Container wrapper -->
-    </nav>
-    <!-- Navbar -->
+    </div>
+    <!-- Right elements -->
+  </div>
+  <!-- Container wrapper -->
+</nav>
+<!-- Navbar -->
+    </div>
 
     {% block content %} {% endblock content %}
+
+    <!-- this seems to be working for now as mb-14 is the largest inherent spacing I can find,
+         however, I'm not sure if the spacing below the navbar and above the footer are
+         the same for each page. It is possible that I will have to comb through each page
+         to verify, because I know I have a lot of littered margin tags in various elements,
+         that could be messing up my perception. -->
+    <div class="mb-14"></div>
 
     <!-- Footer -->
     <footer class="text-center text-lg-start bg-light text-muted">
@@ -266,7 +211,7 @@
       >
         <!-- Left -->
         <div class="me-5 d-none d-lg-block">
-          <span>Let Sauer Websites make an Impact on Your Business:</span>
+          <h6 class="text-uppercase fw-bold">Let Sauer Websites make an Impact on Your Business!</h6>
         </div>
         <!-- Left -->
 
@@ -656,6 +601,14 @@
       <!-- Copyright -->
     </footer>
     <!-- Footer -->
+
+    <!--Start of Tawk.to Script-->
+    <script type="text/javascript" src="{% static 'js/tawk_to_chat_bot.js' %}">
+    </script>
+    <!--End of Tawk.to Script-->
+
+    <!-- registration form validation -->
+    <script type="text/javascript" src="{% static 'js/registration_form_needs_validation.js' %}"></script>
 
     <!-- MDB ESSENTIAL -->
     <script

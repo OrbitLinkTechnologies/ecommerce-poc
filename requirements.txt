@@ -16,3 +16,6 @@ django-environ
 django-filter
 sendgrid
 django-polymorphic
+wagtail
+taggit
+modelcluster

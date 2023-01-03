@@ -171,11 +171,16 @@
         <!-- start generator query condition -->
         {% if product.product_category == 'generator' %}
         <div class="col-sm-3 mb-5">
-            <a href="/ecomm/item/{{ product.id }}/{{ category }}/"><img src="{{ product.product_photos }}" style="height: 260px; width: 260px">
+          <div>
+            <!-- notice how we used img-fluid below, this allows the image to adjust as we change the size of the viewport dynamically
+                 we need to look at doing this in our navbar as well, the elements within it are not very responsive -->
+            <a href="/ecomm/item/{{ product.id }}/{{ category }}/"><img class="img-fluid" src="{{ product.product_photos }}" style="background-color: transparent; height: 260px; width: 260px">
             <br>
-            {{ product.product_name }} <i class="fa-solid fa-grip-lines-vertical" style="color: green;"></i> {{ product.generator_classification_type }} <i class="fa-solid fa-grip-lines-vertical" style="color: green;"></i> {{ product.generator_fuel_type }} <i class="fa-solid fa-grip-lines-vertical" style="color: green;"></i> {{ product.product_brand }} <i class="fa-solid fa-grip-lines-vertical" style="color: green;"></i> {{ product.generator_continuous_wattage_value }} <i class="fa-solid fa-w" style="color: green;"></i>
-            ${{ product.price_set.get.price|divide:100 }}</a> <!-- notice how we access the related name field (foreign key, which is price) by using
+            {{ product.product_name }}    {{ product.generator_classification_type }}    {{ product.generator_fuel_type }}    {{ product.product_brand }}    {{ product.generator_continuous_wattage_value }}
+            <div class="w-100 offset-md-3"><h6 class="text-uppercase fw-bold"><mark>${{ product.price_set.get.price|divide:100 }}</mark></h6></div>
+            </a> <!-- notice how we access the related name field (foreign key, which is price) by using
             the Model Name, in this case "Price" with _set and using .get to grab the price field -->
+          </div>
         </div>
         {% endif %}
         <!-- end generator query condition -->
@@ -183,10 +188,12 @@
         <!-- start game_console query condition -->
         {% if product.product_category == 'game_console' %}
         <div class="col-sm-3 mb-5">
-            <a href="/ecomm/item/{{ product.id }}/{{ category }}/"><img src="{{ product.product_photos }}" style="height: 260px; width: 260px">
+            <a href="/ecomm/item/{{ product.id }}/{{ category }}/"><img src="{{ product.product_photos }}" style="height: 260px; width: 260px"> <!-- it is possible to use "mix-blend-mode: multiply;" on the style tag for the image,
+            however, it only works for images with a white-background and there are some caveats; read about it in this SO thread: https://stackoverflow.com/questions/12662759/make-white-background-of-image-transparent-in-css -->
             <br>
-            {{ product.product_name }} <i class="fa-solid fa-grip-lines-vertical" style="color: green;"></i> {{ product.game_console_classification_type }} <i class="fa-solid fa-grip-lines-vertical" style="color: green;"></i> {{ product.product_brand }} <i class="fa-solid fa-w" style="color: green;"></i>
-            ${{ product.price_set.get.price|divide:100 }}</a> <!-- notice how we access the related name field (foreign key, which is price) by using
+            {{ product.product_name }}    {{ product.game_console_classification_type }}    {{ product.product_brand }}
+            <div class="w-100 offset-md-3"><h6 class="text-uppercase fw-bold"><mark>${{ product.price_set.get.price|divide:100 }}</mark></h6></div>
+            </a> <!-- notice how we access the related name field (foreign key, which is price) by using
             the Model Name, in this case "Price" with _set and using .get to grab the price field -->
         </div>
         {% endif %}
@@ -197,8 +204,9 @@
         <div class="col-sm-3 mb-5">
             <a href="/ecomm/item/{{ product.id }}/{{ category }}/"><img src="{{ product.product_photos }}" style="height: 260px; width: 260px">
             <br>
-            {{ product.product_name }} <i class="fa-solid fa-grip-lines-vertical" style="color: green;"></i> {{ product.home_decor_classification_type }} <i class="fa-solid fa-grip-lines-vertical" style="color: green;"></i> {{ product.product_brand }} <i class="fa-solid fa-w" style="color: green;"></i>
-            ${{ product.price_set.get.price|divide:100 }}</a> <!-- notice how we access the related name field (foreign key, which is price) by using
+            {{ product.product_name }}    {{ product.home_decor_classification_type }}    {{ product.product_brand }}
+            <div class="w-100 offset-md-3"><h6 class="text-uppercase fw-bold"><mark>${{ product.price_set.get.price|divide:100 }}</mark></h6></div>
+            </a> <!-- notice how we access the related name field (foreign key, which is price) by using
             the Model Name, in this case "Price" with _set and using .get to grab the price field -->
         </div>
         {% endif %}
@@ -209,8 +217,9 @@
          <div class="col-sm-3 mb-5">
              <a href="/ecomm/item/{{ product.id }}/{{ category }}/"><img src="{{ product.product_photos }}" style="height: 260px; width: 260px">
              <br>
-             {{ product.product_name }} <i class="fa-solid fa-grip-lines-vertical" style="color: green;"></i> {{ product.sporsts_nutrition_classification_type }} <i class="fa-solid fa-grip-lines-vertical" style="color: green;"></i> {{ product.product_brand }} <i class="fa-solid fa-w" style="color: green;"></i>
-             ${{ product.price_set.get.price|divide:100 }}</a> <!-- notice how we access the related name field (foreign key, which is price) by using
+             {{ product.product_name }}    {{ product.sporsts_nutrition_classification_type }}    {{ product.product_brand }}
+             <div class="w-100 offset-md-3"><h6 class="text-uppercase fw-bold"><mark>${{ product.price_set.get.price|divide:100 }}</mark></h6></div>
+             </a> <!-- notice how we access the related name field (foreign key, which is price) by using
              the Model Name, in this case "Price" with _set and using .get to grab the price field -->
          </div>
          {% endif %}
@@ -221,8 +230,9 @@
          <div class="col-sm-3 mb-5">
              <a href="/ecomm/item/{{ product.id }}/{{ category }}/"><img src="{{ product.product_photos }}" style="height: 260px; width: 260px">
              <br>
-             {{ product.product_name }} <i class="fa-solid fa-grip-lines-vertical" style="color: green;"></i> {{ product.kitchen_and_home_appliance_classification_type }} <i class="fa-solid fa-grip-lines-vertical" style="color: green;"></i> {{ product.product_brand }} <i class="fa-solid fa-w" style="color: green;"></i>
-             ${{ product.price_set.get.price|divide:100 }}</a> <!-- notice how we access the related name field (foreign key, which is price) by using
+             {{ product.product_name }}    {{ product.kitchen_and_home_appliance_classification_type }}    {{ product.product_brand }}
+             <div class="w-100 offset-md-3"><h6 class="text-uppercase fw-bold"><mark>${{ product.price_set.get.price|divide:100 }}</mark></h6></div>
+             </a> <!-- notice how we access the related name field (foreign key, which is price) by using
              the Model Name, in this case "Price" with _set and using .get to grab the price field -->
          </div>
          {% endif %}

@@ -1,11 +1,10 @@
-from django.shortcuts import render
-from ecommerce.models import KitchenAndHomeAppliance, KitchenAndHomeApplianceFilter, SportsNutrition, SportsNutritionFilter, BaseProduct, Generator, GeneratorFilter, Price, GameConsole, GameConsoleFilter, HomeDecor, HomeDecorFilter, CartItem
+from django.shortcuts import render, redirect
+from ecommerce.models import Customer, KitchenAndHomeAppliance, KitchenAndHomeApplianceFilter, SportsNutrition, SportsNutritionFilter, BaseProduct, Generator, GeneratorFilter, Price, GameConsole, GameConsoleFilter, HomeDecor, HomeDecorFilter, CartItem
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.shortcuts import redirect
 from django.views import View
-from django.http import JsonResponse
+from django.http import HttpResponse
 from decouple import config
 from django.conf import settings
 from django.views.generic import TemplateView
@@ -17,7 +16,7 @@ from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 import os
 from django.core.exceptions import ObjectDoesNotExist
-from django.contrib.contenttypes.models import ContentType
+import json
 import stripe
 stripe.api_key = config('STRIPE_SECRET_KEY')
 
@@ -442,23 +441,25 @@ def remove_item_from_cart(request, id):
         cart_item_query_set.first().delete()
     else:
       CartItem.objects.create(product=BaseProduct.objects.get(id=id), user=User.objects.get(id=request.user.id))
-    return redirect('/ecomm/cart/')
+    return redirect('/ecomm/' + request.GET.get('current_view') + '/')
 
 @login_required
 def add_item_to_cart(request, id):
     cart_item_query_set = CartItem.objects.filter(product=BaseProduct.objects.get(id=id), user=User.objects.get(id=request.user.id))
     if cart_item_query_set.exists():
-      cart_item_query_set.update(quantity=F('quantity') + 1)
+      cart_item_query_set.update(quantity=F('quantity') + request.POST.get('item_page_quantity_to_add'))
     else:
-      CartItem.objects.create(product=BaseProduct.objects.get(id=id), user=User.objects.get(id=request.user.id))
+      CartItem.objects.create(product = BaseProduct.objects.get(id=id), user = User.objects.get(id=request.user.id), quantity = request.POST.get('item_page_quantity_to_add'))
     return redirect('/ecomm/cart/')
 
 def register_new_user(request):
     username = request.POST.get('username')
     password = request.POST.get('password')
+    repeat_password = request.POST.get('repeat_password')
     first_name = request.POST.get('first_name')
     last_name = request.POST.get('last_name')
-    user = User.objects.create_user(username=username, password=password, first_name=first_name, last_name=last_name)
+    email = request.POST.get('email')
+    User.objects.create_user(username=username, email=email, password=password, first_name=first_name, last_name=last_name)
     # if we don't add the / here in front of registartion it will be treated as a relative url
     # which means that it will append the specified path parameter to the current url path
     # I had to specify ecomm, where the route "register_done" calls the
@@ -488,6 +489,18 @@ def user_checkout(request):
     return render(request, 'ecommerce/checkout_page.html', {'cart_items' : cart_items,
     'cart_total' : cart_total / 100, 'quantities' : list_of_item_quantities})
 
+@login_required
+def collect_delivery_info(request):
+  # we are going to utilize sessions here to pass along our delivery information,
+  # once the payment is processed via stripe, we will use this information to
+  # send an email to the customer, as well as store a permanent record
+  # for shipping the item to the customer, as well as compliance
+
+  # NOTE: we need to pass flow to the stripe payment processing session
+  delivery_info = request.POST
+  request.session['delivery_info'] = delivery_info
+  return redirect('/ecomm/create-checkout-session')
+
 class CreateCheckoutSessionView(View):
   def post(self, request, *args, **kwargs):
     list_of_cart_items = CartItem.objects.filter(user=User.objects.get(id=request.user.id))
@@ -500,22 +513,77 @@ class CreateCheckoutSessionView(View):
           'quantity' : item.quantity
         }
       )
-    # price = Generator.objects.get(id=1)
+
+    list_of_product_ids_and_prices = []
+    for item in list_of_cart_items:
+      
+      list_of_product_ids_and_prices.append(
+        {
+          'product' : item.product.stripe_product_id,
+          'price' : Price.objects.get(product=item.product).price * item.quantity
+        }
+      )
     # the following domain is just a placeholder
     domain = 'futuredomain.com'
     if settings.DEBUG:
       domain = 'http://127.0.0.1:8000'
     checkout_session = stripe.checkout.Session.create(
-      payment_method_types=['card'],
-      line_items=list_of_line_items,
+      expand = ['line_items'], # this is supposed to give us access to line
+      # items in the response of this checkout session, but it doesn't persist
+      # after we redirect to another url such as below
+      payment_method_types = ['card'],
+      invoice_creation = { "enabled" : True },
+      line_items = list_of_line_items,
       mode = 'payment',
-      success_url = domain + '/ecomm/payment_success/',
+      success_url = domain + '/ecomm/payment_success/?session_id={CHECKOUT_SESSION_ID}&id=' + str(request.user.id),
       cancel_url = domain + '/ecomm/payment_cancel/'
     )
     return redirect(checkout_session.url)
 
-class SuccessView(TemplateView):
-  template_name = 'payment_success.html'
+def successful_payment(request):
+
+  # an asynchronous webhook happens around this point in our payment
+  # flow that sends an email to our customer. We still need to figure
+  # out an ERP (enterprise resource planning) integration for our client
+  # to be able to update their resources accordingly.
+  # NOTE: This needs to happen inside the webhook handling on our server
+  # to avoid any race conditions
+
+  # we aren't currently using the session_id get parameter, but left for future reference
+
+  # notice how we use user_id, since cart item excepts to be passed a User object,
+  # we can override this by the _id and specifying the id of the User
+  CartItem.objects.filter(user_id = request.GET.get('id')).delete()
+
+  return render(request, 'payment_success.html')
+
+@csrf_exempt
+def send_receipt(request):
+  payload = request.body
+  event = None
+
+  try:
+    event = stripe.Event.construct_from(
+      json.loads(payload), stripe.api_key
+    )
+  except ValueError as e:
+    # Invalid payload
+    return HttpResponse(status=400)
+
+  # Handle the event
+  if event.type == 'invoice.payment_succeeded':
+
+    invoice_item = event.data.object # contains a stripe.Invoice
+    send_customer_invoice(request, invoice_item)
+
+    # we need to delete the item from our user's cart,
+    # I feel like the best way to do that is here, because of race conditions,
+    # but currently this approach is not working
+
+  else:
+    pass
+
+  return HttpResponse(status=200)
 
 class CancelView(TemplateView):
   template_name = 'payment_cancel.html'
@@ -551,3 +619,24 @@ def contact_us_page_success(request):
   return render(request, 'ecommerce/contact_us_page_success.html', { 
     'email_from' : 'Travis\' Primary Contact Email'
     })
+
+def send_customer_invoice(request, invoice_item):
+  send_mail = Mail(
+    from_email = os.environ.get("FROM_EMAIL"),
+    to_emails = invoice_item.customer_email,
+    subject = 'Receipt From Sauer Websites Purchase',
+    html_content = 'Here is your receipt for your recent purchase at Sauer Websites Ecommerce POC: '
+    + invoice_item.hosted_invoice_url + '<br><br>' +
+    'You can also download the PDF directly here: ' + invoice_item.invoice_pdf + '<br><br>' +
+    'This email is auto-generated by a webhook on my server that waits for a specific Stripe event to be triggered.' +
+    ' Please feel free to utilize an open-source vulnerability scanner such as https://virustotal.com to confirm that there are no threats.'
+  )
+  try:
+    sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+    response = sg.send(send_mail)
+    print(response.status_code)
+    print(response.body)
+    print(response.headers)
+
+  except Exception as e:
+    print(e.message)

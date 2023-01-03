@@ -44,3 +44,5 @@ admin.site.register(GameConsole, ProductAdmin)
 admin.site.register(SportsNutrition, ProductAdmin)
 
 admin.site.register(KitchenAndHomeAppliance , ProductAdmin)
+
+admin.site.register(Customer)

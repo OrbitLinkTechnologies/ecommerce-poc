@@ -194,7 +194,7 @@
                 role="tabpanel"
                 aria-labelledby="tab-register"
               >
-                <form method="post" action="/ecomm/register_new_user/">
+                <form method="post" class="registration_form_needs_validation" action="/ecomm/register_new_user/" novalidate>
                   {% csrf_token %}
                   <div class="text-center mt-4 mb-2">
                     <p>Sign up with:</p>
@@ -233,6 +233,42 @@
 
                   <p class="text-center mb-4">or:</p>
 
+                  <!-- Username input -->
+                  <div class="form-outline mb-4">
+                    <input
+                      type="text"
+                      id="registerUsername"
+                      class="form-control"
+                      name="username"
+                      required
+                    />
+                    <label
+                      class="form-label"
+                      for="registerUsername"
+                      >Username</label>
+                      <div class="valid-feedback">Looks good!</div>
+                      <div class="invalid-feedback">Please provide a username.</div>
+                  </div>
+
+                  <!-- Email input -->
+                  <!-- Email's are going to be our usernames, this is not true, we want to use usernames to prevent
+                       our user's emails being potentially exposed into the wild and used in a attack vector later on -->
+                       <div class="form-outline mb-4">
+                        <input
+                          type="email"
+                          id="registerEmail"
+                          class="form-control"
+                          name="email"
+                          required
+                        />
+                        <label
+                          class="form-label"
+                          for="registerEmail"
+                          >Email</label>
+                          <div class="valid-feedback">Looks good!</div>
+                          <div class="invalid-feedback">Please provide an email.</div>
+                      </div>
+
                   <!-- First Name input -->
                   <div class="form-outline mb-4">
                     <input
@@ -240,12 +276,14 @@
                       id="registerFirstName"
                       class="form-control"
                       name="first_name"
+                      required
                     />
                     <label
                       class="form-label"
                       for="registerFirstName"
-                      >First Name</label
-                    >
+                      >First Name</label>
+                      <div class="valid-feedback">Looks good!</div>
+                      <div class="invalid-feedback">Please provide a first name.</div>
                   </div>
 
                   <!-- Last Name input -->
@@ -255,28 +293,14 @@
                       id="registerLastName"
                       class="form-control"
                       name="last_name"
+                      required
                     />
                     <label
                       class="form-label"
                       for="registerLastName"
-                      >Last Name</label
-                    >
-                  </div>
-
-                  <!-- Email input -->
-                  <!-- Email's are going to be our usernames -->
-                  <div class="form-outline mb-4">
-                    <input
-                      type="email"
-                      id="registerEmail"
-                      class="form-control"
-                      name="username"
-                    />
-                    <label
-                      class="form-label"
-                      for="registerEmail"
-                      >Email</label
-                    >
+                      >Last Name</label>
+                      <div class="valid-feedback">Looks good!</div>
+                      <div class="invalid-feedback">Please provide a last name.</div>
                   </div>
 
                   <!-- Password input -->
@@ -286,12 +310,16 @@
                       id="registerPassword"
                       class="form-control"
                       name="password"
+                      onkeyup="check_if_passwords_match();"
+                      required
                     />
                     <label
                       class="form-label"
                       for="registerPassword"
-                      >Password</label
-                    >
+                      >Password</label>
+                      <div class="valid-feedback">Looks good!</div>
+                      <div class="invalid-feedback">Please enter a password.</div>
+                      <div id="registerPasswordMessage"></div>
                   </div>
 
                   <!-- Repeat Password input -->
@@ -300,12 +328,17 @@
                       type="password"
                       id="registerRepeatPassword"
                       class="form-control"
+                      name="repeat_password"
+                      onkeyup="check_if_passwords_match();"
+                      required
                     />
                     <label
                       class="form-label"
                       for="registerRepeatPassword"
-                      >Repeat password</label
-                    >
+                      >Repeat password</label>
+                      <div class="valid-feedback">Looks good!</div>
+                      <div class="invalid-feedback">Please enter your password a second time.</div>
+                      <div id="registerRepeatPasswordMessage"></div>
                   </div>
 
                   <!-- Checkbox -->
@@ -315,8 +348,8 @@
                       type="checkbox"
                       value=""
                       id="registerCheck"
-                      checked
                       aria-describedby="registerCheckHelpText"
+                      required
                     />
                     <label
                       class="form-check-label"
@@ -331,7 +364,7 @@
                     type="submit"
                     class="btn btn-primary btn-rounded w-100 mb-3"
                   >
-                    Sign in
+                    Sign Up
                   </button>
                 </form>
               </div>

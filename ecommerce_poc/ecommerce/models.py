@@ -245,16 +245,15 @@ class ProductQuestion(models.Model):
 
 # this is going to be a one-to-one model to extend the User model
 class Customer(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    first_name = models.CharField(max_length=128)
-    last_name = models.CharField(max_length=128)
+    user = models.OneToOneField(User, unique=True, on_delete=models.CASCADE)
     phone_number = models.CharField(max_length=14, null=True, blank=True)
     address = models.CharField(max_length=64, null=True, blank=True)
     address_extended = models.CharField(max_length=64, null=True, blank=True)
     city = models.CharField(max_length=128, null=True, blank=True)
-    postal_code = models.IntegerField()
+    postal_code = models.IntegerField(null=True, blank=True)
     country = models.CharField(max_length=128, null=True, blank=True)
     state_or_province = models.CharField(max_length=128, null=True, blank=True)
+    stripe_customer_id = models.CharField(max_length=128, null=True, blank=True)
     # we need to restructure our models, we need to do away with our abstract
     # BaseProduct model and instead go with basic inheritance;
     # i.e., Generator IS a Product, Scooter IS a Product, etc
@@ -269,6 +268,10 @@ class Delivery(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=128)
     last_name = models.CharField(max_length=128)
+    # I don't think that an email field for a delivery needs to be unique?
+    # no way that this makes sense, especially since we need to persist
+    # this data
+    email = models.CharField(max_length=128)
     phone_number = models.CharField(max_length=14, null=True, blank=True)
     address = models.CharField(max_length=64, null=True, blank=True)
     address_extended = models.CharField(max_length=64, null=True, blank=True)
@@ -299,7 +302,7 @@ class CartItem(models.Model):
   datetime_added = models.DateTimeField(auto_now_add=True)
   datetime_updated = models.DateTimeField(auto_now=True)
   quantity = models.IntegerField(default=1)
-  product = models.OneToOneField(BaseProduct, unique=True, on_delete=models.PROTECT)
+  product = models.ForeignKey(BaseProduct, unique=False, on_delete=models.PROTECT)
   user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
   orderDone = models.BooleanField(default=False)
 
