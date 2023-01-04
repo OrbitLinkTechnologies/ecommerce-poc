@@ -29,13 +29,20 @@
         <a class="nav-link" id="ex-with-icons-tab-6" data-mdb-toggle="tab" href="#ex-with-icons-tabs-6" role="tab"
           aria-controls="ex-with-icons-tabs-6" aria-selected="false"><i class="fa-solid fa-star fa-fw me-2"></i>Reviews</a>
       </li>
+      <li class="nav-item" role="presentation">
+        <a class="nav-link" id="ex-with-icons-tab-7" data-mdb-toggle="tab" href="#ex-with-icons-tabs-7" role="tab"
+          aria-controls="ex-with-icons-tabs-7" aria-selected="false"><i class="fa-regular fa-fw me-2 fa-circle-question"></i>Questions</a>
+      </li>
   </ul>
   <!-- Tabs navs -->
   
   <!-- Tabs content -->
   <div class="tab-content" id="ex-with-icons-content">
     <div class="tab-pane fade show active" id="ex-with-icons-tabs-1" role="tabpanel" aria-labelledby="ex-with-icons-tab-1">
-        {% for item in item_set %}
+      {% for object in build_variables %}  
+      {% for key, value in object.items %}
+      {% if key == 'item_set'%}
+      {% for item in value %}
       <!-- Container for demo purpose -->
 <div class="container my-5 py-5">
 
@@ -186,10 +193,7 @@
             </h5>
   
             <p class="text-muted">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Ratione accusantium harum repellendus illo mollitia similique
-              atque vitae repudiandae animi dolor? Rem eveniet saepe
-              deserunt aliquam. Enim incidunt quas voluptatibus perferendis.
+              {{ item.product_overview }}
             </p>
   
             <div class="table-responsive">
@@ -238,113 +242,6 @@
                       >
                   </div>
                 </div>
-                <!-- Size -->
-                <!-- this is just a placeholder for now, obviously a particular item will have only one fuel type -->
-                <!-- <div class="col-md-6 mb-4">
-                  <select class="select">
-                    <option value="1">Gasoline</option>
-                    <option value="2">Electric</option>
-                  </select>
-                  <label class="form-label select-label">Fuel Type</label>
-                </div> -->
-                <!-- we need to add color choice to our product model, so this is just a placeholder for now -->
-                <!-- Colors -->
-                <!-- <div class="col-md-6 mb-4">
-                  <div class="">
-                    <input
-                           type="radio"
-                           class="btn-check"
-                           name="options"
-                           id="color-primary"
-                           autocomplete="off"
-                           checked
-                           />
-                    <label
-                           class="
-                                  btn btn-primary btn-floating
-                                  me-2
-                                  mb-2
-                                  shadow-0
-                                  "
-                           for="color-primary"
-                           ></label>
-  
-                    <input
-                           type="radio"
-                           class="btn-check"
-                           name="options"
-                           id="color-danger"
-                           autocomplete="off"
-                           />
-                    <label
-                           class="btn btn-danger btn-floating me-2 mb-2 shadow-0"
-                           for="color-danger"
-                           ></label>
-  
-                    <input
-                           type="radio"
-                           class="btn-check"
-                           name="options"
-                           id="color-secondary"
-                           autocomplete="off"
-                           />
-                    <label
-                           class="
-                                  btn btn-secondary btn-floating
-                                  me-2
-                                  mb-2
-                                  shadow-0
-                                  "
-                           for="color-secondary"
-                           ></label>
-  
-                    <input
-                           type="radio"
-                           class="btn-check"
-                           name="options"
-                           id="color-success"
-                           autocomplete="off"
-                           />
-                    <label
-                           class="
-                                  btn btn-success btn-floating
-                                  me-2
-                                  mb-2
-                                  shadow-0
-                                  "
-                           for="color-success"
-                           ></label>
-  
-                    <input
-                           type="radio"
-                           class="btn-check"
-                           name="options"
-                           id="color-warning"
-                           autocomplete="off"
-                           />
-                    <label
-                           class="
-                                  btn btn-warning btn-floating
-                                  me-2
-                                  mb-2
-                                  shadow-0
-                                  "
-                           for="color-warning"
-                           ></label>
-  
-                    <input
-                           type="radio"
-                           class="btn-check"
-                           name="options"
-                           id="color-info"
-                           autocomplete="off"
-                           />
-                    <label
-                           class="btn btn-info btn-floating me-2 mb-2 shadow-0"
-                           for="color-info"
-                           ></label>
-                  </div>
-                </div> -->
               </div>
   
               <input
@@ -373,23 +270,101 @@
   </div>
   <!-- Container for demo purpose -->
   {% endfor %}
+  {% endif %}
+  {% endfor %}
+  {% endfor %}
     </div>
     <div class="tab-pane fade" id="ex-with-icons-tabs-2" role="tabpanel" aria-labelledby="ex-with-icons-tab-2">
-    {% for item in item_set %}
-      {{ item.product_name }}
-    {% endfor %}
+    <!-- start dynamic feature component -->
+    <div class="row">
+      {% for object in build_variables %}
+      {% for key, value in object.items %}
+      {% if key == 'item_set' or key == 'category' %}
+      {% else %}
+      <div class="col-xl-6 mb-4">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge rounded-pill badge-info">{{ key }}</span>
+              <div class="d-flex align-items-center">
+                <div class="ms-3">
+                  <p class="fw-bold mb-1">{{ value }}</p>
+                  <!--<p class="text-muted mb-0">michael.bale@gmail.com</p>-->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+      {% endfor %}
+      {% endfor %}
+    </div>
+    <!-- end dynamic feature component -->
     </div>
     <div class="tab-pane fade" id="ex-with-icons-tabs-3" role="tabpanel" aria-labelledby="ex-with-icons-tab-3">
-      Tab 3 content
+    <!-- start dynamic feature component -->
+    <div class="row">
+      <div class="col-xl-12 mb-4">
+        <div class="card">
+          <div class="card-body">
+            <div class="ms-4 d-flex align-items-center">
+              <span class="badge rounded-pill badge-info">Product Specifications</span>
+              <div class="ms-5 me-5 d-flex align-items-center">
+                  <ul class="list-group list-group-light">
+                  {% for object in product_specifications %}
+                  {% for key, value in object.items %}
+                  {% if key != 'Package Contents' %}
+                  <li class="list-group-item border-0"><strong>{{ key }}:    </strong>{{ value }}</li>
+                  {% endif %}
+                  {% endfor %}
+                  {% endfor %}
+                  </ul>
+              </div>
+              <div class="ms-5 me-5 vr vr-blurry"></div>
+              <span class="badge rounded-pill badge-info">Package Contents</span>
+              <div class="ms-5 d-flex align-items-center">
+                <ul class="list-group list-group-light">
+                {% for outer_list in package_contents %}
+                {% for item in outer_list %}
+                <li class="list-group-item border-0"><strong>{{ item }}</li>
+                {% endfor %}
+                {% endfor %}
+                </ul>
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- end dynamic feature component -->
     </div>
     <div class="tab-pane fade" id="ex-with-icons-tabs-4" role="tabpanel" aria-labelledby="ex-with-icons-tab-4">
         Tab 4 content
       </div>
-      <div class="tab-pane fade" id="ex-with-icons-tabs-5" role="tabpanel" aria-labelledby="ex-with-icons-tab-5">
-        Tab 5 content
+      <div class="tab-pane fade d-flex justify-content-center" id="ex-with-icons-tabs-5" role="tabpanel" aria-labelledby="ex-with-icons-tab-5">
+        {% for object in build_variables %}
+        {% for key, value in object.items %}
+        {% if key == 'item_set'%}
+        {% for item in value %}
+        {% if item.product_manuals_and_documentation == None %}
+        <div class="alert alert-dismissible fade show mt-5" role="alert" data-mdb-color="info">
+          <!-- class ms-4 (margin-start-4) was needed here to align the text within the alert -->
+          <strong class="ms-4">Sorry, there are no manuals for this item.</strong>
+        </div>
+        {% else %}
+        <a class="mt-5" href="{{ item.product_manuals_and_documentation }}"><i class="fa-solid fa-file-pdf me-3 fa-5x"></i><strong>User's Manual</strong></a>
+        {% endif %}
+        {% endfor %}
+        {% endif %}
+        {% endfor %}
+        {% endfor %}
       </div>
       <div class="tab-pane fade" id="ex-with-icons-tabs-6" role="tabpanel" aria-labelledby="ex-with-icons-tab-6">
         Tab 6 content
+      </div>
+      <div class="tab-pane fade" id="ex-with-icons-tabs-7" role="tabpanel" aria-labelledby="ex-with-icons-tab-7">
+        Tab 7 content
       </div>
   </div>
   <!-- Tabs content -->

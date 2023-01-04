@@ -1,4 +1,3 @@
-import jsonfield
 from django.db import models
 from django.contrib.auth.models import User
 import django_filters
@@ -8,29 +7,7 @@ from polymorphic.models import PolymorphicModel
 # this is our base product model, which ALL products will have values for
 class BaseProduct(PolymorphicModel):
     product_name = models.CharField(max_length=255)
-    product_category_choices = (
-        ('generator', 'generator'),
-        ('wood_stove', 'wood_stove'),
-        ('pellet_stove', 'pellet_stove'),
-        ('power_equipment', 'power_equipment'),
-        ('mobility_scooter', 'mobility_scooter'),
-        ('water_heater', 'water_heater'),
-        ('electronic', 'electronic'),
-        ('air_control', 'air_control')
-    )
-    product_category = models.CharField(max_length=128, choices=product_category_choices)
-    # had to comment out color choices below until we update our models
-    '''product_color_choices = (
-        ('red', 'red'),
-        ('yelow', 'yellow'),
-        ('blue', 'blue'),
-        ('green', 'green'),
-        ('orange', 'orange'),
-        ('purple', 'purple'),
-        ('black', 'black'),
-        ('grey', 'grey'),
-    )
-    product_color = models.CharField(max_length=32, choices=product_color_choices)'''
+    product_category = models.CharField(max_length=128)
     product_manufacturer = models.CharField(max_length=255)
     product_brand = models.CharField(max_length=255)
     product_SKU = models.CharField(max_length=32)
@@ -40,8 +17,6 @@ class BaseProduct(PolymorphicModel):
         ('refurbished', 'refurbished')
     )
     product_condition = models.CharField(max_length=64, choices=product_condition_choices)
-    # we need to remove product price, as we are only using stripe product price
-    # product_price = models.DecimalField(decimal_places=2,max_digits=8)
     product_reviews = models.ForeignKey('ProductReview', on_delete=models.CASCADE, null=True, blank=True)
     product_in_stock = models.BooleanField(default=True)
     product_quantity = models.IntegerField()
@@ -55,21 +30,23 @@ class BaseProduct(PolymorphicModel):
     # should probably be a jsonfield. It may have a higher learning curve depending upon
     # the experience of the admin, but overall I think it provides better
     # scalability and maintainability
-    product_overview = jsonfield.JSONField(null=True, blank=True)
+    # NOTE: I still want to consider the comments above, but for now I think the best idea
+    # is to have the product overview be a text field
+    product_overview = models.TextField(null=True, blank=True)
     # NOTE: null=True and blank=True are both needed her in order for us to be able to not set values
     product_question = models.ForeignKey('ProductQuestion', on_delete=models.CASCADE, null=True, blank=True)
-    product_features = jsonfield.JSONField(null=True, blank=True)
-    product_specifications = jsonfield.JSONField(null=True, blank=True)
+    product_features = models.JSONField(null=True, blank=True)
+    product_specifications = models.JSONField(null=True, blank=True)
     # product warranty will be a json field that we can use to display warranty information where
     # applicable on the site; NOTE: having this warranty json field is needed where we
     # want to be able to show warranty information and the pdfs from manuals and documentation won't suffice
-    product_warranty_additional_information = jsonfield.JSONField(null=True, blank=True)
+    product_warranty_additional_information = models.JSONField(null=True, blank=True)
     # product photos and videos are s3 bucket assets as explained elsewhere
     product_photos = models.CharField(max_length=128, null=True, blank=True)
     product_videos = models.CharField(max_length=128, null=True, blank=True)
     product_discounted = models.BooleanField(default=False)
     product_discounted_rate = models.DecimalField(decimal_places=2,max_digits=5, null=True, blank=True)
-    product_package_contents = jsonfield.JSONField(null=True, blank=True)
+    product_package_contents = models.JSONField(null=True, blank=True)
     product_created_at = models.DateTimeField(auto_now_add=True)
     product_updated_at = models.DateTimeField(auto_now=True)
     stripe_product_id = models.CharField(max_length=100, blank=True, null=True)

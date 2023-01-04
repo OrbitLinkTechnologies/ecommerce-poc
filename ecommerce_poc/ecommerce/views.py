@@ -17,6 +17,7 @@ from sendgrid.helpers.mail import Mail
 import os
 from django.core.exceptions import ObjectDoesNotExist
 import json
+from django.utils.safestring import SafeString
 import stripe
 stripe.api_key = config('STRIPE_SECRET_KEY')
 
@@ -410,8 +411,39 @@ def getModel(category):
 # above the filter_results_page method
 def item_page(request, id, category='generator'):
     item_set = getModel(category).objects.filter(id=id)
-    return render(request, 'ecommerce/item_page.html', {'item_set' : item_set,
-    'category' : category})
+    product_features = item_set.first().product_features
+    product_specifications = item_set.first().product_specifications
+    build_variables = []
+    build_variables.append(
+      {
+        'item_set' : item_set
+      }
+    )
+    build_variables.append(
+      {
+        'category' : category
+      }
+    )
+    for item in product_features:
+      build_variables.append(
+        {
+          item : product_features[item]
+        }
+      )
+    build_specification_list = []
+    for spec in product_specifications:
+      build_specification_list.append(
+        {
+          spec : product_specifications[spec]
+        }
+      )
+    package_contents_list = []
+    for spec in product_specifications:
+      if spec == 'Package Contents':
+        package_contents_list.append(product_specifications[spec])
+    print(package_contents_list)
+    return render(request, 'ecommerce/item_page.html', {'build_variables' : build_variables,
+    'product_specifications' : build_specification_list, 'package_contents' : package_contents_list})
 
 @login_required
 def cart_page(request):
