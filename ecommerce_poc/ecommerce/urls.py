@@ -8,6 +8,7 @@ from .views import (
 app_name = 'ecommerce'
 
 urlpatterns = [
+    path('leave_review/<int:id>/<str:category>/', views.leave_review, name='leave_review'),
     path('send_receipt/', views.send_receipt, name='send_receipt'),
     path('collect_delivery_info/', views.collect_delivery_info, name='collect_delivery_info'),
     path('contact_us_page_success/', views.contact_us_page_success, name='send_customer_question'),

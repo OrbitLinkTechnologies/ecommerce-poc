@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from ecommerce.models import Customer, KitchenAndHomeAppliance, KitchenAndHomeApplianceFilter, SportsNutrition, SportsNutritionFilter, BaseProduct, Generator, GeneratorFilter, Price, GameConsole, GameConsoleFilter, HomeDecor, HomeDecorFilter, CartItem
+from ecommerce.models import ProductReview, Customer, KitchenAndHomeAppliance, KitchenAndHomeApplianceFilter, SportsNutrition, SportsNutritionFilter, BaseProduct, Generator, GeneratorFilter, Price, GameConsole, GameConsoleFilter, HomeDecor, HomeDecorFilter, CartItem
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -441,7 +441,6 @@ def item_page(request, id, category='generator'):
     for spec in product_specifications:
       if spec == 'Package Contents':
         package_contents_list.append(product_specifications[spec])
-    print(package_contents_list)
     return render(request, 'ecommerce/item_page.html', {'build_variables' : build_variables,
     'product_specifications' : build_specification_list, 'package_contents' : package_contents_list})
 
@@ -672,3 +671,20 @@ def send_customer_invoice(request, invoice_item):
 
   except Exception as e:
     print(e.message)
+
+def leave_review(request, id, category):
+  review_title = request.POST.get('review_title')
+  review_text_body = request.POST.get('review_text_body')
+  customer_name = request.POST.get('customer_name')
+  customer_email = request.POST.get('customer_email')
+  product_rating = request.POST.get('product_rating')
+
+  print(str(request.POST))
+  ProductReview.objects.create(review_title=review_title, review_text_body=review_text_body, customer_name=customer_name,
+  customer_email=customer_email, product_rating=product_rating, base_product_association=getModel(category).objects.get(id=id))
+
+  return HttpResponse('title: ' + review_title
+  + '<br>review: ' + review_text_body
+  + '<br>name: ' + customer_name
+  + '<br>email:' + customer_email
+  + '<br>rating:' + str(product_rating))

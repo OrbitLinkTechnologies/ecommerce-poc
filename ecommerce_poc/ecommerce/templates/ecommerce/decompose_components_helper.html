@@ -41,3 +41,96 @@
   </div>
 </div>
 <!-- end list type card component -->
+
+<!-- separator -->
+
+<!-- start leave a review component -->
+<div class="row">
+  <div class="col-md-9 col-lg-7 col-xl-5 mx-auto text-center">
+    <h4 class="mb-4">Leave a Review</h4>
+    <form>
+      <!-- start leave a review component -->
+      <div class="form-outline mb-4">
+        <ul class="rating" data-mdb-toggle="rating">
+          <li><i class="far fa-star fa-sm text-primary" title="Bad"></i></li>
+          <li><i class="far fa-star fa-sm text-primary" title="Poor"></i></li>
+          <li><i class="far fa-star fa-sm text-primary" title="OK"></i></li>
+          <li><i class="far fa-star fa-sm text-primary" title="Good"></i></li>
+          <li><i class="far fa-star fa-sm text-primary" title="Excellent"></i></li>
+        </ul>
+      </div>
+      <!-- end leave a review component -->
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-outline mb-4">
+            <input type="text" id="contactBlockName1" class="form-control" />
+            <label class="form-label" for="contactBlockName1">Name</label>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-outline mb-4">
+            <input type="email" id="contactBlockEmail2" class="form-control" />
+            <label class="form-label" for="contactBlockEmail2">Email</label>
+          </div>
+        </div>
+      </div>
+      <div class="form-outline mb-4">
+        <input type="tel" id="contactBlockPhone3" class="form-control" />
+        <label class="form-label" for="contactBlockPhone3">Phone (optional)</label>
+      </div>
+      <div class="form-outline mb-4">
+        <textarea class="form-control" id="contactBlockMessage4" rows="4"></textarea>
+        <label class="form-label" for="contactBlockMessage4">Message</label>
+      </div>
+      <button type="button" class="btn btn-dark btn-block">Send message</button>
+    </form>
+  </div>
+</div>
+<!-- end leave a review component -->
+
+<!-- separator -->
+
+<!-- NOTE: for whatever reason, I tried to use the rating component here: https://mdbootstrap.com/docs/standard/components/rating/
+and it was not working! However, I used the component snippet below which is super similar and it worked! -->
+
+<!-- start product overview reviews -->
+<div class="d-flex text-primary">
+  <ul
+      class="rating mb-3 me-2"
+      data-mdb-toggle="rating"
+      data-mdb-readonly="true"
+      data-mdb-value="4"
+      >
+    <li>
+      <i
+         class="far fa-star fa-sm text-primary ps-0"
+         title="Bad"
+         ></i>
+    </li>
+    <li>
+      <i
+         class="far fa-star fa-sm text-primary"
+         title="Poor"
+         ></i>
+    </li>
+    <li>
+      <i class="far fa-star fa-sm text-primary" title="OK"></i>
+    </li>
+    <li>
+      <i
+         class="far fa-star fa-sm text-primary"
+         title="Good"
+         ></i>
+    </li>
+    <li>
+      <i
+         class="far fa-star fa-sm text-primary"
+         title="Excellent"
+         ></i>
+    </li>
+  </ul>
+  <a href=""><strong class="me-2">4.5/5</strong>(2 reviews)</a>
+</div>
+<!-- end product overview reviews -->
+
+<!-- separator -->

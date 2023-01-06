@@ -4,7 +4,7 @@
 
 <div class="container my-5 py-5">
 <!-- Tabs navs -->
-<ul class="nav nav-tabs mb-3" id="ex-with-icons" role="tablist">
+<ul class="nav nav-tabs mb-10" id="ex-with-icons" role="tablist">
     <li class="nav-item" role="presentation">
       <a class="nav-link active" id="ex-with-icons-tab-1" data-mdb-toggle="tab" href="#ex-with-icons-tabs-1" role="tab"
         aria-controls="ex-with-icons-tabs-1" aria-selected="true"><i class="fa-solid fa-street-view fa-fw me-2"></i>Overview</a>
@@ -17,10 +17,6 @@
       <a class="nav-link" id="ex-with-icons-tab-3" data-mdb-toggle="tab" href="#ex-with-icons-tabs-3" role="tab"
         aria-controls="ex-with-icons-tabs-3" aria-selected="false"><i class="fa-solid fa-paste fa-fw me-2"></i>Specifications</a>
     </li>
-    <li class="nav-item" role="presentation">
-        <a class="nav-link" id="ex-with-icons-tab-4" data-mdb-toggle="tab" href="#ex-with-icons-tabs-4" role="tab"
-          aria-controls="ex-with-icons-tabs-4" aria-selected="false"><i class="fa-solid fa-map fa-fw me-2"></i>Warranty</a>
-      </li>
       <li class="nav-item" role="presentation">
         <a class="nav-link" id="ex-with-icons-tab-5" data-mdb-toggle="tab" href="#ex-with-icons-tabs-5" role="tab"
           aria-controls="ex-with-icons-tabs-5" aria-selected="false"><i class="fa-solid fa-paperclip fa-fw me-2"></i>Manuals</a>
@@ -149,6 +145,7 @@
                ><p class="mb-2 text-uppercase small">{{ item.product_category }}</p></a
               >
   
+            <!-- start product overview reviews -->
             <div class="d-flex text-primary">
               <ul
                   class="rating mb-3 me-2"
@@ -186,6 +183,7 @@
               </ul>
               <a href=""><strong class="me-2">4.5/5</strong>(2 reviews)</a>
             </div>
+            <!-- end product overview reviews -->
   
             <h5 class="mb-3">
               <s class="text-muted me-2 small align-middle">${{ item.price_set.get.price|divide:100 }}</s
@@ -339,9 +337,6 @@
     </div>
     <!-- end dynamic feature component -->
     </div>
-    <div class="tab-pane fade" id="ex-with-icons-tabs-4" role="tabpanel" aria-labelledby="ex-with-icons-tab-4">
-        Tab 4 content
-      </div>
       <div class="tab-pane fade d-flex justify-content-center" id="ex-with-icons-tabs-5" role="tabpanel" aria-labelledby="ex-with-icons-tab-5">
         {% for object in build_variables %}
         {% for key, value in object.items %}
@@ -361,7 +356,103 @@
         {% endfor %}
       </div>
       <div class="tab-pane fade" id="ex-with-icons-tabs-6" role="tabpanel" aria-labelledby="ex-with-icons-tab-6">
-        Tab 6 content
+        <!-- start leave a review component -->
+        <div class="row">
+          <div class="col-md-9 col-lg-7 col-xl-5 mx-auto text-center">
+            <h4 class="mb-4">Leave a Review</h4>
+            {% for object in build_variables %}  
+            {% for key, value in object.items %}
+            {% if key == 'item_set'%}
+            {% for item in value %}
+            <form method="post" action="/ecomm/leave_review/{{ item.id }}/{{ item.product_category }}/">
+            {% endfor %}
+            {% endif %}
+            {% endfor %}
+            {% endfor %}
+              {% csrf_token %}
+              <div class="row">
+                <div class="col-md-6">
+                  <label class="form-label">Rating</label>
+                </div>
+                <div class="col-md-6">
+                  <!-- start leave review -->
+                  <div class="d-flex text-primary">
+                    <input type="hidden" id="get_leave_review_value" name="product_rating">
+                    <ul
+                        class="rating mb-3 me-2"
+                        data-mdb-toggle="rating"
+                        >
+                      <li>
+                        <i
+                           class="far fa-star fa-sm text-primary ps-0"
+                           title="Bad"
+                           onclick="get_review_value(this)"
+                           value="1"
+                           >1</i>
+                      </li>
+                      <li>
+                        <i
+                           class="far fa-star fa-sm text-primary"
+                           title="Poor"
+                           onclick="get_review_value(this)"
+                           value="2"
+                           >2</i>
+                      </li>
+                      <li>
+                        <i class="far fa-star fa-sm text-primary"
+                           title="OK"
+                           onclick="get_review_value(this)"
+                           value="3"
+                           >3</i>
+                      </li>
+                      <li>
+                        <i
+                           class="far fa-star fa-sm text-primary"
+                           title="Good"
+                           onclick="get_review_value(this)"
+                           value="4"
+                           >4</i>
+                      </li>
+                      <li>
+                        <i
+                           class="far fa-star fa-sm text-primary"
+                           title="Excellent"
+                           onclick="get_review_value(this)"
+                           value="5"
+                           >5</i>
+                      </li>
+                    </ul>
+                  </div>
+                  <!-- end leave review -->
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-outline mb-4">
+                    <input type="text" id="contactBlockName1" class="form-control" name="review_title"/>
+                    <label class="form-label" for="contactBlockName1">Review Title</label>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="form-outline mb-4">
+                    <textarea class="form-control" id="contactBlockMessage4" rows="4" name="review_text_body"></textarea>
+                    <label class="form-label" for="contactBlockMessage4">Review</label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-outline mb-4">
+                    <input type="text" id="contactBlockName5" class="form-control" name="customer_name"/>
+                    <label class="form-label" for="contactBlockName5">Name (Publicly Displayed)</label>
+              </div>
+              <div class="form-outline mb-4">
+                    <input type="email" id="contactBlockEmail2" class="form-control" name="customer_email"/>
+                    <label class="form-label" for="contactBlockEmail2">Email (Private - Not Displayed)</label>
+              </div>
+              <button type="submit" class="btn btn-dark btn-block">Submit Review</button>
+            </form>
+          </div>
+        </div>
+        <!-- end leave a review component -->
       </div>
       <div class="tab-pane fade" id="ex-with-icons-tabs-7" role="tabpanel" aria-labelledby="ex-with-icons-tab-7">
         Tab 7 content
