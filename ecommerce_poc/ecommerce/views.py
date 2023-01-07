@@ -441,8 +441,9 @@ def item_page(request, id, category='generator'):
     for spec in product_specifications:
       if spec == 'Package Contents':
         package_contents_list.append(product_specifications[spec])
-    return render(request, 'ecommerce/item_page.html', {'build_variables' : build_variables,
-    'product_specifications' : build_specification_list, 'package_contents' : package_contents_list})
+    return render(request, 'ecommerce/item_page_2.html', {'build_variables' : build_variables,
+    'product_specifications' : build_specification_list, 'package_contents' : package_contents_list,
+    'item_id' : id, 'category' : category})
 
 @login_required
 def cart_page(request):

@@ -2,48 +2,92 @@
 {% load my_tags %}
 {% block content %}
 
-<div class="container my-5 py-5">
-<!-- Tabs navs -->
-<ul class="nav nav-tabs mb-10" id="ex-with-icons" role="tablist">
+<div class="container">
+  <ul class="nav nav-tabs mb-6" id="myTab0" role="tablist">
     <li class="nav-item" role="presentation">
-      <a class="nav-link active" id="ex-with-icons-tab-1" data-mdb-toggle="tab" href="#ex-with-icons-tabs-1" role="tab"
-        aria-controls="ex-with-icons-tabs-1" aria-selected="true"><i class="fa-solid fa-street-view fa-fw me-2"></i>Overview</a>
+      <button
+        class="nav-link active"
+        id="home-tab0"
+        data-mdb-toggle="tab"
+        data-mdb-target="#home0"
+        type="button"
+        role="tab"
+        aria-controls="home"
+        aria-selected="true"
+      >
+        Overview
+      </button>
     </li>
     <li class="nav-item" role="presentation">
-      <a class="nav-link" id="ex-with-icons-tab-2" data-mdb-toggle="tab" href="#ex-with-icons-tabs-2" role="tab"
-        aria-controls="ex-with-icons-tabs-2" aria-selected="false"><i class="fa-solid fa-circle-info  fa-fw me-2"></i>Features</a>
+      <button
+        class="nav-link"
+        id="profile-tab0"
+        data-mdb-toggle="tab"
+        data-mdb-target="#profile0"
+        type="button"
+        role="tab"
+        aria-controls="profile"
+        aria-selected="false"
+      >
+        Features
+      </button>
     </li>
     <li class="nav-item" role="presentation">
-      <a class="nav-link" id="ex-with-icons-tab-3" data-mdb-toggle="tab" href="#ex-with-icons-tabs-3" role="tab"
-        aria-controls="ex-with-icons-tabs-3" aria-selected="false"><i class="fa-solid fa-paste fa-fw me-2"></i>Specifications</a>
+      <button
+        class="nav-link"
+        id="contact-tab0"
+        data-mdb-toggle="tab"
+        data-mdb-target="#contact0"
+        type="button"
+        role="tab"
+        aria-controls="contact"
+        aria-selected="false"
+      >
+        Specifications
+      </button>
     </li>
-      <li class="nav-item" role="presentation">
-        <a class="nav-link" id="ex-with-icons-tab-5" data-mdb-toggle="tab" href="#ex-with-icons-tabs-5" role="tab"
-          aria-controls="ex-with-icons-tabs-5" aria-selected="false"><i class="fa-solid fa-paperclip fa-fw me-2"></i>Manuals</a>
-      </li>
-      <li class="nav-item" role="presentation">
-        <a class="nav-link" id="ex-with-icons-tab-6" data-mdb-toggle="tab" href="#ex-with-icons-tabs-6" role="tab"
-          aria-controls="ex-with-icons-tabs-6" aria-selected="false"><i class="fa-solid fa-star fa-fw me-2"></i>Reviews</a>
-      </li>
-      <li class="nav-item" role="presentation">
-        <a class="nav-link" id="ex-with-icons-tab-7" data-mdb-toggle="tab" href="#ex-with-icons-tabs-7" role="tab"
-          aria-controls="ex-with-icons-tabs-7" aria-selected="false"><i class="fa-regular fa-fw me-2 fa-circle-question"></i>Questions</a>
-      </li>
+    <li class="nav-item" role="presentation">
+      <button
+        class="nav-link"
+        id="manuals-tab0"
+        data-mdb-toggle="tab"
+        data-mdb-target="#manuals0"
+        type="button"
+        role="tab"
+        aria-controls="manuals"
+        aria-selected="true"
+      >
+        Manuals
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button
+        class="nav-link"
+        id="reviews-tab0"
+        data-mdb-toggle="tab"
+        data-mdb-target="#reviews0"
+        type="button"
+        role="tab"
+        aria-controls="reviews"
+        aria-selected="true"
+      >
+        Reviews
+      </button>
+    </li>
   </ul>
-  <!-- Tabs navs -->
-  
-  <!-- Tabs content -->
-  <div class="tab-content" id="ex-with-icons-content">
-    <div class="tab-pane fade show active" id="ex-with-icons-tabs-1" role="tabpanel" aria-labelledby="ex-with-icons-tab-1">
-      {% for object in build_variables %}  
-      {% for key, value in object.items %}
-      {% if key == 'item_set'%}
-      {% for item in value %}
-      <!-- Container for demo purpose -->
-<div class="container my-5 py-5">
-
-    <!-- Section: Product details -->
-    <section class="mb-9">
+  <div class="tab-content" id="myTabContent0">
+    <div
+      class="tab-pane fade show active"
+      id="home0"
+      role="tabpanel"
+      aria-labelledby="home-tab0"
+    >
+      <!-- Section: Product details -->
+    {% for object in build_variables %}  
+    {% for key, value in object.items %}
+    {% if key == 'item_set'%}
+    {% for item in value %}
+    <section class="mb-4">
       <div class="row gx-lg-5">
         <div class="col-md-6 mb-4 mb-md-0">
           <!-- Gallery -->
@@ -263,17 +307,14 @@
         </div>
       </div>
     </section>
+    {% endfor %}
+    {% endif %}
+    {% endfor %}
+    {% endfor %}
     <!-- Section: Product details -->
-  
-  </div>
-  <!-- Container for demo purpose -->
-  {% endfor %}
-  {% endif %}
-  {% endfor %}
-  {% endfor %}
     </div>
-    <div class="tab-pane fade" id="ex-with-icons-tabs-2" role="tabpanel" aria-labelledby="ex-with-icons-tab-2">
-    <!-- start dynamic feature component -->
+    <div class="tab-pane fade" id="profile0" role="tabpanel" aria-labelledby="profile-tab0">
+      <!-- start dynamic feature component -->
     <div class="row">
       {% for object in build_variables %}
       {% for key, value in object.items %}
@@ -300,10 +341,10 @@
     </div>
     <!-- end dynamic feature component -->
     </div>
-    <div class="tab-pane fade" id="ex-with-icons-tabs-3" role="tabpanel" aria-labelledby="ex-with-icons-tab-3">
+    <div class="tab-pane fade" id="contact0" role="tabpanel" aria-labelledby="contact-tab0">
     <!-- start dynamic feature component -->
     <div class="row">
-      <div class="col-xl-12 mb-4">
+      <div class="col-xl-6 mb-4">
         <div class="card">
           <div class="card-body">
             <div class="ms-4 d-flex align-items-center">
@@ -319,17 +360,33 @@
                   {% endfor %}
                   </ul>
               </div>
-              <div class="ms-5 me-5 vr vr-blurry"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    <!-- end dynamic feature component -->
+    <!-- start dynamic feature component -->
+      <div class="col-xl-6 mb-4">
+        <div class="card">
+          <div class="card-body">
+            <div class="ms-4 d-flex align-items-center">
               <span class="badge rounded-pill badge-info">Package Contents</span>
-              <div class="ms-5 d-flex align-items-center">
+              <div class="ms-5 me-5 d-flex align-items-center">
                 <ul class="list-group list-group-light">
                 {% for outer_list in package_contents %}
                 {% for item in outer_list %}
-                <li class="list-group-item border-0"><strong>{{ item }}</li>
+                <!-- literally the entire reason that my page was all misaligned was because
+                I didn't have a closing tag for the strong tag undernearth this comment!!!
+                We need to look up a mechanism for finding starting and closing tags in a
+                HTML document. NOTE: I did notice in firefox's developer tool's inspection tool
+                that there were a bunch of bundled up strong tags. When I deleted this node in the
+                browser inspector tool, all the added space underneath my elements disappeared!
+                It's possible I could use this methodology in future scenarios with a similar issue! -->
+                <li class="list-group-item border-0"><strong>{{ item }}</strong></li>
                 {% endfor %}
                 {% endfor %}
                 </ul>
-            </div>
+                </div>
             </div>
           </div>
         </div>
@@ -337,7 +394,7 @@
     </div>
     <!-- end dynamic feature component -->
     </div>
-      <div class="tab-pane fade d-flex justify-content-center" id="ex-with-icons-tabs-5" role="tabpanel" aria-labelledby="ex-with-icons-tab-5">
+    <div class="tab-pane fade" id="manuals0" role="tabpanel" aria-labelledby="manuals-tab0">
         {% for object in build_variables %}
         {% for key, value in object.items %}
         {% if key == 'item_set'%}
@@ -354,102 +411,99 @@
         {% endif %}
         {% endfor %}
         {% endfor %}
-      </div>
-      <div class="tab-pane fade" id="ex-with-icons-tabs-6" role="tabpanel" aria-labelledby="ex-with-icons-tab-6">
-        <!-- start leave a review component -->
-        <div class="row">
-          <div class="col-md-9 col-lg-7 col-xl-5 mx-auto text-center">
-            <h4 class="mb-4">Leave a Review</h4>
-            <form method="post" action="/ecomm/leave_review/{{ item_id }}/{{ category }}/">
-              {% csrf_token %}
-              <div class="row">
-                <div class="col-md-6">
-                  <label class="form-label">Rating</label>
-                </div>
-                <div class="col-md-6">
-                  <!-- start leave review -->
-                  <div class="d-flex text-primary">
-                    <input type="hidden" id="get_leave_review_value" name="product_rating">
-                    <ul
-                        class="rating mb-3 me-2"
-                        data-mdb-toggle="rating"
-                        >
-                      <li>
-                        <i
-                           class="far fa-star fa-sm text-primary ps-0"
-                           title="Bad"
-                           onclick="get_review_value(this)"
-                           value="1"
-                           >1</i>
-                      </li>
-                      <li>
-                        <i
-                           class="far fa-star fa-sm text-primary"
-                           title="Poor"
-                           onclick="get_review_value(this)"
-                           value="2"
-                           >2</i>
-                      </li>
-                      <li>
-                        <i class="far fa-star fa-sm text-primary"
-                           title="OK"
-                           onclick="get_review_value(this)"
-                           value="3"
-                           >3</i>
-                      </li>
-                      <li>
-                        <i
-                           class="far fa-star fa-sm text-primary"
-                           title="Good"
-                           onclick="get_review_value(this)"
-                           value="4"
-                           >4</i>
-                      </li>
-                      <li>
-                        <i
-                           class="far fa-star fa-sm text-primary"
-                           title="Excellent"
-                           onclick="get_review_value(this)"
-                           value="5"
-                           >5</i>
-                      </li>
-                    </ul>
-                  </div>
-                  <!-- end leave review -->
-                </div>
+    </div>
+    <div class="tab-pane fade" id="reviews0" role="tabpanel" aria-labelledby="reviews-tab0">
+      <!-- start leave a review component -->
+      <div class="row">
+        <div class="col-md-9 col-lg-7 col-xl-5 mx-auto text-center">
+          <h4 class="mb-4">Leave a Review</h4>
+          <form method="post" action="/ecomm/leave_review/{{ item_id }}/{{ category }}/">
+            {% csrf_token %}
+            <div class="row">
+              <div class="col-md-6">
+                <label class="form-label">Rating</label>
               </div>
-              <div class="row">
-                <div class="col-md-12">
-                  <div class="form-outline mb-4">
-                    <input type="text" id="contactBlockName1" class="form-control" name="review_title"/>
-                    <label class="form-label" for="contactBlockName1">Review Title</label>
-                  </div>
+              <div class="col-md-6">
+                <!-- start leave review -->
+                <div class="d-flex text-primary">
+                  <input type="hidden" id="get_leave_review_value" name="product_rating">
+                  <ul
+                      class="rating mb-3 me-2"
+                      data-mdb-toggle="rating"
+                      >
+                    <li>
+                      <i
+                         class="far fa-star fa-sm text-primary ps-0"
+                         title="Bad"
+                         onclick="get_review_value(this)"
+                         value="1"
+                         >1</i>
+                    </li>
+                    <li>
+                      <i
+                         class="far fa-star fa-sm text-primary"
+                         title="Poor"
+                         onclick="get_review_value(this)"
+                         value="2"
+                         >2</i>
+                    </li>
+                    <li>
+                      <i class="far fa-star fa-sm text-primary"
+                         title="OK"
+                         onclick="get_review_value(this)"
+                         value="3"
+                         >3</i>
+                    </li>
+                    <li>
+                      <i
+                         class="far fa-star fa-sm text-primary"
+                         title="Good"
+                         onclick="get_review_value(this)"
+                         value="4"
+                         >4</i>
+                    </li>
+                    <li>
+                      <i
+                         class="far fa-star fa-sm text-primary"
+                         title="Excellent"
+                         onclick="get_review_value(this)"
+                         value="5"
+                         >5</i>
+                    </li>
+                  </ul>
                 </div>
-                <div class="col-md-12">
-                  <div class="form-outline mb-4">
-                    <textarea class="form-control" id="contactBlockMessage4" rows="4" name="review_text_body"></textarea>
-                    <label class="form-label" for="contactBlockMessage4">Review</label>
-                  </div>
+                <!-- end leave review -->
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-outline mb-4">
+                  <input type="text" id="contactBlockName1" class="form-control" name="review_title"/>
+                  <label class="form-label" for="contactBlockName1">Review Title</label>
                 </div>
               </div>
-              <div class="form-outline mb-4">
-                    <input type="text" id="contactBlockName5" class="form-control" name="customer_name"/>
-                    <label class="form-label" for="contactBlockName5">Name (Publicly Displayed)</label>
+              <div class="col-md-12">
+                <div class="form-outline mb-4">
+                  <textarea class="form-control" id="contactBlockMessage4" rows="4" name="review_text_body"></textarea>
+                  <label class="form-label" for="contactBlockMessage4">Review</label>
+                </div>
               </div>
-              <div class="form-outline mb-4">
-                    <input type="email" id="contactBlockEmail2" class="form-control" name="customer_email"/>
-                    <label class="form-label" for="contactBlockEmail2">Email (Private - Not Displayed)</label>
-              </div>
-              <button type="submit" class="btn btn-dark btn-block">Submit Review</button>
-            </form>
-          </div>
+            </div>
+            <div class="form-outline mb-4">
+                  <input type="text" id="contactBlockName5" class="form-control" name="customer_name"/>
+                  <label class="form-label" for="contactBlockName5">Name (Publicly Displayed)</label>
+            </div>
+            <div class="form-outline mb-4">
+                  <input type="email" id="contactBlockEmail2" class="form-control" name="customer_email"/>
+                  <label class="form-label" for="contactBlockEmail2">Email (Private - Not Displayed)</label>
+            </div>
+            <button type="submit" class="btn btn-dark btn-block">Submit Review</button>
+          </form>
         </div>
-        <!-- end leave a review component -->
       </div>
-      <div class="tab-pane fade" id="ex-with-icons-tabs-7" role="tabpanel" aria-labelledby="ex-with-icons-tab-7">
-        Tab 7 content
-      </div>
+      <!-- end leave a review component -->
+    </div>
   </div>
-  <!-- Tabs content -->
 </div>
+
 {% endblock content %}
