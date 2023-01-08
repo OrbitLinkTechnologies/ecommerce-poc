@@ -14,9 +14,9 @@ from pathlib import Path
 # why is the decouple import working, but showing up as a missing import?
 from decouple import config
 import os
-import environ
-
-environ.Env.read_env()
+# apparently environ.get is not working, so we need to use python-dotenv package
+from dotenv import load_dotenv
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -87,12 +87,12 @@ WSGI_APPLICATION = "ecommerce_poc.wsgi.application"
 
 DATABASES = {
     'default': {
-        'ENGINE' : os.environ.get("DB_ENGINE"),
-        'NAME': os.environ.get("DB_NAME"),
-        'USER': os.environ.get("DB_USER"),
-        'PASSWORD': os.environ.get("DB_PASS"),
-        'HOST': os.environ.get("DB_HOST"),
-        'PORT': os.environ.get("DB_PORT"),
+        'ENGINE' : os.getenv("DB_ENGINE"),
+        'NAME': os.getenv("DB_NAME"),
+        'USER': os.getenv("DB_USER"),
+        'PASSWORD': os.getenv("DB_PASS"),
+        'HOST': os.getenv("DB_HOST"),
+        'PORT': os.getenv("DB_PORT"),
     }
 }
 
@@ -125,20 +125,20 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
-AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
-AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_STORAGE_BUCKET_NAME")
+AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
+AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME")
 AWS_S3_CUSTOM_DOMAIN = "%s.s3.amazonaws.com" % AWS_STORAGE_BUCKET_NAME
 AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',
 }
-AWS_LOCATION = os.environ.get("AWS_LOCATION")
+AWS_LOCATION = os.getenv("AWS_LOCATION")
 
 #STATICFILES_DIRS = [
 #    os.path.join(BASE_DIR, 'static')
 #]
 
-STATIC_ROOT = os.environ.get("AWS_LOCATION")
+STATIC_ROOT = os.getenv("AWS_LOCATION")
 
 STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
 
@@ -157,7 +157,7 @@ LOGIN_REDIRECT_URL = '/ecomm'
 # https://docs.djangoproject.com/en/4.0/topics/email/
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-SENDGRID_API_KEY = os.environ["SENDGRID_API_KEY"]
+SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY")
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = 'smtp.sendgrid.net'
 EMAIL_HOST_USER = 'apikey' # Exactly that. 
@@ -167,5 +167,5 @@ EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = os.getenv('FROM_EMAIL')
 
 # stripe api keys
-STRIPE_PUBLIC_KEY = os.environ.get('STRIPE_PUBLIC_KEY')
-STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
+STRIPE_PUBLIC_KEY = os.getenv('STRIPE_PUBLIC_KEY')
+STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY')
