@@ -19,3 +19,5 @@ django-polymorphic
 wagtail
 taggit
 modelcluster
+django-sendgrid-v5
+django-crispy-forms

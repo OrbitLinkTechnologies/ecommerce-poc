@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from ecommerce.models import ProductReview, Customer, KitchenAndHomeAppliance, KitchenAndHomeApplianceFilter, SportsNutrition, SportsNutritionFilter, BaseProduct, Generator, GeneratorFilter, Price, GameConsole, GameConsoleFilter, HomeDecor, HomeDecorFilter, CartItem
+from ecommerce.models import Delivery, ProductQuestion, ProductAnswer, ProductReview, Customer, KitchenAndHomeAppliance, KitchenAndHomeApplianceFilter, SportsNutrition, SportsNutritionFilter, BaseProduct, Generator, GeneratorFilter, Price, GameConsole, GameConsoleFilter, HomeDecor, HomeDecorFilter, CartItem
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -441,9 +441,69 @@ def item_page(request, id, category='generator'):
     for spec in product_specifications:
       if spec == 'Package Contents':
         package_contents_list.append(product_specifications[spec])
+
+    product_reviews = ProductReview.objects.filter(base_product_association=getModel(category).objects.get(id=id))
+
+    product_questions = ProductQuestion.objects.filter(base_product_association=getModel(category).objects.get(id=id))
+
+    # this is a hashmap where we store the rating as the key;
+    # as we iterate through the ratings we check to see if the rating exists
+    # (i.e. the key) and increment it if it does, otherwise we add the kv to the map
+    number_of_people_per_rating = {}
+    sum_rating_for_this_product = 0
+    number_of_ratings_for_this_product = 0
+    for review in product_reviews:
+      sum_rating_for_this_product += review.product_rating
+      number_of_ratings_for_this_product += 1
+      if review.product_rating in number_of_people_per_rating:
+        number_of_people_per_rating[review.product_rating] += 1
+      else:
+        number_of_people_per_rating[review.product_rating] = 1
+
+    if number_of_ratings_for_this_product == 0:
+      average_rating_for_this_product = 0
+    else:
+      average_rating_for_this_product = sum_rating_for_this_product / number_of_ratings_for_this_product
+
+    # print('average = ' + str(average_rating_for_this_product))
+    print('number of ratings per rating value = ' + str(number_of_people_per_rating))
+
+    # we need to send everything into our django templates as a list
+    # therefore we need to store our number_of_people_per_ratings "object"
+    # within a list to be able to access it within our template
+    list_of_number_of_ratings_per_rating_value = []
+    list_of_number_of_ratings_per_rating_value.append(number_of_people_per_rating)
+
+    ones_ratings = 0
+    twos_ratings = 0
+    threes_ratings = 0
+    fours_ratings = 0
+    fives_ratings = 0
+
+    for kv in number_of_people_per_rating:
+      if kv == 1:
+        ones_ratings = number_of_people_per_rating[kv]
+      if kv == 2:
+        twos_ratings = number_of_people_per_rating[kv]
+      if kv == 3:
+        threes_ratings = number_of_people_per_rating[kv]
+      if kv == 4:
+        fours_ratings = number_of_people_per_rating[kv]
+      if kv == 5:
+        fives_ratings = number_of_people_per_rating[kv]
+
+    print(ones_ratings)
+    print(twos_ratings)
+    print(threes_ratings)
+    print(fours_ratings)
+    print(fives_ratings)
+
     return render(request, 'ecommerce/item_page_2.html', {'build_variables' : build_variables,
     'product_specifications' : build_specification_list, 'package_contents' : package_contents_list,
-    'item_id' : id, 'category' : category})
+    'item_id' : id, 'category' : category, 'product_reviews' : product_reviews,
+    'average_rating' : str(round(average_rating_for_this_product, 2)), 'rating_count' : number_of_ratings_for_this_product,
+    'ones_ratings' : ones_ratings, 'twos_ratings' : twos_ratings, 'threes_ratings' : threes_ratings,
+    'fours_ratings' : fours_ratings, 'fives_ratings' : fives_ratings, 'product_questions' : product_questions})
 
 @login_required
 def cart_page(request):
@@ -529,14 +589,15 @@ def collect_delivery_info(request):
   # for shipping the item to the customer, as well as compliance
 
   # NOTE: we need to pass flow to the stripe payment processing session
-  delivery_info = request.POST
-  request.session['delivery_info'] = delivery_info
   return redirect('/ecomm/create-checkout-session')
 
 class CreateCheckoutSessionView(View):
   def post(self, request, *args, **kwargs):
     list_of_cart_items = CartItem.objects.filter(user=User.objects.get(id=request.user.id))
     list_of_line_items = []
+    if request.POST:
+      delivery_info = request.POST
+      request.session['delivery_info'] = delivery_info
     for item in list_of_cart_items:
       
       list_of_line_items.append(
@@ -573,6 +634,19 @@ class CreateCheckoutSessionView(View):
     return redirect(checkout_session.url)
 
 def successful_payment(request):
+
+  stripe_checkout_session_response = stripe.checkout.Session.retrieve(request.GET.get('session_id'))
+
+  if Delivery.objects.filter(stripe_checkout_session_id=request.GET.get('session_id')).exists():
+    pass
+  else:
+    if request.session['delivery_info']:
+      Delivery.objects.create(user=User.objects.get(id=request.user.id), first_name=request.session['delivery_info'].get('first_name'),
+      last_name=request.session['delivery_info'].get('last_name'), email=request.session['delivery_info'].get('email'), phone_number=request.session['delivery_info'].get('phone_number'),
+      address=request.session['delivery_info'].get('address'), address_extended=request.session['delivery_info'].get('address_extended'),
+      city=request.session['delivery_info'].get('city'), postal_code=request.session['delivery_info'].get('postal_code'),
+      country=request.session['delivery_info'].get('country'), state_or_province=request.session['delivery_info'].get('state_or_province'),
+      stripe_invoice_id=stripe_checkout_session_response.invoice, stripe_checkout_session_id=stripe_checkout_session_response.id)
 
   # an asynchronous webhook happens around this point in our payment
   # flow that sends an email to our customer. We still need to figure
@@ -618,6 +692,7 @@ def send_receipt(request):
   return HttpResponse(status=200)
 
 class CancelView(TemplateView):
+  
   template_name = 'payment_cancel.html'
 
 def about_page(request):
@@ -644,6 +719,27 @@ def send_customer_question(request):
 
   except Exception as e:
     print(e.message)
+  
+  # if customer wants a copy, send them an email as well
+  if request.POST.get('mail_customer_a_copy'):
+    send_mail = Mail(
+      from_email= os.environ.get("FROM_EMAIL"),
+      to_emails= request.POST.get('email'),
+      subject=request.POST['subject'],
+      html_content= 'CUSTOMER COPY:<br><br>' +
+      'You have a message from ' + request.POST['name'] + '!<br><br>' +
+      'Please respond to them @ ' + request.POST['email'] + '!<br><br>' +
+      'Message Body: <br><br>' + request.POST['message']
+    )
+    try:
+      sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+      response = sg.send(send_mail)
+      print(response.status_code)
+      print(response.body)
+      print(response.headers)
+
+    except Exception as e:
+      print(e.message)
 
   return redirect('/ecomm/contact_us_page_success', name = request.POST['name'])
 
@@ -678,14 +774,25 @@ def leave_review(request, id, category):
   review_text_body = request.POST.get('review_text_body')
   customer_name = request.POST.get('customer_name')
   customer_email = request.POST.get('customer_email')
-  product_rating = request.POST.get('product_rating')
+  if request.POST.get('product_rating'):
+    product_rating = request.POST.get('product_rating')
+  else:
+    product_rating = 5
 
   print(str(request.POST))
   ProductReview.objects.create(review_title=review_title, review_text_body=review_text_body, customer_name=customer_name,
   customer_email=customer_email, product_rating=product_rating, base_product_association=getModel(category).objects.get(id=id))
 
-  return HttpResponse('title: ' + review_title
-  + '<br>review: ' + review_text_body
-  + '<br>name: ' + customer_name
-  + '<br>email:' + customer_email
-  + '<br>rating:' + str(product_rating))
+  return redirect('/ecomm/item/' + str(id) + '/' + str(category) + '/')
+
+def leave_question(request, id, category):
+  customer_name = request.POST.get('customer_name')
+  customer_email = request.POST.get('customer_email')
+  customer_question_text_body = request.POST.get('customer_question_text_body')
+
+  print(str(request.POST))
+  ProductQuestion.objects.create(customer_name=customer_name, customer_email=customer_email,
+  customer_question_text_body=customer_question_text_body,
+  base_product_association=getModel(category).objects.get(id=id))
+
+  return redirect('/ecomm/item/' + str(id) + '/' + str(category) + '/')

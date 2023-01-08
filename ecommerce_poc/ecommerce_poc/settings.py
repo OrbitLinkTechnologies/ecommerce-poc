@@ -52,7 +52,10 @@ INSTALLED_APPS = [
     'fontawesomefree',
     'django_extensions',
     'polymorphic',
+    'crispy_forms'
 ]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap5'
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -158,7 +161,16 @@ LOGIN_REDIRECT_URL = '/ecomm'
 # console so we can copy and paste. we can use the following link to the django docs
 # to set up this reset link being sent to a user's actual email:
 # https://docs.djangoproject.com/en/4.0/topics/email/
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+SENDGRID_API_KEY = os.environ["SENDGRID_API_KEY"]
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_HOST_USER = 'apikey' # Exactly that. 
+EMAIL_HOST_PASSWORD = SENDGRID_API_KEY
+EMAIL_PORT = 587 # 25 or 587 (for unencrypted/TLS connections).
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = os.getenv('FROM_EMAIL')
 
 # stripe api keys
 STRIPE_PUBLIC_KEY = os.environ.get('STRIPE_PUBLIC_KEY')

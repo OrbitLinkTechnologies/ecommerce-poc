@@ -22,42 +22,47 @@
     </style>
     <div class="row">
       <div class="col-lg-6 pe-lg-4 mb-5 mb-lg-0">
-        <h5 class="mb-4">Delivery information</h5>
-        <form action="/ecomm/create-checkout-session/" method="POST">
+        <h5 class="mb-4">Shipping information</h5>
+        <form action="/ecomm/create-checkout-session/" class="registration_form_needs_validation" method="POST" novalidate>
           {% csrf_token %}
           <div class="row">
             <div class="col-md-6">
               <div class="form-outline mb-4">
-                <input type="text" id="input0x" class="form-control" value="{{ user.first_name }}" name="first_name"/>
+                <input type="text" id="input0x" class="form-control" value="{{ user.first_name }}" name="first_name" required/>
                 <label class="form-label" for="input0x">First name</label>
+                <div class="invalid-feedback">Enter your first name.</div>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-outline mb-4">
-                <input type="text" id="input1x" class="form-control" value="{{ user.last_name }}" name="last_name"/>
+                <input type="text" id="input1x" class="form-control" value="{{ user.last_name }}" name="last_name" required/>
                 <label class="form-label" for="input1x">Last name</label>
+                <div class="invalid-feedback">Enter your last name.</div>
               </div>
             </div>
           </div>
           <div class="row">
             <div class="col-md-6">
               <div class="form-outline mb-4">
-                <input type="email" id="input2x" class="form-control" value="{{ user.username }}" name="email"/>
+                <input type="email" id="input2x" class="form-control" value="{{ user.username }}" name="email" required/>
                 <label class="form-label" for="input2x">Email</label>
+                <div class="invalid-feedback">Enter your email.</div>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-outline mb-4">
-                <input type="tel" id="input3x" class="form-control" name="phone_number"/>
+                <input type="tel" id="input3x" class="form-control" name="phone_number" required/>
                 <label class="form-label" for="input3x">Phone</label>
+                <div class="invalid-feedback">Enter your phone number.</div>
               </div>
             </div>
           </div>
           <div class="row">
             <div class="col-md-6">
               <div class="form-outline mb-4">
-                <input type="text" id="input4x" class="form-control" name="address"/>
+                <input type="text" id="input4x" class="form-control" name="address" required/>
                 <label class="form-label" for="input4x">Address</label>
+                <div class="invalid-feedback">Enter your shipping address.</div>
               </div>
             </div>
             <div class="col-md-6">
@@ -70,26 +75,29 @@
           <div class="row">
             <div class="col-md-6">
               <div class="form-outline mb-4">
-                <input type="text" id="input6x" class="form-control" name="city"/>
+                <input type="text" id="input6x" class="form-control" name="city" required/>
                 <label class="form-label" for="input6x">City</label>
+                <div class="invalid-feedback">Enter your first name.</div>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-outline mb-4">
-                <input type="text" id="input7x" class="form-control" name="postal_code"/>
+                <input type="text" id="input7x" class="form-control" name="postal_code" required/>
                 <label class="form-label" for="input7x">Postal code</label>
+                <div class="invalid-feedback">Enter your postal/zip code.</div>
               </div>
             </div>
           </div>
           <div class="row mb-5 pb-4 mb-4 border-bottom border-2" style="border-color: hsl(0,0%, 96%) !important;">
             <div class="col-md-6">
               <div class="form-outline mb-4">
-                <input type="text" id="input8x" class="form-control" name="state_or_province"/>
+                <input type="text" id="input8x" class="form-control" name="state_or_province" required/>
                 <label class="form-label" for="input8x">State, province, etc.</label>
+                <div class="invalid-feedback">Enter your state/province.</div>
               </div>
             </div>
             <div class="col-md-6">
-              <select class="select" name="country">
+              <select class="select" name="country" required>
                 <option value="1">Italy</option>
                 <option value="2">Germany</option>
                 <option value="3">France</option>
@@ -98,12 +106,13 @@
                 <option value="6">Portugal</option>
               </select>
               <label class="form-label select-label">Country</label>
+              <div class="invalid-feedback">Select your Country.</div>
             </div>
           </div>
 
         <div class="mb-5">
           <div class="form-check mb-3">
-            <input class="form-check-input" type="radio" name="flexRadioDefault0X" id="radio0x" checked />
+            <input class="form-check-input" type="radio" name="flexRadioDefault0X" id="radio0x" required/>
             <label class="form-check-label" for="radio0x">
               <div>
                 <p class="mb-0">Standard home delivery</p>
@@ -112,7 +121,7 @@
             </label>
           </div>
           <div class="form-check mb-3">
-            <input class="form-check-input" type="radio" name="flexRadioDefault0X" id="radio1x" />
+            <input class="form-check-input" type="radio" name="flexRadioDefault0X" id="radio1x" required/>
             <label class="form-check-label" for="radio1x">
               <div>
                 <p class="mb-0">Express home delivery</p>
@@ -121,7 +130,7 @@
             </label>
           </div>
           <div class="form-check mb-0">
-            <input class="form-check-input" type="radio" name="flexRadioDefault0X" id="radio2x" />
+            <input class="form-check-input" type="radio" name="flexRadioDefault0X" id="radio2x" required/>
             <label class="form-check-label" for="radio2x">
               <div>
                 <p class="mb-0">Standard pick up location</p>
@@ -137,24 +146,27 @@
             <div class="form-check mb-2">
               <input class="form-check-input collapsed" type="radio" name="flexRadioDefault6x0"
                 id="flexRadioDefault17x0" data-mdb-toggle="collapse" data-mdb-target="#flush-collapseOnex0"
-                aria-expanded="false" aria-controls="flush-collapseOnex0" checked />
+                aria-expanded="false" aria-controls="flush-collapseOnex0" required/>
               <label class="form-check-label" for="flexRadioDefault17x0">
                 <div>
                   <p class="mb-1">Card</p>
+                </div>
+                <div>
+                  <p class="mb-1"><strong><em>Use credit card number 4242 4242 4242 4242 to test Stripe payment flow</em></strong></p>
                 </div>
               </label>
             </div>
           </div>
 
           <!-- start paypal payment -->
-          <div class="accordion-item">
+          <!--<div class="accordion-item">
             <div class="form-check">
               <input class="form-check-input collapsed" type="radio" name="flexRadioDefault6x0"
                 id="flexRadioDefault16x0" data-mdb-toggle="collapse" data-mdb-target="#flush-collapseTwox0"
                 aria-expanded="false" aria-controls="flush-collapseTwox0" />
               <label class="form-check-label" for="flexRadioDefault16x0"> PayPal </label>
             </div>
-          </div>
+          </div>-->
           <!-- end paypal payment -->
           
         </div>

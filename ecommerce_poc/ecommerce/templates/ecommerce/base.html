@@ -171,11 +171,19 @@
         >
         {% if user.is_authenticated %}
         <li>
+          {% if next %}
           <a class="dropdown-item" href="{% url 'logout' %}?next={{ request.path }}">Logout</a>
+          {% else %}
+          <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+          {% endif %}
         </li>
         {% else %}
         <li>
+          {% if next %}
           <a class="dropdown-item" href="{% url 'login' %}?next={{ request.path }}">Login</a>
+          {% else %}
+          <a class="dropdown-item" href="{% url 'login' %}">Login</a>
+          {% endif %}
         </li>
         {% endif %}
           <li>

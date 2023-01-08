@@ -199,6 +199,8 @@ class ProductReview(models.Model):
     # product, and divide by the count of ratings for that product
     # this seems to be sufficient for now
     product_rating = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     # NOTE: the reason that we create a foreign key for base product here is because
     # a review may only be associated with one product, but a product may have MANY reviews
     base_product_association = models.ForeignKey(BaseProduct, on_delete=models.CASCADE)
@@ -210,19 +212,23 @@ class ProductQuestion(models.Model):
     customer_name = models.CharField(max_length=128)
     customer_email = models.CharField(max_length=128)
     customer_question_text_body = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     # NOTE: we create a foreign key for base prodcut here because a
     # question may only be associated with one product, but a product,
     # may be associated with many questions
     base_product_association = models.ForeignKey(BaseProduct, on_delete=models.CASCADE)
     
     def __str__(self):
-        return 'question_' + self.questions_customer_email
+        return 'question_' + self.customer_email
 
 class ProductAnswer(models.Model):
     # we create the foreign key relationship here. This means that an Answer
     # can only be tied to one question, but a question can have many answers
     question = models.ForeignKey(ProductQuestion, on_delete=models.CASCADE)
     company_answer_text_body = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 # this is going to be a one-to-one model to extend the User model
 # NOTE: we need to do more investigation around OneToOneFields, ForeignKeys,
@@ -250,7 +256,13 @@ class Customer(models.Model):
 # that can only have one of an object from another table; in our case we will create the
 # foreign key restraint in the delivery model
 class Delivery(models.Model):
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    # NOTE: we are commenting out associating a customer with a delivery for now
+    # but it makes sense that customer and delivery are integrated in some way;
+    # we need to be able to track our customer relationships (CRM)
+    # customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    # NOTE: this FK relationship says that a cart item may only be associated with
+    # a single user, but a USER may be associated with ANY number of cart items, which makes sense
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     first_name = models.CharField(max_length=128)
     last_name = models.CharField(max_length=128)
     # I don't think that an email field for a delivery needs to be unique?
@@ -264,6 +276,19 @@ class Delivery(models.Model):
     postal_code = models.IntegerField()
     country = models.CharField(max_length=128, null=True, blank=True)
     state_or_province = models.CharField(max_length=128, null=True, blank=True)
+    # delivery needs to be associated with an invoice
+    stripe_invoice_id = models.CharField(max_length=128)
+    # need to store the session id of the checkout so we don't create duplicate deliveries
+    stripe_checkout_session_id = models.CharField(max_length=128)
+    # we have ensured that we only create a delivery if our customer successfully checks out
+    # and is returned a checkout session id and a stripe invoice id to tie a delivery and an invoice together
+    # we now need a field for our client to mark whether a delivery was completed or not
+    # NOTE: we need to figure out a way to archive this order in stripe and mark it as read only
+    # for future reference and compliance
+    delivery_completed = models.BooleanField(default=False)
+
+    def __str__(self):
+      return self.user.get_username() + '_delivery'
 
 class Price(models.Model):
   # NOTE: after doing the aforementioned research above, it may be
@@ -308,3 +333,6 @@ class CartItem(models.Model):
 
   def __str__(self):
         return self.user.get_username() + '_' + self.product.product_name + self.product.product_SKU
+
+# NOTE: we need to consider adding datetime_added/updated to all models that need
+# to withstand retention for compliance reasons
