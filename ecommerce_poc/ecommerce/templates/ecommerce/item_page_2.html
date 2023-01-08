@@ -1,0 +1,771 @@
+{% extends 'ecommerce/base.html' %}
+{% load static %}
+{% load my_tags %}
+{% block content %}
+
+<div class="container">
+  <ul class="nav nav-tabs mb-6" id="myTab0" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button
+        class="nav-link active"
+        id="home-tab0"
+        data-mdb-toggle="tab"
+        data-mdb-target="#home0"
+        type="button"
+        role="tab"
+        aria-controls="home"
+        aria-selected="true"
+      >
+        Overview
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button
+        class="nav-link"
+        id="profile-tab0"
+        data-mdb-toggle="tab"
+        data-mdb-target="#profile0"
+        type="button"
+        role="tab"
+        aria-controls="profile"
+        aria-selected="false"
+      >
+        Features
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button
+        class="nav-link"
+        id="contact-tab0"
+        data-mdb-toggle="tab"
+        data-mdb-target="#contact0"
+        type="button"
+        role="tab"
+        aria-controls="contact"
+        aria-selected="false"
+      >
+        Specifications
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button
+        class="nav-link"
+        id="manuals-tab0"
+        data-mdb-toggle="tab"
+        data-mdb-target="#manuals0"
+        type="button"
+        role="tab"
+        aria-controls="manuals"
+        aria-selected="true"
+      >
+        Manuals
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button
+        class="nav-link"
+        id="reviews-tab0"
+        data-mdb-toggle="tab"
+        data-mdb-target="#reviews0"
+        type="button"
+        role="tab"
+        aria-controls="reviews"
+        aria-selected="true"
+      >
+        Reviews
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button
+        class="nav-link"
+        id="questions-tab0"
+        data-mdb-toggle="tab"
+        data-mdb-target="#questions0"
+        type="button"
+        role="tab"
+        aria-controls="questions"
+        aria-selected="true"
+      >
+        Questions
+      </button>
+    </li>
+  </ul>
+  <div class="tab-content" id="myTabContent0">
+    <div
+      class="tab-pane fade show active"
+      id="home0"
+      role="tabpanel"
+      aria-labelledby="home-tab0"
+    >
+      <!-- Section: Product details -->
+    {% for object in build_variables %}  
+    {% for key, value in object.items %}
+    {% if key == 'item_set'%}
+    {% for item in value %}
+    <section class="mb-4">
+      <div class="row gx-lg-5">
+        <div class="col-md-6 mb-4 mb-md-0">
+          <!-- Gallery -->
+          <div
+               class="ecommerce-gallery vertical"
+               data-mdb-zoom-effect="true"
+               data-mdb-auto-height="true"
+               >
+            <div class="row gx-2 gx-lg-3">
+              <div class="col-2 col-lg-3">
+                <div
+                     class="multi-carousel vertical"
+                     data-mdb-breakpoint="false"
+                     data-mdb-items="4"
+                     style="height: 500px"
+                     >
+                  <div class="multi-carousel-inner">
+                    <div class="multi-carousel-item active mb-2">
+                      <img
+                           src="{{ item.product_photos }}"
+                           data-mdb-img="{{ item.product_photos }}"
+                           alt="Gallery image 1"
+                           class="active w-100 rounded"
+                           />
+                    </div>
+                    <div class="multi-carousel-item mb-2">
+                      <img
+                           src="{{ item.product_photos }}"
+                           data-mdb-img="{{ item.product_photos }}"
+                           alt="Gallery image 2"
+                           class="w-100 rounded"
+                           />
+                    </div>
+                    <div class="multi-carousel-item mb-2">
+                      <img
+                           src="{{ item.product_photos }}"
+                           data-mdb-img="{{ item.product_photos }}"
+                           alt="Gallery image 3"
+                           class="w-100 rounded"
+                           />
+                    </div>
+                    <div class="multi-carousel-item mb-2">
+                      <img
+                           src="{{ item.product_photos }}"
+                           data-mdb-img="{{ item.product_photos }}"
+                           alt="Gallery image 4"
+                           class="w-100 rounded"
+                           />
+                    </div>
+                  </div>
+                  <button
+                          class="carousel-control-prev"
+                          tabindex="0"
+                          type="button"
+                          data-mdb-slide="prev"
+                          >
+                    <span
+                          class="carousel-control-prev-icon"
+                          aria-hidden="true"
+                          ></span>
+                  </button>
+                  <button
+                          class="carousel-control-next"
+                          tabindex="0"
+                          type="button"
+                          data-mdb-slide="next"
+                          >
+                    <span
+                          class="carousel-control-next-icon"
+                          aria-hidden="true"
+                          ></span>
+                  </button>
+                </div>
+              </div>
+              <div class="col-10 col-lg-9">
+                <div class="lightbox">
+                  <img
+                       src="{{ item.product_photos }}"
+                       alt="Gallery image 1"
+                       class="
+                              ecommerce-gallery-main-img
+                              active
+                              w-100
+                              rounded-4
+                              "
+                       />
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Gallery -->
+        </div>
+  
+        <div class="col-md-6 mb-4 mb-md-0">
+          <!-- Details -->
+          <div>
+            <h1 class="fw-bold mb-3 h5">{{ item.product_name }}</h1>
+            <a href="" class="text-muted mb-3"
+               ><p class="mb-2 text-uppercase small">{{ item.product_category }}</p></a
+              >
+  
+            <!-- start product overview reviews -->
+            <div class="d-flex text-primary">
+              <ul
+                  class="rating mb-3 me-2"
+                  data-mdb-toggle="rating"
+                  data-mdb-readonly="true"
+                  data-mdb-value="{{ average_rating }}"
+                  >
+                <li>
+                  <i
+                     class="far fa-star fa-sm text-primary ps-0"
+                     title="Bad"
+                     ></i>
+                </li>
+                <li>
+                  <i
+                     class="far fa-star fa-sm text-primary"
+                     title="Poor"
+                     ></i>
+                </li>
+                <li>
+                  <i class="far fa-star fa-sm text-primary" title="OK"></i>
+                </li>
+                <li>
+                  <i
+                     class="far fa-star fa-sm text-primary"
+                     title="Good"
+                     ></i>
+                </li>
+                <li>
+                  <i
+                     class="far fa-star fa-sm text-primary"
+                     title="Excellent"
+                     ></i>
+                </li>
+              </ul>
+              <a href=""><strong class="me-2">{{ average_rating }}/5</strong>({{ rating_count }})</a>
+            </div>
+            <!-- end product overview reviews -->
+  
+            <h5 class="mb-3">
+              <s class="text-muted me-2 small align-middle">${{ item.price_set.get.price|divide:100 }}</s
+                ><span class="align-middle">${{ item.price_set.get.price|divide:100 }}</span>
+            </h5>
+  
+            <p class="text-muted">
+              {{ item.product_overview }}
+            </p>
+  
+            <div class="table-responsive">
+              <table class="table table-sm table-borderless mb-0">
+                <tbody>
+                  <tr>
+                    <th class="ps-0 w-25" scope="row">
+                      <strong>Manufacturer</strong>
+                    </th>
+                    <td>{{ item.product_manufacturer }}</td>
+                  </tr>
+                  <tr>
+                    <th class="ps-0 w-25" scope="row">
+                      <strong>Brand</strong>
+                    </th>
+                    <td>{{ item.product_brand }}</td>
+                  </tr>
+                  <tr>
+                    <th class="ps-0 w-25" scope="row">
+                      <strong>SKU</strong>
+                    </th>
+                    <td>{{ item.product_SKU }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+  
+            <hr class="my-5" />
+  
+            <form method="post" action="/ecomm/add_item_to_cart/{{ item.id }}/">
+                {% csrf_token %}
+              <div class="row">
+                <!-- Quantity -->
+                <div class="col-md-6 mb-4">
+                  <div class="form-outline">
+                    <input
+                           type="number"
+                           id="typeNumber"
+                           class="form-control"
+                           value="1"
+                           min="1"
+                           name="item_page_quantity_to_add"
+                           />
+                    <label class="form-label" for="typeNumber"
+                           >Quantity</label
+                      >
+                  </div>
+                </div>
+              </div>
+  
+              <input
+                      type="submit"
+                      class="btn btn-primary btn-rounded me-2"
+                      value="Add to cart"
+                      /> <!-- added the self closing tag here; originally it was just a <input> tag instead of <input/> -->
+              <!-- commented this out for simplicity, can consider implementing a favoriting feature in the future -->
+              <!-- <button
+                      href="#!"
+                      type="button"
+                      class="btn btn-danger btn-floating"
+                      data-mdb-toggle="tooltip"
+                      title="Add to wishlist"
+                      >
+                <i class="fas fa-heart"></i>
+              </button> -->
+            </form>
+          </div>
+          <!-- Details -->
+        </div>
+      </div>
+    </section>
+    {% endfor %}
+    {% endif %}
+    {% endfor %}
+    {% endfor %}
+    <!-- Section: Product details -->
+    </div>
+    <div class="tab-pane fade" id="profile0" role="tabpanel" aria-labelledby="profile-tab0">
+      <!-- start dynamic feature component -->
+    <div class="row">
+      {% for object in build_variables %}
+      {% for key, value in object.items %}
+      {% if key == 'item_set' or key == 'category' %}
+      {% else %}
+      <div class="col-xl-6 mb-4">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge rounded-pill badge-info">{{ key }}</span>
+              <div class="d-flex align-items-center">
+                <div class="ms-3">
+                  <p class="fw-bold mb-1">{{ value }}</p>
+                  <!--<p class="text-muted mb-0">michael.bale@gmail.com</p>-->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+      {% endfor %}
+      {% endfor %}
+    </div>
+    <!-- end dynamic feature component -->
+    </div>
+    <div class="tab-pane fade" id="contact0" role="tabpanel" aria-labelledby="contact-tab0">
+    <!-- start dynamic feature component -->
+    <div class="row">
+      <div class="col-xl-6 mb-4">
+        <div class="card">
+          <div class="card-body">
+            <div class="ms-4 d-flex align-items-center">
+              <span class="badge rounded-pill badge-info">Product Specifications</span>
+              <div class="ms-5 me-5 d-flex align-items-center">
+                  <ul class="list-group list-group-light">
+                  {% for object in product_specifications %}
+                  {% for key, value in object.items %}
+                  {% if key != 'Package Contents' %}
+                  <li class="list-group-item border-0"><strong>{{ key }}:    </strong>{{ value }}</li>
+                  {% endif %}
+                  {% endfor %}
+                  {% endfor %}
+                  </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    <!-- end dynamic feature component -->
+    <!-- start dynamic feature component -->
+      <div class="col-xl-6 mb-4">
+        <div class="card">
+          <div class="card-body">
+            <div class="ms-4 d-flex align-items-center">
+              <span class="badge rounded-pill badge-info">Package Contents</span>
+              <div class="ms-5 me-5 d-flex align-items-center">
+                <ul class="list-group list-group-light">
+                {% for outer_list in package_contents %}
+                {% for item in outer_list %}
+                <!-- literally the entire reason that my page was all misaligned was because
+                I didn't have a closing tag for the strong tag undernearth this comment!!!
+                We need to look up a mechanism for finding starting and closing tags in a
+                HTML document. NOTE: I did notice in firefox's developer tool's inspection tool
+                that there were a bunch of bundled up strong tags. When I deleted this node in the
+                browser inspector tool, all the added space underneath my elements disappeared!
+                It's possible I could use this methodology in future scenarios to diagnose
+                the problem area with similar issues in the future! -->
+                <li class="list-group-item border-0"><strong>{{ item }}</strong></li>
+                {% endfor %}
+                {% endfor %}
+                </ul>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- end dynamic feature component -->
+    </div>
+    <div class="tab-pane fade" id="manuals0" role="tabpanel" aria-labelledby="manuals-tab0">
+        {% for object in build_variables %}
+        {% for key, value in object.items %}
+        {% if key == 'item_set'%}
+        {% for item in value %}
+        {% if item.product_manuals_and_documentation == None %}
+        <div class="alert alert-dismissible fade show mt-5" role="alert" data-mdb-color="info">
+          <!-- class ms-4 (margin-start-4) was needed here to align the text within the alert -->
+          <strong class="ms-4">Sorry, there are no manuals for this item.</strong>
+        </div>
+        {% else %}
+        <a class="mt-5" href="{{ item.product_manuals_and_documentation }}"><i class="fa-solid fa-file-pdf me-3 fa-5x"></i><strong>User's Manual</strong></a>
+        {% endif %}
+        {% endfor %}
+        {% endif %}
+        {% endfor %}
+        {% endfor %}
+    </div>
+    <div class="tab-pane fade" id="reviews0" role="tabpanel" aria-labelledby="reviews-tab0">
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Leave a Review</h5>
+        <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <!-- start modal body -->
+      <div class="modal-body">
+        <!-- start leave a review component -->
+      <div class="row">
+        <div class="col-md-9 col-lg-7 col-xl-5 mx-auto text-center">
+          <form method="post" class="registration_form_needs_validation" action="/ecomm/leave_review/{{ item_id }}/{{ category }}/" novalidate>
+            {% csrf_token %}
+            <div class="row">
+              <div class="col-md-6">
+                <label class="form-label">Rating</label>
+              </div>
+              <div class="col-md-6">
+                <!-- start leave review -->
+                <!-- I need to find a way to make sure that someone doesn't de-select the review rating with JavaScript -->
+                <div class="d-flex text-primary">
+                  <input type="hidden" id="get_leave_review_value" name="product_rating">
+                  <ul
+                      class="rating mb-3 me-2"
+                      data-mdb-toggle="rating"
+                      data-mdb-value="5"
+                      >
+                    <li>
+                      <!-- I believe that we can use data-mdb-value for all of these list items, instead of reading their
+                           textContent, which requires us to have a numerical value by the star. -->
+                      <i
+                         class="far fa-star fa-sm text-primary ps-0"
+                         title="Bad"
+                         onclick="get_review_value(this)"
+                         value="1"
+                         >1</i>
+                    </li>
+                    <li>
+                      <i
+                         class="far fa-star fa-sm text-primary"
+                         title="Poor"
+                         onclick="get_review_value(this)"
+                         value="2"
+                         >2</i>
+                    </li>
+                    <li>
+                      <i class="far fa-star fa-sm text-primary"
+                         title="OK"
+                         onclick="get_review_value(this)"
+                         value="3"
+                         >3</i>
+                    </li>
+                    <li>
+                      <i
+                         class="far fa-star fa-sm text-primary"
+                         title="Good"
+                         onclick="get_review_value(this)"
+                         value="4"
+                         >4</i>
+                    </li>
+                    <li>
+                      <i
+                         class="far fa-star fa-sm text-primary"
+                         title="Excellent"
+                         onclick="get_review_value(this)"
+                         value="5"
+                         >5</i>
+                    </li>
+                  </ul>
+                </div>
+                <!-- end leave review -->
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-outline mb-4">
+                  <input type="text" id="contactBlockName1" class="form-control" name="review_title" required/>
+                  <div class="invalid-feedback">Please provide a title.</div>
+                  <label class="form-label" for="contactBlockName1">Review Title</label>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-outline mb-4">
+                  <textarea class="form-control" id="contactBlockMessage4" rows="4" name="review_text_body" required></textarea>
+                 <div class="invalid-feedback">Please provide your experience with this product.</div>
+                  <label class="form-label" for="contactBlockMessage4">Review</label>
+                </div>
+              </div>
+            </div>
+            <div class="form-outline mb-4">
+                  <input type="text" id="contactBlockName5" class="form-control" name="customer_name" required/>
+                  <label class="form-label" for="contactBlockName5">Name (Public)</label>
+                 <div class="invalid-feedback">Please provide your name.</div>
+            </div>
+            <div class="form-outline mb-4">
+                  <input type="email" id="contactBlockEmail2" class="form-control" name="customer_email" required/>
+                  <label class="form-label" for="contactBlockEmail2">Email (Private)</label>
+                  <div class="invalid-feedback">Please provide your email.</div>
+            </div>
+            <!-- Checkbox -->
+            <div class="form-check d-flex justify-content-center mb-4">
+              <input class="form-check-input me-2" type="checkbox" value="" id="form5Example3" required/>
+              <label class="form-check-label" for="form5Example3">
+                I have read and agree to the terms
+              </label>
+            </div>
+        </div>
+      </div>
+      <!-- end leave a review component -->
+      </div>
+      <!-- end modal body -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Submit Review</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+<!-- Modal -->
+<!--Section: Product Reviews -->
+<section class="mb-10">
+  <div class="row justify-content-center mx-auto">
+    <div class="col-lg-10 col-xl-10">
+      <div class="col-lg-10 col-xl-10">
+        <!-- start review data -->
+      <h2 class="fw-bold mb-2">Reviews ({{ rating_count }})</h2>
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <!-- start product overview reviews -->
+        <div class="d-flex text-primary">
+          <ul
+              class="rating mb-3 me-2"
+              data-mdb-toggle="rating"
+              data-mdb-readonly="true"
+              data-mdb-value="{{ average_rating }}"
+              >
+            <li>
+              <i
+                 class="far fa-star fa-sm text-primary ps-0"
+                 title="Bad"
+                 ></i>
+            </li>
+            <li>
+              <i
+                 class="far fa-star fa-sm text-primary"
+                 title="Poor"
+                 ></i>
+            </li>
+            <li>
+              <i class="far fa-star fa-sm text-primary" title="OK"></i>
+            </li>
+            <li>
+              <i
+                 class="far fa-star fa-sm text-primary"
+                 title="Good"
+                 ></i>
+            </li>
+            <li>
+              <i
+                 class="far fa-star fa-sm text-primary"
+                 title="Excellent"
+                 ></i>
+            </li>
+          </ul>
+          <a href=""><strong class="me-2">{{ average_rating }}/5</strong>({{ rating_count }})</a>
+        </div>
+        <!-- end product overview reviews -->
+        <!--<h4 class="mb-0">{{ average_rating }}<span class="text-muted">/5</span></h4>
+        <ul class="list-unstyled d-flex flex-row mb-0">
+          <li><i class="fas fa-star text-primary"></i></li>
+          <li><i class="fas fa-star text-primary"></i></li>
+          <li><i class="fas fa-star text-primary"></i></li>
+          <li><i class="fas fa-star text-primary"></i></li>
+          <li><i class="fas fa-star text-primary"></i></li>
+        </ul>-->
+      </div>
+      <!-- start individual rating count -->
+      <div class="d-flex flex-row align-items-center">
+        <p class="mb-0 me-2">5</p>
+        <div class="progress w-100 ms-1">
+          <div class="progress-bar bg-primary" role="progressbar" style="width: {{ fives_ratings }}%;" aria-valuenow="{{ fives_ratings }}" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+        <p class="mb-0 ms-2">({{ fives_ratings }})</p>
+      </div>
+      <div class="d-flex flex-row align-items-center">
+        <p class="mb-0 me-2">4</p>
+        <div class="progress w-100 ms-1">
+          <div class="progress-bar bg-primary" role="progressbar" style="width: {{ fours_ratings }}%;" aria-valuenow="{{ fours_ratings }}" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+        <p class="mb-0 ms-2">({{ fours_ratings }})</p>
+      </div>
+      <div class="d-flex flex-row align-items-center">
+        <p class="mb-0 me-2">3</p>
+        <div class="progress w-100 ms-1">
+          <div class="progress-bar" role="progressbar" style="width: {{ threes_ratings }}%;" aria-valuenow="{{ threes_ratings }}" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+        <p class="mb-0 ms-2">({{ threes_ratings }})</p>
+      </div>
+      <div class="d-flex flex-row align-items-center">
+        <p class="mb-0 me-2">2</p>
+        <div class="progress w-100 ms-1">
+          <div class="progress-bar" role="progressbar" style="width: {{ twos_ratings }}%;" aria-valuenow="{{ twos_ratings }}" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+        <p class="mb-0 ms-2">({{ twos_ratings }})</p>
+      </div>
+      <div class="d-flex flex-row align-items-center mb-4">
+        <p class="mb-0 me-2">1</p>
+        <div class="progress w-100 ms-1">
+          <div class="progress-bar" role="progressbar" style="width: {{ ones_ratings }}%;" aria-valuenow="{{ ones_ratings }}" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+        <p class="mb-0 ms-2">({{ ones_ratings }})</p>
+      </div>
+      <!-- end individual rating count -->
+      <!-- end review data -->
+      </div>
+      <!-- Button trigger modal -->
+      <button type="button" class="btn btn-primary mb-10" data-mdb-toggle="modal" data-mdb-target="#exampleModal">
+        Write a Review
+      </button>
+      <!-- Button trigger modal -->
+      <!-- start dynamic reviews -->
+      {% for review in product_reviews %}
+      <div class="d-flex mb-4 pb-2">
+        <div class="flex-shrink-0 me-md-4 me-3">
+          <!-- TODO: pull the profile pictures from the user associated with the review, this is just temporary for now -->
+          <img src="{% static 'images/profile_1.webp' %}" class="rounded-circle shadow-4" style="width: 55px; height: 55px;" alt="Generic placeholder image">
+        </div>
+        <div class="flex-grow-1 border-bottom">
+          <h6 class="mb-1">{{ review.customer_name }}</h6>
+          <p class="text-muted">{{ review.updated_at }}</p>
+          <ul class="list-unstyled d-flex flex-row"
+              data-mdb-toggle="rating"
+              data-mdb-readonly="true"
+              data-mdb-value="{{ review.product_rating }}">
+            <li><i class="fas fa-star fa-sm text-warning me-1"></i></li>
+            <li><i class="fas fa-star fa-sm text-warning me-1"></i></li>
+            <li><i class="fas fa-star fa-sm text-warning me-1"></i></li>
+            <li><i class="fas fa-star fa-sm text-warning me-1"></i></li>
+            <li><i class="fas fa-star fa-sm text-warning"></i></li>
+          </ul>
+          <p class="text-muted mb-4">{{ review.review_text_body }}</p>
+        </div>
+      </div>
+      {% endfor %}
+      <!-- end dynamic reviews -->
+    </div>
+  </div>
+</section>
+<!--Section: Product Reviews -->
+</div>
+<div class="tab-pane fade" id="questions0" role="tabpanel" aria-labelledby="questions-tab0">
+<!-- Question Modal -->
+<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel2">Ask a Question</h5>
+        <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- start leave a review component -->
+<div class="row">
+  <div class="col-md-9 col-lg-7 col-xl-5 mx-auto text-center">
+    <form method="post" class="registration_form_needs_validation" action="/ecomm/leave_question/{{ item_id }}/{{ category }}/" novalidate>
+      {% csrf_token %}
+      <div class="form-outline mb-4 col-12">
+            <input type="text" id="leave_question_name" class="form-control" name="customer_name" required/>
+            <label class="form-label" for="leave_question_name">Name (Public)</label>
+            <div class="invalid-feedback">Please provide your name.</div>
+      </div>
+      <div class="form-outline mb-4">
+            <input type="email" id="leave_question_email" class="form-control" name="customer_email" required/>
+            <label class="form-label" for="leave_question_email">Email (Private)</label>
+            <div class="invalid-feedback">Please provide your email.</div>
+      </div>
+      <div class="form-outline mb-4">
+        <textarea class="form-control" id="leave_question_text" rows="4" name="customer_question_text_body" required></textarea>
+        <label class="form-label" for="leave_question_text">Question</label>
+        <div class="invalid-feedback">Please provide your question.</div>
+      </div>
+      <!-- Checkbox -->
+      <div class="form-check d-flex justify-content-center mb-4">
+        <input class="form-check-input me-2" type="checkbox" value="" id="leave_question_checkbox" required/>
+        <label class="form-check-label" for="leave_question_checkbox">
+          I have read and agree to the terms
+        </label>
+      </div>
+  </div>
+</div>
+<!-- end leave a review component -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Submit Question</button>
+      </div>
+      <!-- add end form tag under this comment -->
+    </form>
+    </div>
+  </div>
+</div>
+<!-- Question Modal -->
+<!--Section: Product Questions -->
+<section class="mb-10">
+  <div class="row justify-content-center mx-auto">
+    <div class="col-lg-10 col-xl-10">
+      <div class="col-lg-10 col-xl-10">
+      <h2 class="fw-bold mb-2">Questions</h2>
+      </div>
+      <!-- Question Button trigger modal -->
+      <button type="button" class="btn btn-primary mb-10" data-mdb-toggle="modal" data-mdb-target="#exampleModal2">
+        Ask a Question
+      </button>
+      <!-- Question Button trigger modal -->
+      <!-- start dynamic reviews -->
+      {% for question in product_questions %}
+      <div class="d-flex mb-4 pb-2">
+        <div class="flex-shrink-0 me-md-4 me-3">
+          <!-- TODO: pull the profile pictures from the user associated with the review, this is just temporary for now -->
+          <img src="{% static 'images/profile_1.webp' %}" class="rounded-circle shadow-4" style="width: 55px; height: 55px;" alt="Generic placeholder image">
+        </div>
+        <div class="flex-grow-1 border-bottom">
+          <h6 class="mb-1">{{ question.customer_name }}</h6>
+          <p class="text-muted">{{ question.updated_at }}</p>
+          <p class="text-muted mb-4">{{ question.customer_question_text_body }}</p>
+        </div>
+      </div>
+      {% endfor %}
+      <!-- end dynamic reviews -->
+    </div>
+  </div>
+</section>
+<!--Section: Product Reviews -->
+</div>
+  </div>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,266 @@
+{% extends 'ecommerce/base.html' %}
+{% load my_tags %}
+{% block content %}
+
+<!-- start filter container -->
+<div class="d-grid gap-2 d-md-flex justify-content-md-start mb-5 container">
+  <!--start drop-down filter 1-->
+  <div class="dropdown mb-1">
+    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
+    data-mdb-toggle="dropdown" aria-expanded="false">
+    Brand
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+      {% for product in all_product_brands %}
+        <!-- start dynamic search criteria -->
+        <li class="page-item">
+            <a id="{{ product.product_brand }}-id" class="dropdown-item">
+                <div class="form-check">
+                    <input onclick="changeHref(this)" class="form-check-input" type="checkbox" name="product_brand"  value="{{ product.product_brand }}" id="{{ product.product_brand }}{{ forloop.counter }}" 
+                    {% if product.product_brand in product_brand %} checked {% else %} "" {% endif %}
+                    />
+                    <label class="form-check-label" for="{{ product.product_brand }}{{ forloop.counter }}">{{ product.product_brand }}</label>
+                </div>
+            </a>
+        </li>
+        <!-- end dynamic search criteria -->
+        {% endfor %}
+        <!-- start script for filter search criteria -->
+        <script>
+          function changeHref(element){
+            console.log(element.id)
+            if(document.getElementById(element.id).checked){
+              // document.getElementById(element.id).href="?page={{ response.number }}&product_brand=" + element.value
+              /*
+                for whatever reason, we had to use window location to get our filter to work,
+                even though we had it working with just straight onclick and href manipulation
+                in single and dual use cases
+              */
+             /*
+                we need to look into using javascript to clean up the url, whenever a filter is unset;
+                what we have now is working, but it is messy
+             */
+              {% if param_list %}
+                window.location="{{ request.path }}?{% for param in param_list %}{% for key, value in param.items %}{{ key }}={{ value }}&{% endfor %}{% endfor %}" + element.name + "=" + element.value
+              {% else %}
+                window.location="{{ request.get_full_path }}?page={{ response.number }}&" + element.name + "=" + element.value
+              {% endif %}
+            }
+            if(!document.getElementById(element.id).checked){
+              // document.getElementById(element.id).href="?page={{ response.number }}&product_brand=" + element.value
+              /*
+                for whatever reason, we had to use window location to get our filter to work,
+                even though we had it working with just straight onclick and href manipulation
+                in single and dual use cases
+              */
+              {% if param_list %}
+                window.location="{{ request.path }}?{% for param in param_list %}{% for key, value in param.items %}{{ key }}={{ value }}&{% endfor %}{% endfor %}" + element.name + "="
+              {% else %}
+                window.location="{{ request.get_full_path }}?page={{ response.number }}&" + element.name + "="
+              {% endif %}
+            }
+          }
+
+          function clearAllFilters(element){
+            {% if request.GET %}
+              window.location="{{ request.path }}"
+            {% else %}
+            {% endif %}
+          }
+        </script>
+        <!-- end script for filter search criteria -->
+        <!--<li><hr class="dropdown-divider" /></li>-->
+    </ul>
+  </div>
+  <!--end drop-down filter 1-->
+  <!--start drop-down filter 2-->
+  <!-- start generator fuel type conditional -->
+  {% if category == 'generator' %}
+  <div class="dropdown">
+    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
+    data-mdb-toggle="dropdown" aria-expanded="false">
+    Fuel
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        {% for product in all_product_fuel_types %}
+        <!-- start dynamic search criteria -->
+        <li class="page-item">
+          <a id="{{ product.generator_fuel_type }}-id" class="dropdown-item">
+              <div class="form-check">
+                  <input onclick="changeHref(this)" class="form-check-input" type="checkbox" name="generator_fuel_type"  value="{{ product.generator_fuel_type }}" id="{{ product.generator_fuel_type }}{{ forloop.counter }}" 
+                  {% if product.generator_fuel_type in generator_fuel_type %} checked {% else %} "" {% endif %}
+                  />
+                  <label class="form-check-label" for="{{ product.generator_fuel_type }}{{ forloop.counter }}">{{ product.generator_fuel_type }}</label>
+              </div>
+          </a>
+        </li>
+        <!-- end dynamic search criteria -->
+        {% endfor %}
+        <!--<li><hr class="dropdown-divider" /></li>-->
+    </ul>
+  </div>
+  {% endif %}
+  <!-- end generator fuel type conditional -->
+  <!--end drop-down filter 2-->
+  <!--start GENERIC TYPE drop-down filter 3-->
+  <div class="dropdown">
+    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
+    data-mdb-toggle="dropdown" aria-expanded="false">
+    Type
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        {% for product in all_product_classification_types %}
+        <!-- start dynamic search criteria -->
+        <li class="page-item">
+          <a id="{{ product.product_classification_type }}-id" class="dropdown-item">
+              <div class="form-check">
+                  <input onclick="changeHref(this)" class="form-check-input" type="checkbox" name="{{ category }}_classification_type"  value="{{ product.product_classification_type }}" id="{{ product.product_classification_type }}{{ forloop.counter }}" 
+                  {% if product.product_classification_type in product_classification_type %} checked {% else %} "" {% endif %}
+                  />
+                  <label class="form-check-label" for="{{ product.product_classification_type }}{{ forloop.counter }}">{{ product.product_classification_type }}</label>
+              </div>
+          </a>
+        </li>
+        <!-- end dynamic search criteria -->
+        {% endfor %}
+        <!--<li><hr class="dropdown-divider" /></li>-->
+    </ul>
+  </div>
+  <!--end GENERIC TYPE drop-down filter 3-->
+    <!--start drop-down filter 4-->
+    <div class="dropdown">
+      <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
+      data-mdb-toggle="dropdown" aria-expanded="false">
+      Condition
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          {% for product in all_product_condition_types %}
+          <!-- start dynamic search criteria -->
+          <li class="page-item">
+            <a id="{{ product.product_condition }}-id" class="dropdown-item">
+                <div class="form-check">
+                    <input onclick="changeHref(this)" class="form-check-input" type="checkbox" name="product_condition"  value="{{ product.product_condition }}" id="{{ product.product_condition }}{{ forloop.counter }}" 
+                    {% if product.product_condition in product_condition %} checked {% else %} "" {% endif %}
+                    />
+                    <label class="form-check-label" for="{{ product.product_condition }}{{ forloop.counter }}">{{ product.product_condition }}</label>
+                </div>
+            </a>
+          </li>
+          <!-- end dynamic search criteria -->
+          {% endfor %}
+          <!--<li><hr class="dropdown-divider" /></li>-->
+      </ul>
+    </div>
+    <!--end drop-down filter 4-->
+    <!-- start clear all filters button -->
+    <a class="btn btn-warning" type="button" id="clearAllFiltersButton" onclick="clearAllFilters(this)">
+      Clear All Filters
+    </a>
+    <!-- end clear all filters button -->
+</div>
+<!-- end filter container -->
+
+<div class="container mb-5">
+    {% for product in response %} 
+    {% if forloop.counter|modulo:4 == 1 %}
+        <div class="row mb-5">
+    {% endif %}
+
+    <!-- start we need to make these elements more dynamic, like we did with the filters above -->
+
+        <!-- start generator query condition -->
+        {% if product.product_category == 'generator' %}
+        <div class="col-sm-3 mb-5">
+          <div>
+            <!-- notice how we used img-fluid below, this allows the image to adjust as we change the size of the viewport dynamically
+                 we need to look at doing this in our navbar as well, the elements within it are not very responsive -->
+            <a href="/ecomm/item/{{ product.id }}/{{ category }}/"><img class="img-fluid" src="{{ product.product_photos }}" style="background-color: transparent; height: 260px; width: 260px">
+            <br>
+            {{ product.product_name }}    {{ product.generator_classification_type }}    {{ product.generator_fuel_type }}    {{ product.product_brand }}    {{ product.generator_continuous_wattage_value }}
+            <div class="w-100 offset-md-3"><h6 class="text-uppercase fw-bold"><mark>${{ product.price_set.get.price|divide:100 }}</mark></h6></div>
+            </a> <!-- notice how we access the related name field (foreign key, which is price) by using
+            the Model Name, in this case "Price" with _set and using .get to grab the price field -->
+          </div>
+        </div>
+        {% endif %}
+        <!-- end generator query condition -->
+
+        <!-- start game_console query condition -->
+        {% if product.product_category == 'game_console' %}
+        <div class="col-sm-3 mb-5">
+            <a href="/ecomm/item/{{ product.id }}/{{ category }}/"><img src="{{ product.product_photos }}" style="height: 260px; width: 260px"> <!-- it is possible to use "mix-blend-mode: multiply;" on the style tag for the image,
+            however, it only works for images with a white-background and there are some caveats; read about it in this SO thread: https://stackoverflow.com/questions/12662759/make-white-background-of-image-transparent-in-css -->
+            <br>
+            {{ product.product_name }}    {{ product.game_console_classification_type }}    {{ product.product_brand }}
+            <div class="w-100 offset-md-3"><h6 class="text-uppercase fw-bold"><mark>${{ product.price_set.get.price|divide:100 }}</mark></h6></div>
+            </a> <!-- notice how we access the related name field (foreign key, which is price) by using
+            the Model Name, in this case "Price" with _set and using .get to grab the price field -->
+        </div>
+        {% endif %}
+        <!-- end game_console query condition -->
+
+        <!-- start home_decor query condition -->
+        {% if product.product_category == 'home_decor' %}
+        <div class="col-sm-3 mb-5">
+            <a href="/ecomm/item/{{ product.id }}/{{ category }}/"><img src="{{ product.product_photos }}" style="height: 260px; width: 260px">
+            <br>
+            {{ product.product_name }}    {{ product.home_decor_classification_type }}    {{ product.product_brand }}
+            <div class="w-100 offset-md-3"><h6 class="text-uppercase fw-bold"><mark>${{ product.price_set.get.price|divide:100 }}</mark></h6></div>
+            </a> <!-- notice how we access the related name field (foreign key, which is price) by using
+            the Model Name, in this case "Price" with _set and using .get to grab the price field -->
+        </div>
+        {% endif %}
+        <!-- end home_decor query condition -->
+
+         <!-- start sports_nutrition query condition -->
+         {% if product.product_category == 'sports_nutrition' %}
+         <div class="col-sm-3 mb-5">
+             <a href="/ecomm/item/{{ product.id }}/{{ category }}/"><img src="{{ product.product_photos }}" style="height: 260px; width: 260px">
+             <br>
+             {{ product.product_name }}    {{ product.sporsts_nutrition_classification_type }}    {{ product.product_brand }}
+             <div class="w-100 offset-md-3"><h6 class="text-uppercase fw-bold"><mark>${{ product.price_set.get.price|divide:100 }}</mark></h6></div>
+             </a> <!-- notice how we access the related name field (foreign key, which is price) by using
+             the Model Name, in this case "Price" with _set and using .get to grab the price field -->
+         </div>
+         {% endif %}
+         <!-- end sports_nutrition query condition -->
+
+         <!-- start kitchen_and_home_appliance query condition -->
+         {% if product.product_category == 'kitchen_and_home_appliance' %}
+         <div class="col-sm-3 mb-5">
+             <a href="/ecomm/item/{{ product.id }}/{{ category }}/"><img src="{{ product.product_photos }}" style="height: 260px; width: 260px">
+             <br>
+             {{ product.product_name }}    {{ product.kitchen_and_home_appliance_classification_type }}    {{ product.product_brand }}
+             <div class="w-100 offset-md-3"><h6 class="text-uppercase fw-bold"><mark>${{ product.price_set.get.price|divide:100 }}</mark></h6></div>
+             </a> <!-- notice how we access the related name field (foreign key, which is price) by using
+             the Model Name, in this case "Price" with _set and using .get to grab the price field -->
+         </div>
+         {% endif %}
+         <!-- end kitchen_and_home_appliance query condition -->
+
+        <!-- end we need to make these elements more dynamic, like we did with the filters above -->
+
+    {% if forloop.last or forloop.counter|modulo:4 == 0 %}
+    {% if forloop.last %}
+    <div class="float-end mt-5 mb-5">
+        <ul class="pagination">
+            {% if response.has_previous %}
+            <li class="page-item"><a href="?{% param_replace page=1 %}" class="page-link">&laquo; first</a></li>
+            <li class="page-item"><a href="?{% param_replace page=response.previous_page_number %}" class="page-link">previous</a></li>
+            {% endif %}
+            <li class="page-item"><a href="#" class="page-link">Page {{ response.number }} of {{ response.paginator.num_pages }}</a></li>
+            {% if response.has_next %}
+            <li class="page-item"><a href="?{% param_replace page=response.next_page_number %}" class="page-link">next</a></li>
+            <li class="page-item"><a href="?{ param_replace page=response.paginator.num_pages %}" class="page-link">last &raquo;</a></li>
+            {% endif %}
+        </ul>
+    </div>
+    {% endif %}
+        </div>
+    {% endif %}
+
+    {% endfor %}
+
+</div>
+
+{% endblock content %}

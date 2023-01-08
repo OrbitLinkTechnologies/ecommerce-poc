@@ -1,0 +1,661 @@
+<!-- start list type card component -->
+<div class="row">
+  <div class="col-xl-6 mb-4">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="d-flex align-items-center">
+            <img
+              src="https://mdbootstrap.com/img/new/avatars/3.jpg"
+              alt=""
+              style="width: 45px; height: 45px"
+              class="rounded-circle"
+            />
+            <div class="ms-3">
+              <p class="fw-bold mb-1">Michael Bale</p>
+              <p class="text-muted mb-0">michael.bale@gmail.com</p>
+            </div>
+          </div>
+          <span class="badge rounded-pill badge-danger">Removed</span>
+        </div>
+      </div>
+      <div
+        class="card-footer border-0 bg-light p-2 d-flex justify-content-around"
+      >
+        <a
+          class="btn btn-link m-0 text-reset"
+          href="#"
+          role="button"
+          data-ripple-color="primary"
+          >Message<i class="fas fa-envelope ms-2"></i
+        ></a>
+        <a
+          class="btn btn-link m-0 text-reset"
+          href="#"
+          role="button"
+          data-ripple-color="primary"
+          >Call<i class="fas fa-phone ms-2"></i
+        ></a>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- end list type card component -->
+
+<!-- separator -->
+
+<!-- start leave a review component -->
+<div class="row">
+  <div class="col-md-9 col-lg-7 col-xl-5 mx-auto text-center">
+    <h4 class="mb-4">Leave a Review</h4>
+    <form>
+      <!-- start leave a review component -->
+      <div class="form-outline mb-4">
+        <ul class="rating" data-mdb-toggle="rating">
+          <li><i class="far fa-star fa-sm text-primary" title="Bad"></i></li>
+          <li><i class="far fa-star fa-sm text-primary" title="Poor"></i></li>
+          <li><i class="far fa-star fa-sm text-primary" title="OK"></i></li>
+          <li><i class="far fa-star fa-sm text-primary" title="Good"></i></li>
+          <li><i class="far fa-star fa-sm text-primary" title="Excellent"></i></li>
+        </ul>
+      </div>
+      <!-- end leave a review component -->
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-outline mb-4">
+            <input type="text" id="contactBlockName1" class="form-control" />
+            <label class="form-label" for="contactBlockName1">Name</label>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-outline mb-4">
+            <input type="email" id="contactBlockEmail2" class="form-control" />
+            <label class="form-label" for="contactBlockEmail2">Email</label>
+          </div>
+        </div>
+      </div>
+      <div class="form-outline mb-4">
+        <input type="tel" id="contactBlockPhone3" class="form-control" />
+        <label class="form-label" for="contactBlockPhone3">Phone (optional)</label>
+      </div>
+      <div class="form-outline mb-4">
+        <textarea class="form-control" id="contactBlockMessage4" rows="4"></textarea>
+        <label class="form-label" for="contactBlockMessage4">Message</label>
+      </div>
+      <button type="button" class="btn btn-dark btn-block">Send message</button>
+    </form>
+  </div>
+</div>
+<!-- end leave a review component -->
+
+<!-- separator -->
+
+<!-- NOTE: for whatever reason, I tried to use the rating component here: https://mdbootstrap.com/docs/standard/components/rating/
+and it was not working! However, I used the component snippet below which is super similar and it worked! -->
+
+<!-- start product overview reviews -->
+<div class="d-flex text-primary">
+  <ul
+      class="rating mb-3 me-2"
+      data-mdb-toggle="rating"
+      data-mdb-readonly="true"
+      data-mdb-value="4"
+      >
+    <li>
+      <i
+         class="far fa-star fa-sm text-primary ps-0"
+         title="Bad"
+         ></i>
+    </li>
+    <li>
+      <i
+         class="far fa-star fa-sm text-primary"
+         title="Poor"
+         ></i>
+    </li>
+    <li>
+      <i class="far fa-star fa-sm text-primary" title="OK"></i>
+    </li>
+    <li>
+      <i
+         class="far fa-star fa-sm text-primary"
+         title="Good"
+         ></i>
+    </li>
+    <li>
+      <i
+         class="far fa-star fa-sm text-primary"
+         title="Excellent"
+         ></i>
+    </li>
+  </ul>
+  <a href=""><strong class="me-2">4.5/5</strong>(2 reviews)</a>
+</div>
+<!-- end product overview reviews -->
+
+<!-- separator -->
+
+<!-- separator -->
+
+  <!-- Section: Product details -->
+  <section class="mb-9">
+    <div class="row gx-lg-5">
+      <div class="col-md-6 mb-4 mb-md-0">
+        <!-- Gallery -->
+        <div
+             class="ecommerce-gallery vertical"
+             data-mdb-zoom-effect="true"
+             data-mdb-auto-height="true"
+             >
+          <div class="row gx-2 gx-lg-3">
+            <div class="col-2 col-lg-3">
+              <div
+                   class="multi-carousel vertical"
+                   data-mdb-breakpoint="false"
+                   data-mdb-items="4"
+                   style="height: 500px"
+                   >
+                <div class="multi-carousel-inner">
+                  <div class="multi-carousel-item active mb-2">
+                    <img
+                         src="https://mdbootstrap.com/img/new/ecommerce/vertical/068.jpg"
+                         data-mdb-img="https://mdbootstrap.com/img/new/ecommerce/vertical/068.jpg"
+                         alt="Gallery image 1"
+                         class="active w-100 rounded"
+                         />
+                  </div>
+                  <div class="multi-carousel-item mb-2">
+                    <img
+                         src="https://mdbootstrap.com/img/new/ecommerce/vertical/009.jpg"
+                         data-mdb-img="https://mdbootstrap.com/img/new/ecommerce/vertical/009.jpg"
+                         alt="Gallery image 2"
+                         class="w-100 rounded"
+                         />
+                  </div>
+                  <div class="multi-carousel-item mb-2">
+                    <img
+                         src="https://mdbootstrap.com/img/new/ecommerce/vertical/086.jpg"
+                         data-mdb-img="https://mdbootstrap.com/img/new/ecommerce/vertical/086.jpg"
+                         alt="Gallery image 3"
+                         class="w-100 rounded"
+                         />
+                  </div>
+                  <div class="multi-carousel-item mb-2">
+                    <img
+                         src="https://mdbootstrap.com/img/new/ecommerce/vertical/087.jpg"
+                         data-mdb-img="https://mdbootstrap.com/img/new/ecommerce/vertical/087.jpg"
+                         alt="Gallery image 4"
+                         class="w-100 rounded"
+                         />
+                  </div>
+                </div>
+                <button
+                        class="carousel-control-prev"
+                        tabindex="0"
+                        type="button"
+                        data-mdb-slide="prev"
+                        >
+                  <span
+                        class="carousel-control-prev-icon"
+                        aria-hidden="true"
+                        ></span>
+                </button>
+                <button
+                        class="carousel-control-next"
+                        tabindex="0"
+                        type="button"
+                        data-mdb-slide="next"
+                        >
+                  <span
+                        class="carousel-control-next-icon"
+                        aria-hidden="true"
+                        ></span>
+                </button>
+              </div>
+            </div>
+            <div class="col-10 col-lg-9">
+              <div class="lightbox">
+                <img
+                     src="https://mdbootstrap.com/img/Photos/Slides/1.jpg"
+                     alt="Gallery image 1"
+                     class="
+                            ecommerce-gallery-main-img
+                            active
+                            w-100
+                            rounded-4
+                            "
+                     />
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Gallery -->
+      </div>
+
+      <div class="col-md-6 mb-4 mb-md-0">
+        <!-- Details -->
+        <div>
+          <h1 class="fw-bold mb-3 h5">Sophisticated dress</h1>
+          <a href="" class="text-muted mb-3"
+             ><p class="mb-2 text-uppercase small">Dresses</p></a
+            >
+
+          <div class="d-flex text-primary">
+            <ul
+                class="rating mb-3 me-2"
+                data-mdb-toggle="rating"
+                data-mdb-readonly="true"
+                data-mdb-value="4"
+                >
+              <li>
+                <i
+                   class="far fa-star fa-sm text-primary ps-0"
+                   title="Bad"
+                   ></i>
+              </li>
+              <li>
+                <i
+                   class="far fa-star fa-sm text-primary"
+                   title="Poor"
+                   ></i>
+              </li>
+              <li>
+                <i class="far fa-star fa-sm text-primary" title="OK"></i>
+              </li>
+              <li>
+                <i
+                   class="far fa-star fa-sm text-primary"
+                   title="Good"
+                   ></i>
+              </li>
+              <li>
+                <i
+                   class="far fa-star fa-sm text-primary"
+                   title="Excellent"
+                   ></i>
+              </li>
+            </ul>
+            <a href=""><strong class="me-2">4/5</strong>(2 reviews)</a>
+          </div>
+
+          <h5 class="mb-3">
+            <s class="text-muted me-2 small align-middle">$119</s
+              ><span class="align-middle">$101</span>
+          </h5>
+
+          <p class="text-muted">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            Ratione accusantium harum repellendus illo mollitia similique
+            atque vitae repudiandae animi dolor? Rem eveniet saepe
+            deserunt aliquam. Enim incidunt quas voluptatibus perferendis.
+          </p>
+
+          <div class="table-responsive">
+            <table class="table table-sm table-borderless mb-0">
+              <tbody>
+                <tr>
+                  <th class="ps-0 w-25" scope="row">
+                    <strong>Model</strong>
+                  </th>
+                  <td>Shirt 5407X</td>
+                </tr>
+                <tr>
+                  <th class="ps-0 w-25" scope="row">
+                    <strong>Material</strong>
+                  </th>
+                  <td>Cotton 80%</td>
+                </tr>
+                <tr>
+                  <th class="ps-0 w-25" scope="row">
+                    <strong>Delivery</strong>
+                  </th>
+                  <td>USA, Europe</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <hr class="my-5" />
+
+          <form action="">
+            <div class="row">
+              <!-- Quantity -->
+              <div class="col-md-6 mb-4">
+                <div class="form-outline">
+                  <input
+                         type="number"
+                         id="typeNumber"
+                         class="form-control"
+                         value="1"
+                         min="1"
+                         />
+                  <label class="form-label" for="typeNumber"
+                         >Quantity</label
+                    >
+                </div>
+              </div>
+              <!-- Size -->
+              <div class="col-md-6 mb-4">
+                <select class="select">
+                  <option value="1">XS</option>
+                  <option value="2">S</option>
+                  <option value="3">M</option>
+                  <option value="4">L</option>
+                  <option value="5">XL</option>
+                </select>
+                <label class="form-label select-label">Size</label>
+              </div>
+
+              <!-- Colors -->
+              <div class="col-md-6 mb-4">
+                <div class="">
+                  <input
+                         type="radio"
+                         class="btn-check"
+                         name="options"
+                         id="color-primary"
+                         autocomplete="off"
+                         checked
+                         />
+                  <label
+                         class="
+                                btn btn-primary btn-floating
+                                me-2
+                                mb-2
+                                shadow-0
+                                "
+                         for="color-primary"
+                         ></label>
+
+                  <input
+                         type="radio"
+                         class="btn-check"
+                         name="options"
+                         id="color-danger"
+                         autocomplete="off"
+                         />
+                  <label
+                         class="btn btn-danger btn-floating me-2 mb-2 shadow-0"
+                         for="color-danger"
+                         ></label>
+
+                  <input
+                         type="radio"
+                         class="btn-check"
+                         name="options"
+                         id="color-secondary"
+                         autocomplete="off"
+                         />
+                  <label
+                         class="
+                                btn btn-secondary btn-floating
+                                me-2
+                                mb-2
+                                shadow-0
+                                "
+                         for="color-secondary"
+                         ></label>
+
+                  <input
+                         type="radio"
+                         class="btn-check"
+                         name="options"
+                         id="color-success"
+                         autocomplete="off"
+                         />
+                  <label
+                         class="
+                                btn btn-success btn-floating
+                                me-2
+                                mb-2
+                                shadow-0
+                                "
+                         for="color-success"
+                         ></label>
+
+                  <input
+                         type="radio"
+                         class="btn-check"
+                         name="options"
+                         id="color-warning"
+                         autocomplete="off"
+                         />
+                  <label
+                         class="
+                                btn btn-warning btn-floating
+                                me-2
+                                mb-2
+                                shadow-0
+                                "
+                         for="color-warning"
+                         ></label>
+
+                  <input
+                         type="radio"
+                         class="btn-check"
+                         name="options"
+                         id="color-info"
+                         autocomplete="off"
+                         />
+                  <label
+                         class="btn btn-info btn-floating me-2 mb-2 shadow-0"
+                         for="color-info"
+                         ></label>
+                </div>
+              </div>
+            </div>
+
+            <button
+                    type="button"
+                    class="btn btn-primary btn-rounded me-2"
+                    >
+              <i class="fas fa-cart-plus me-2"></i>Add to cart
+            </button>
+            <button
+                    href="#!"
+                    type="button"
+                    class="btn btn-danger btn-floating"
+                    data-mdb-toggle="tooltip"
+                    title="Add to wishlist"
+                    >
+              <i class="fas fa-heart"></i>
+            </button>
+          </form>
+        </div>
+        <!-- Details -->
+      </div>
+    </div>
+  </section>
+  <!-- Section: Product details -->
+
+  <!-- separator -->
+
+<!--Section: Design Block-->
+<section class="mb-10">
+  <div class="row justify-content-center mx-auto">
+    <div class="col-md-10 col-lg-8 col-xl-6">
+      <!-- start review data -->
+      <h2 class="fw-bold mb-2">reviews (2)</h2>
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="mb-0">4.8<span class="text-muted">/5</span></h4>
+        <ul class="list-unstyled d-flex flex-row mb-0">
+          <li><i class="fas fa-star text-primary"></i></li>
+          <li><i class="fas fa-star text-primary"></i></li>
+          <li><i class="fas fa-star text-primary"></i></li>
+          <li><i class="fas fa-star text-primary"></i></li>
+          <li><i class="fas fa-star text-primary"></i></li>
+        </ul>
+      </div>
+      <div class="d-flex flex-row align-items-center">
+        <p class="mb-0 me-2">5</p>
+        <div class="progress w-100 ms-1">
+          <div class="progress-bar bg-primary" role="progressbar" style="width: 75%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+      </div>
+      <div class="d-flex flex-row align-items-center">
+        <p class="mb-0 me-2">4</p>
+        <div class="progress w-100 ms-1">
+          <div class="progress-bar bg-primary" role="progressbar" style="width: 30%;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+      </div>
+      <div class="d-flex flex-row align-items-center">
+        <p class="mb-0 me-2">3</p>
+        <div class="progress w-100 ms-1">
+          <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+      </div>
+      <div class="d-flex flex-row align-items-center">
+        <p class="mb-0 me-2">2</p>
+        <div class="progress w-100 ms-1">
+          <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+      </div>
+      <div class="d-flex flex-row align-items-center mb-4">
+        <p class="mb-0 me-2">1</p>
+        <div class="progress w-100 ms-1">
+          <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+      </div>
+      <p class="text-muted border-bottom pb-4 mb-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos cupiditate aliquid porro distinctio quisquam repellendus corrupti, architecto iusto nesciunt unde ratione similique id eveniet numquam eligendi officia eius quaerat dignissimos.</p>
+      <!-- end review data -->
+      <div class="d-flex justify-content-between pt-1 pb-4 mb-4 border-bottom">
+        <div>
+          <h5>Anna</h5>
+          <p class="text-muted mb-0">Purchased on: 21/12/2021</p>
+          <p class="text-muted">Opinion added: 16/03/2022</p>
+          <ul class="list-unstyled d-flex flex-row mb-4">
+            <li><i class="fas fa-star text-primary"></i></li>
+            <li><i class="fas fa-star text-primary"></i></li>
+            <li><i class="fas fa-star text-primary"></i></li>
+            <li><i class="fas fa-star text-primary"></i></li>
+            <li><i class="fas fa-star text-primary"></i></li>
+          </ul>
+          <p class="mb-4">Awesome</p>
+          <button class="btn btn-outline-dark mb-1">Helpful?</button>
+        </div>
+        <img src="https://mdbootstrap.com/img/Photos/new-templates/img97.jpg" class="rounded-5 shadow-4 mt-1" style="width: 90px; height: 90px;">
+      </div>
+      <div class="d-flex justify-content-between pt-1">
+        <div>
+          <h5>Kate</h5>
+          <p class="text-muted mb-0">Purchased on: 10/09/2021</p>
+          <p class="text-muted">Opinion added: 21/09/2021</p>
+          <ul class="list-unstyled d-flex flex-row mb-4">
+            <li><i class="fas fa-star text-primary"></i></li>
+            <li><i class="fas fa-star text-primary"></i></li>
+            <li><i class="fas fa-star text-primary"></i></li>
+            <li><i class="fas fa-star text-primary"></i></li>
+            <li><i class="far fa-star-half-alt text-primary"></i></li>
+          </ul>
+          <p class="mb-4">A very nice handbag, perfect for festive occasions</p>
+          <button class="btn btn-outline-dark mb-1">Helpful?</button>
+        </div>
+        <img src="https://mdbootstrap.com/img/Photos/new-templates/img97.jpg" class="rounded-5 shadow-4 mt-1" style="width: 90px; height: 90px;">
+      </div>
+    </div>
+  </div>
+</section>
+<!--Section: Design Block-->
+
+  <!-- separator -->
+
+   <!--Section: Review Type Component -->
+   <section class="mb-10">
+    <div class="row justify-content-center mx-auto">
+      <div class="col-lg-10 col-xl-8">
+        <h2 class="fw-bold mb-5">Reviews</h2>
+        <div class="d-flex mb-4 pb-2">
+          <div class="flex-shrink-0 me-md-4 me-3">
+            <img src="https://mdbootstrap.com/img/Photos/Avatars/img%20(1).jpg" class="rounded-circle shadow-4" style="width: 55px; height: 55px;" alt="Generic placeholder image">
+          </div>
+          <div class="flex-grow-1 border-bottom">
+            <h6 class="mb-1">Cara Rawback</h6>
+            <p class="text-muted">16.03.2022</p>
+            <ul class="list-unstyled d-flex flex-row">
+              <li><i class="fas fa-star fa-sm text-warning me-1"></i></li>
+              <li><i class="fas fa-star fa-sm text-warning me-1"></i></li>
+              <li><i class="fas fa-star fa-sm text-warning me-1"></i></li>
+              <li><i class="fas fa-star fa-sm text-warning me-1"></i></li>
+              <li><i class="fas fa-star fa-sm text-warning"></i></li>
+            </ul>
+            <p class="text-muted mb-4">At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident.</p>
+          </div>
+        </div>     
+      </div>
+    </div>
+  </section>
+  <!--Section: Review Type Component -->
+
+  <!-- separator -->
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-mdb-toggle="modal" data-mdb-target="#exampleModal">
+  Launch demo modal
+</button>
+<!-- Button trigger modal -->
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">...</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal -->
+
+<!-- separator -->
+
+<!-- start leave a review component -->
+<div class="row">
+  <div class="col-md-9 col-lg-7 col-xl-5 mx-auto text-center">
+    <form method="post" class="registration_form_needs_validation" action="/ecomm/leave_review/{{ item_id }}/{{ category }}/" novalidate>
+      {% csrf_token %}
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-outline mb-4">
+            <input type="text" id="contactBlockName1" class="form-control" name="review_title" required/>
+            <div class="valid-feedback">Looks good!</div>
+            <div class="invalid-feedback">Please provide a title.</div>
+            <label class="form-label" for="contactBlockName1">Review Title</label>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="form-outline mb-4">
+            <textarea class="form-control" id="contactBlockMessage4" rows="4" name="review_text_body" required></textarea>
+            <div class="valid-feedback">Looks good!</div>
+            <div class="invalid-feedback">Please provide your experience with this product.</div>
+            <label class="form-label" for="contactBlockMessage4">Review</label>
+          </div>
+        </div>
+      </div>
+      <div class="form-outline mb-4">
+            <input type="text" id="contactBlockName5" class="form-control" name="customer_name" required/>
+            <label class="form-label" for="contactBlockName5">Name (Publicly Displayed)</label>
+            <div class="valid-feedback">Looks good!</div>
+            <div class="invalid-feedback">Please provide your name.</div>
+      </div>
+      <div class="form-outline mb-4">
+            <input type="email" id="contactBlockEmail2" class="form-control" name="customer_email" required/>
+            <label class="form-label" for="contactBlockEmail2">Email (Private - Not Displayed)</label>
+            <div class="valid-feedback">Looks good!</div>
+            <div class="invalid-feedback">Please provide your email.</div>
+      </div>
+      <!-- Checkbox -->
+      <div class="form-check d-flex justify-content-center mb-4">
+        <input class="form-check-input me-2" type="checkbox" value="" id="form5Example3" required/>
+        <label class="form-check-label" for="form5Example3">
+          I have read and agree to the terms
+        </label>
+      </div>
+  </div>
+</div>
+<!-- end leave a review component -->

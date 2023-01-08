@@ -1,24 +1,36 @@
 name: Build automation for ecommerce poc
+
 on:
+
   workflow_dispatch:
 
 jobs:
+
   run-tests-and-build:
+
+    environment: build
     
     runs-on: ubuntu-latest
 
-    env:
-      DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
-      DB_ENGINE : ${{ secrets.DB_ENGINE }}
-      DB_NAME : ${{ secrets.DB_NAME }}
-      DB_USER : ${{ secrets.DB_USER }}
-      DB_PASS : ${{ secrets.DB_PASS }}
-      DB_HOST : ${{ secrets.DB_HOST }}
-      DB_PORT : ${{ secrets.DB_PORT }}
-      AWS_ACCESS_KEY_ID : ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY : ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      AWS_STORAGE_BUCKET_NAME : ${{ secrets.AWS_STORAGE_BUCKET_NAME }}
-      AWS_LOCATION : ${{ secrets.AWS_LOCATION }}
+    # we are unable to access environment secrets within the postgres
+    # gh service below
+    # NOTE: This is for sure the culprit, we need to find a way
+    # to securely set these environment variables for the
+    # test database
+    # NOTE: we might just have to use our own docker container
+    # and tie the container db volume, to a real physical volume
+    # within our repository
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_USER: 'postgres'
+          POSTGRES_PASSWORD: 'fp12ww15'
+          POSTGRES_DB: 'factory_pure_poc'
+        ports:
+          - 5432:5432
+        # needed because the postgres container does not provide a healthcheck
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
       - name: Check out repository code
@@ -38,12 +50,73 @@ jobs:
         run: |
           pip install -r requirements.txt
 
-      #- name: run model tests
-        #run: |
-          #cd ecommerce_poc
-          #python manage.py test
+      # setting the environment variables on the gh runner seems to
+      # work for the run migrations step, however read the
+      # description below for the run model tests step
+      - name: run migrations
+        run: |
+          export DJANGO_SECRET_KEY=${{ secrets.DJANGO_SECRET_KEY }}
+          export STRIPE_PUBLIC_KEY=${{ secrets.STRIPE_PUBLIC_KEY }}
+          export STRIPE_SECRET_KEY=${{ secrets.STRIPE_SECRET_KEY }}
+          export DB_ENGINE=${{ secrets.DB_ENGINE }}
+          export DB_HOST=${{ secrets.DB_HOST }}
+          export DB_NAME=${{ secrets.DB_NAME }}
+          export DB_PASS=${{ secrets.DB_PASS }}
+          export DB_PORT=${{ secrets.DB_PORT }}
+          export DB_USER=${{ secrets.DB_USER }}
+          export AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
+          export AWS_LOCATION=${{ secrets.AWS_LOCATION }}
+          export AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          export AWS_STORAGE_BUCKET_NAME=${{ secrets.AWS_STORAGE_BUCKET_NAME }}
+          cd ecommerce_poc
+          python manage.py migrate
 
+      # as described above, setting environment variables on the
+      # runner seems to work, so one would assume that you would
+      # need to do the same for the next step?
+      # but if we don't set the environment variables as done
+      # below in run model tests, everything still seems to work fine
+      # I'm assuming that is because the same runner
+      # is used across the entire job (and not a new runner spawned each step),
+      # but it is also possible, however unlikely, that none of these
+      # environment variables are used for the run model tests step
+      # actually scratch that I guess a new runner is used for each step
+      - name: run model tests
+        run: |
+          export DJANGO_SECRET_KEY=${{ secrets.DJANGO_SECRET_KEY }}
+          export STRIPE_PUBLIC_KEY=${{ secrets.STRIPE_PUBLIC_KEY }}
+          export STRIPE_SECRET_KEY=${{ secrets.STRIPE_SECRET_KEY }}
+          export DB_ENGINE=${{ secrets.DB_ENGINE }}
+          export DB_HOST=${{ secrets.DB_HOST }}
+          export DB_NAME=${{ secrets.DB_NAME }}
+          export DB_PASS=${{ secrets.DB_PASS }}
+          export DB_PORT=${{ secrets.DB_PORT }}
+          export DB_USER=${{ secrets.DB_USER }}
+          export AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
+          export AWS_LOCATION=${{ secrets.AWS_LOCATION }}
+          export AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          export AWS_STORAGE_BUCKET_NAME=${{ secrets.AWS_STORAGE_BUCKET_NAME }}
+          cd ecommerce_poc
+          python manage.py test
+      # in order to test that our django app starts and works correctly
+      # we should test all url paths in our app
+      # NOTE: we just confirmed that a new runner is used for each step
+      # so explicitly setting the environment variables is a precursor
+      # to being able to run our django app
       - name: test runserver
         run: |
+          export DJANGO_SECRET_KEY=${{ secrets.DJANGO_SECRET_KEY }}
+          export STRIPE_PUBLIC_KEY=${{ secrets.STRIPE_PUBLIC_KEY }}
+          export STRIPE_SECRET_KEY=${{ secrets.STRIPE_SECRET_KEY }}
+          export DB_ENGINE=${{ secrets.DB_ENGINE }}
+          export DB_HOST=${{ secrets.DB_HOST }}
+          export DB_NAME=${{ secrets.DB_NAME }}
+          export DB_PASS=${{ secrets.DB_PASS }}
+          export DB_PORT=${{ secrets.DB_PORT }}
+          export DB_USER=${{ secrets.DB_USER }}
+          export AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
+          export AWS_LOCATION=${{ secrets.AWS_LOCATION }}
+          export AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          export AWS_STORAGE_BUCKET_NAME=${{ secrets.AWS_STORAGE_BUCKET_NAME }}
           cd ecommerce_poc
           python manage.py runserver &

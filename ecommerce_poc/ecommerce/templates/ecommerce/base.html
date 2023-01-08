@@ -6,8 +6,7 @@
     <meta charset="utf-8" />
     <meta
       name="viewport"
-      content="width=device-width, initial-scale=1"
-    />
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
 
     <!-- Font Awesome -->
     <link
@@ -31,69 +30,93 @@
       href="{% static 'md_bstrap/plugins/css/all.min.css' %}"
     />
 
-    <title>Generators, Outdoor Equipment, and More!</title>
+    <!-- make the page viewport responsive -->
+    <link rel="stylesheet" href="{% static 'md_bstrap/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'md_bstrap/css/bootstrap-responsive.css' %}">
+
+    <!-- currently only need this section to make a horizontally expanding
+          dropdown menu -->
+    <style>
+      .dropdown-menu{
+        min-width: 500px;
+      }
+    </style>
+
+    <title>Sauer Websites!</title>
   </head>
-  <body class="p-3 mb-2 bg-secondary bg-gradient text-white">
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-9">
-      <!-- Container wrapper -->
-      <div class="container-fluid">
-        <!-- Toggle button -->
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-mdb-toggle="collapse"
-          data-mdb-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <i class="fas fa-bars"></i>
-        </button>
+  <!-- we changed the background color here, so that our site was easier to look at during development -->
+  <body class="p-3">
+    
+    <!--it seems like 14 is the largest space coefficient, at least for margin-bottom -->
+    <div class="mb-10">
+      <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <!-- Container wrapper -->
+  <div class="container-fluid">
+    <!-- Toggle button -->
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-mdb-toggle="collapse"
+      data-mdb-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <i class="fas fa-bars"></i>
+    </button>
 
-        <!-- Collapsible wrapper -->
-        <div
-          class="collapse navbar-collapse"
-          id="navbarSupportedContent"
-        >
-          <!-- Navbar brand -->
-          <a
-            class="navbar-brand mt-2 mt-lg-0"
-            href="#"
-          >
-            <img
-              src="{% static 'images/company_logo_ex.png' %}"
-              height="120"
-              alt="MDB Logo"
-              loading="lazy"
-            />
-          </a>
-          <!-- Left links -->
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a
-                class="nav-link"
-                href="/ecomm"
-              >
-                <ul class="list-group text-black ms-5">
-                  <li class="list-group-item">Home</li>
-                </ul>
-              </a>
-            </li>
-          </ul>
-          <!-- Left links -->
-        </div>
-        <!-- Collapsible wrapper -->
+    <!-- Collapsible wrapper -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <!-- Navbar brand -->
+      <a class="navbar-brand mt-2 mt-lg-0" href="https://tscompsci.com">
+        <img
+          src="{% static 'images/sauer_web_dev_new.png' %}"
+          height="70"
+          width="180"
+          alt="Sauer Websites"
+          loading="lazy"
+          style="mix-blend-mode: multiply;"
+        />
+      </a>
+      <!-- Left links -->
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" href="/ecomm/filter_results_page/generator">Generators</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/ecomm/filter_results_page/game_console">Game Consoles</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/ecomm/filter_results_page/home_decor">Home Decor</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/ecomm/filter_results_page/sports_nutrition">Sports Nutrition</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/ecomm/filter_results_page/kitchen_and_home_appliance">Kitchen And Home Appliances</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/ecomm/about">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/ecomm/contact_us">Contact Us</a>
+        </li>
+      </ul>
+      <!-- Left links -->
+    </div>
+    <!-- Collapsible wrapper -->
 
-        <!-- Right elements -->
-        <!--<div class="d-flex align-items-center">
-      
-      <a class="text-reset me-3" href="#">
-        <i class="fas fa-shopping-cart"></i>
+    <!-- Right elements -->
+    <div class="d-flex align-items-center">
+      <!-- Icon -->
+      <a class="text-reset me-2" href="/ecomm/cart/">
+        <i class="fas fa-shopping-cart fa-2x" style="color: dodgerblue"></i>
       </a>
 
-      
-      <div class="dropdown">
+      <!-- Notifications -->
+      <!-- commenting out for now, might use again in the future -->
+      <!-- <div class="dropdown">
         <a
           class="text-reset me-3 dropdown-toggle hidden-arrow"
           href="#"
@@ -119,8 +142,9 @@
             <a class="dropdown-item" href="#">Something else here</a>
           </li>
         </ul>
-      </div>
-      
+      </div> -->
+
+      <!-- Avatar -->
       <div class="dropdown">
         <a
           class="dropdown-toggle d-flex align-items-center hidden-arrow"
@@ -130,11 +154,15 @@
           data-mdb-toggle="dropdown"
           aria-expanded="false"
         >
+          <!-- we want to show the default profile pic if someone isn't logged in
+               and show a different default picture if they are logged in OR
+               they have uploaded an image of themself -->
           <img
-            src="{% static 'images/factory-pure-logo.avif' %}"
+            src="{% static 'images/profile_1.webp' %}"
             class="rounded-circle"
-            height="25"
-            alt="Black and White Portrait of a Man"
+            height="65"
+            width="65"
+            alt="Default User Profile Picture"
             loading="lazy"
           />
         </a>
@@ -142,50 +170,47 @@
           class="dropdown-menu dropdown-menu-end"
           aria-labelledby="navbarDropdownMenuAvatar"
         >
+        {% if user.is_authenticated %}
+        <li>
+          {% if next %}
+          <a class="dropdown-item" href="{% url 'logout' %}?next={{ request.path }}">Logout</a>
+          {% else %}
+          <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+          {% endif %}
+        </li>
+        {% else %}
+        <li>
+          {% if next %}
+          <a class="dropdown-item" href="{% url 'login' %}?next={{ request.path }}">Login</a>
+          {% else %}
+          <a class="dropdown-item" href="{% url 'login' %}">Login</a>
+          {% endif %}
+        </li>
+        {% endif %}
           <li>
             <a class="dropdown-item" href="#">My profile</a>
           </li>
           <li>
             <a class="dropdown-item" href="#">Settings</a>
           </li>
-          <li>
-            <a class="dropdown-item" href="#">Logout</a>
-          </li>
         </ul>
       </div>
-    </div>-->
-        <!-- Right elements -->
-        <div class="alert alert-dismissible fade show me-3 mt-3" role="alert" data-mdb-color="info">
-          We're here to help! <strong>CALL or TEXT:</strong><br>
-          <i class="fa-solid fa-phone-volume me-2"></i><strong>(888) 888-8888 (M-F 8AM - 5:30 PM CT)</strong><br>
-          <i class="fa-solid fa-phone-volume me-2"></i><strong>(888) 888-8888 (After Hours Sales)</strong>
-          <button type="button" class="btn-close" data-mdb-dismiss="alert" aria-label="Close"></button>
-        </div>
-        <ul class="list-group text-black ms-5">
-          {% if user.is_authenticated %}
-          <li class="list-group-item">User: {{ user.get_username }}</li>
-          <li class="list-group-item">
-            <a href="/ecomm/cart"
-              >Cart<i class="fa-solid fa-cart-arrow-down ms-2"></i
-            ></a>
-          </li>
-          <li class="list-group-item">
-            <a href="{% url 'logout' %}?next={{ request.path }}">Logout</a>
-          </li>
-          {% else %}
-          <li class="list-group-item">
-            <a href="{% url 'login' %}?next={{ request.path }}">Login</a>
-          </li>
-          {% endif %}
-        </ul>
-
-        <!-- Right elements -->
-      </div>
-      <!-- Container wrapper -->
-    </nav>
-    <!-- Navbar -->
+    </div>
+    <!-- Right elements -->
+  </div>
+  <!-- Container wrapper -->
+</nav>
+<!-- Navbar -->
+    </div>
 
     {% block content %} {% endblock content %}
+
+    <!-- this seems to be working for now as mb-14 is the largest inherent spacing I can find,
+         however, I'm not sure if the spacing below the navbar and above the footer are
+         the same for each page. It is possible that I will have to comb through each page
+         to verify, because I know I have a lot of littered margin tags in various elements,
+         that could be messing up my perception. -->
+    <div class="mb-10"></div>
 
     <!-- Footer -->
     <footer class="text-center text-lg-start bg-light text-muted">
@@ -195,7 +220,7 @@
       >
         <!-- Left -->
         <div class="me-5 d-none d-lg-block">
-          <span>Get connected with us on social networks:</span>
+          <h6 class="text-uppercase fw-bold">Let Sauer Websites make an Impact on Your Business!</h6>
         </div>
         <!-- Left -->
 
@@ -250,96 +275,96 @@
             <!-- Grid column -->
             <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
               <!-- Links -->
-              <h6 class="text-uppercase fw-bold mb-4">Popular Brands</h6>
+              <h6 class="text-uppercase fw-bold mb-4">Trending Products</h6>
               <p>
                 <a
                   href="#!"
                   class="text-reset"
-                  >Generac Generators</a
+                  >HP Designjet T630</a
                 >
               </p>
               <p>
                 <a
                   href="#!"
                   class="text-reset"
-                  >DuroMax Portable Generators</a
+                  >HP DreamColor Z31x</a
                 >
               </p>
               <p>
                 <a
                   href="#!"
                   class="text-reset"
-                  >Kohler Standby Generators</a
+                  >Trane Refurbished Generators</a
                 >
               </p>
               <p>
                 <a
                   href="#!"
                   class="text-reset"
-                  >Cummins Generators</a
+                  >Cummins Portable Generators</a
                 >
               </p>
               <p>
                 <a
                   href="#!"
                   class="text-reset"
-                  >Briggs and Stratton</a
+                  >PlayStation 5 Consoles</a
                 >
               </p>
               <p>
                 <a
                   href="#!"
                   class="text-reset"
-                  >Drolet Wood Stoves</a
+                  >Sony - 85" BRAVIA XR</a
                 >
               </p>
               <p>
                 <a
                   href="#!"
                   class="text-reset"
-                  >Comfortbilt Pellet Stoves</a
+                  >Nvidia Geforce GT 1030 2GB</a
                 >
               </p>
               <p>
                 <a
                   href="#!"
                   class="text-reset"
-                  >Firman Generators</a
+                  >Nvidia GTX 1650 4GB GDDR6</a
                 >
               </p>
               <p>
                 <a
                   href="#!"
                   class="text-reset"
-                  >Champion Generators</a
+                  >Organic Protein</a
                 >
               </p>
               <p>
                 <a
                   href="#!"
                   class="text-reset"
-                  >US Stove</a
+                  >Amazon's Alexa</a
                 >
               </p>
               <p>
                 <a
                   href="#!"
                   class="text-reset"
-                  >EV Rider</a
+                  >Nintendo Consoles</a
                 >
               </p>
               <p>
                 <a
                   href="#!"
                   class="text-reset"
-                  >Marey Tankless Water Heaters</a
+                  >Steam VR Headsets</a
                 >
               </p>
               <p>
                 <a
                   href="#!"
                   class="text-reset"
-                  >England's Stove Works</a
+                  >LuLuLemon</a
                 >
               </p>
             </div>
@@ -348,26 +373,26 @@
             <!-- Grid column -->
             <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
               <!-- Links -->
-              <h6 class="text-uppercase fw-bold mb-4">Categories</h6>
+              <h6 class="text-uppercase fw-bold mb-4">Product Inventory</h6>
               <p>
                 <a
                   href="#!"
                   class="text-reset"
-                  >Heaters</a
+                  >Electronics</a
                 >
               </p>
               <p>
                 <a
                   href="#!"
                   class="text-reset"
-                  >Air Purifiers</a
+                  >Sports Nutrition</a
                 >
               </p>
               <p>
                 <a
                   href="#!"
                   class="text-reset"
-                  >Pressure Washers</a
+                  >Health Care</a
                 >
               </p>
               <p>
@@ -381,35 +406,35 @@
                 <a
                   href="#!"
                   class="text-reset"
-                  >Dehumidifiers</a
+                  >Books</a
                 >
               </p>
               <p>
                 <a
                   href="#!"
                   class="text-reset"
-                  >Dehumidifiers</a
+                  >VR Headsets</a
                 >
               </p>
               <p>
                 <a
                   href="#!"
                   class="text-reset"
-                  >Electric Skateboards</a
+                  >Video Games</a
                 >
               </p>
               <p>
                 <a
                   href="#!"
                   class="text-reset"
-                  >Tankless Water Heaters</a
+                  >Kitchen Appliances</a
                 >
               </p>
               <p>
                 <a
                   href="#!"
                   class="text-reset"
-                  >Refurbished Items</a
+                  >Home Decor</a
                 >
               </p>
             </div>
@@ -418,82 +443,82 @@
             <!-- Grid column -->
             <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
               <!-- Links -->
-              <h6 class="text-uppercase fw-bold mb-4">Resources</h6>
+              <h6 class="text-uppercase fw-bold mb-4">Informative Links</h6>
               <p>
                 <a
                   href="#!"
                   class="text-reset"
-                  >Air Purifier Buying Guide</a
+                  >Sauer MVP</a
                 >
               </p>
               <p>
                 <a
                   href="#!"
                   class="text-reset"
-                  >Dehumidifier Buying Guide</a
+                  >High Quality E-commerce Solutions</a
                 >
               </p>
               <p>
                 <a
                   href="#!"
                   class="text-reset"
-                  >Tankless Water Heater Buying Guide</a
+                  >End-To-End Digital Product Solutions</a
                 >
               </p>
               <p>
                 <a
                   href="#!"
                   class="text-reset"
-                  >Chronic Bronchitis and Emphysema</a
+                  >Responsive Design For Any Device</a
                 >
               </p>
               <p>
                 <a
                   href="#!"
                   class="text-reset"
-                  >Do Air Purifiers Work?</a
+                  >High Quality User Interface</a
                 >
               </p>
               <p>
                 <a
                   href="#!"
                   class="text-reset"
-                  >What Is Asthma?</a
+                  >A Multitude of Templates to Choose From</a
                 >
               </p>
               <p>
                 <a
                   href="#!"
                   class="text-reset"
-                  >What Are Allergies?</a
+                  >A Much More Custom Solution</a
                 >
               </p>
               <p>
                 <a
                   href="#!"
                   class="text-reset"
-                  >How to Get Rid of Allergies</a
+                  >Choose Your Level of Administration</a
                 >
               </p>
               <p>
                 <a
                   href="#!"
                   class="text-reset"
-                  >How to Get Rid of Smoke Smell</a
+                  >No Service is Out of the Conversation</a
                 >
               </p>
               <p>
                 <a
                   href="#!"
                   class="text-reset"
-                  >How to Get Rid of Mold</a
+                  >Security Comes First</a
                 >
               </p>
               <p>
                 <a
                   href="#!"
                   class="text-reset"
-                  >How to Get Rid of Pet Dander</a
+                  >Reliability and Integrity</a
                 >
               </p>
             </div>
@@ -509,12 +534,10 @@
                 admin@gmail.com
               </p>
               <p>
-                <i class="fas fa-phone me-3"></i>(888) 888-8888 (M-F 8AM - 5:30
-                PM CT)
+                <i class="fas fa-phone me-3"></i>(888) 888-8888 (Business Hours)
               </p>
               <p>
-                <i class="fas fa-print me-3"></i> (888) 888-8888 (After Hours
-                Sales)
+                <i class="fas fa-print me-3"></i> (888) 888-8888 (After Hours)
               </p>
             </div>
             <!-- Grid column -->
@@ -587,6 +610,17 @@
       <!-- Copyright -->
     </footer>
     <!-- Footer -->
+
+    <!--Start of Tawk.to Script-->
+    <script type="text/javascript" src="{% static 'js/tawk_to_chat_bot.js' %}">
+    </script>
+    <!--End of Tawk.to Script-->
+
+    <!-- registration form validation -->
+    <script type="text/javascript" src="{% static 'js/registration_form_needs_validation.js' %}"></script>
+    
+    <!-- get leave review value for item page -->
+    <script type="text/javascript" src="{% static 'js/get_review_value.js' %}"></script>
 
     <!-- MDB ESSENTIAL -->
     <script

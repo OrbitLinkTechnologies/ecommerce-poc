@@ -1,4 +1,5 @@
 Django==3.2
+setuptools
 fontawesomefree==6
 psycopg2
 django-jsonfield
@@ -10,3 +11,10 @@ flake8
 django-html
 Beautify
 python-decouple
+stripe
+django-environ
+django-filter
+sendgrid
+django-polymorphic
+django-sendgrid-v5
+django-crispy-forms

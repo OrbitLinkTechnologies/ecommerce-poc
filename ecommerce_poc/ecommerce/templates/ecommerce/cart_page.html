@@ -43,26 +43,27 @@
               </div>
   
               <div class="col-md-8 mb-4 mb-md-0">
-                <p class="fw-bold">Generator_{{ item.product_name }}</p>
+                <p class="fw-bold">{{ item.product_name }}</p>
                 <p class="mb-1">
-                  <span class="text-muted me-2">{{ item.product_category }} type:</span><span>{{ item.generator_classification_type }}</span>
+                  <span class="text-muted me-2">category: </span><span>{{ item.product_category }}</span>
                 </p>
                 <p>
-                  <span class="text-muted me-2">Fuel Type:</span
-                    ><span>{{ item.generator_fuel_type }}</span>
+                  <span class="text-muted me-2">brand: </span
+                    ><span>{{ item.product_brand }}</span>
                 </p>
   
                 <p class="mb-4">
-                  <a href="/ecomm/remove_item_from_cart/{{ item.id }}/" class="text-muted pe-3 border-end"
-                     ><small
+                  <!-- add border-end to the list of classes to have a vertical border at the end of the a tag -->
+                  <a href="/ecomm/remove_item_from_cart/{{ item.id }}/?current_view=cart" class="text-muted pe-3"
+                     >
+                     <small
                              ><i class="fas fa-trash me-2"></i>Remove</small
                     ></a>
-                  <a href="" class="text-muted ps-3"
+                  <!-- <a href="" class="text-muted ps-3"
                      ><small
                              ><i class="fas fa-heart me-2"></i>Move to wish
                     list</small
-                    ></a
-                    >
+                    ></a> -->
                 </p>
               </div>
   
@@ -72,8 +73,10 @@
                          type="number"
                          id="typeNumber"
                          class="form-control"
-                         value="1"
+                         value="{{ item.quantity }}"
                          min="1"
+                         name="cart_page_quantity_to_remove"
+                         readonly="true"
                          />
                   <label class="form-label" for="typeNumber"
                          >Quantity</label
@@ -81,8 +84,8 @@
                 </div>
   
                 <h5 class="mb-2">
-                  <s class="text-muted me-2 small align-middle">${{ item.product_price }}</s
-                    ><span class="align-middle">{{ item.product_price }}</span>
+                  <s class="text-muted me-2 small align-middle">${{ item.cart_item_total|divide:100 }}</s
+                    ><span class="align-middle">${{ item.cart_item_total|divide:100 }}</span>
                 </h5>
                 <p class="text-danger"><small>Product On Sale: {{ item.product_on_sale }}</small></p>
               </div>
@@ -150,7 +153,7 @@
   
             <div class="d-flex justify-content-between mb-3">
               <span>Temporary amount </span>
-              <span>{{ cart_total }}</span>
+              <span>${{ cart_total }}</span>
             </div>
             <div class="d-flex justify-content-between">
                 <!--we need to add a shipping fee to our product model, or potentially even create a shipping model;
@@ -161,11 +164,11 @@
             <hr class="my-4" />
             <div class="d-flex justify-content-between fw-bold mb-5">
               <span>Cart Total (including VAT)</span>
-              <span>{{ cart_total }}</span>
+              <span>${{ cart_total }}</span>
             </div>
   
             <a class="btn btn-primary btn-rounded w-100" href="/ecomm/user_checkout/">
-              Got to checkout
+              Go to checkout
             </a>
           </section>
           <!-- Section: Summary -->
