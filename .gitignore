@@ -7,6 +7,9 @@ factorypureclone/static/**
 # removing all migrations
 factorypureclone/ecommerce/migrations/**
 
+# removing ecommerce_config.json
+ecommerce_poc/ecommerce_poc/ecommerce_config.json
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

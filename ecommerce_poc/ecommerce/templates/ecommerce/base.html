@@ -110,8 +110,8 @@
     <!-- Right elements -->
     <div class="d-flex align-items-center">
       <!-- Icon -->
-      <a class="text-reset me-2" href="/ecomm/cart/">
-        <i class="fas fa-shopping-cart fa-2x" style="color: dodgerblue"></i>
+      <a class="text-reset" href="/ecomm/cart/">
+        <i class="fas fa-shopping-cart fa-2x me-3" style="color: dodgerblue"></i>
       </a>
 
       <!-- Notifications -->
@@ -157,14 +157,15 @@
           <!-- we want to show the default profile pic if someone isn't logged in
                and show a different default picture if they are logged in OR
                they have uploaded an image of themself -->
-          <img
+          <!--<img
             src="{% static 'images/profile_1.webp' %}"
             class="rounded-circle"
             height="65"
             width="65"
             alt="Default User Profile Picture"
             loading="lazy"
-          />
+          />-->
+          <i class="fa-solid fa-user fa-2x" style="color: dodgerblue"></i>
         </a>
         <ul
           class="dropdown-menu dropdown-menu-end"
