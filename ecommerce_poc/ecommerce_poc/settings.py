@@ -193,7 +193,7 @@ else:
   SENDGRID_API_KEY = config["SENDGRID_API_KEY"]
   DEFAULT_FROM_EMAIL = config["FROM_EMAIL"]
 
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_BACKEND = "sendgrid_backend.SendgridBackend"
 EMAIL_HOST = 'smtp.sendgrid.net'
 EMAIL_HOST_USER = 'apikey' # Exactly that. 
 EMAIL_HOST_PASSWORD = SENDGRID_API_KEY
