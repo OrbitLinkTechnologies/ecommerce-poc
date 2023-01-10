@@ -19,7 +19,7 @@ from django.urls import path, include
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path('ecomm/', include('ecommerce.urls', namespace='ecommerce')),
+    path('', include('ecommerce.urls', namespace='ecommerce')),
 ]
 
 urlpatterns += staticfiles_urlpatterns()
