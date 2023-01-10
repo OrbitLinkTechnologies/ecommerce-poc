@@ -629,7 +629,7 @@ class CreateCheckoutSessionView(View):
         }
       )
     # the following domain is just a placeholder
-    domain = 'sauerwebsites.com:443'
+    domain = 'https://sauerwebsites.com'
     if settings.DEBUG == True:
       domain = 'http://127.0.0.1:8000'
     checkout_session = stripe.checkout.Session.create(
