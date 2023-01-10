@@ -629,8 +629,8 @@ class CreateCheckoutSessionView(View):
         }
       )
     # the following domain is just a placeholder
-    domain = 'futuredomain.com'
-    if settings.DEBUG:
+    domain = 'sauerwebsites.com'
+    if settings.DEBUG == True:
       domain = 'http://127.0.0.1:8000'
     checkout_session = stripe.checkout.Session.create(
       expand = ['line_items'], # this is supposed to give us access to line
