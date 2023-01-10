@@ -11,33 +11,36 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
-# why is the decouple import working, but showing up as a missing import?
-from decouple import config
+import json
 import os
-import environ
+from decouple import config as dev_config
 
-env = environ.Env(
-    # set casting, default value
-    DEBUG=(bool, True)
-)
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+SECURE_SSL_REDIRECT = True
 
-environ.Env.read_env()
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = False
+
+if DEBUG == True:
+  pass
+else:
+  with open('/etc/ecommerce_config.json') as config_file:
+    config = json.load(config_file)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
+if DEBUG == True:
+  SECRET_KEY = dev_config("DJANGO_SECRET_KEY")
+else:
+  SECRET_KEY = config["DJANGO_SECRET_KEY"]
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = [ '66.228.52.101', 'sauerwebsites.com' ]
 
 # Application definition
 
@@ -52,10 +55,7 @@ INSTALLED_APPS = [
     'fontawesomefree',
     'django_extensions',
     'polymorphic',
-    'crispy_forms'
 ]
-
-CRISPY_TEMPLATE_PACK = 'bootstrap5'
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -91,16 +91,29 @@ WSGI_APPLICATION = "ecommerce_poc.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE' : os.environ.get("DB_ENGINE"),
-        'NAME': os.environ.get("DB_NAME"),
-        'USER': os.environ.get("DB_USER"),
-        'PASSWORD': os.environ.get("DB_PASS"),
-        'HOST': os.environ.get("DB_HOST"),
-        'PORT': os.environ.get("DB_PORT"),
-    }
-}
+if DEBUG == True:
+  DATABASES = {
+      'default': {
+          'ENGINE' : dev_config("DB_ENGINE"),
+          'NAME': dev_config("DB_NAME"),
+          'USER': dev_config("DB_USER"),
+          'PASSWORD': dev_config("DB_PASS"),
+          'HOST': dev_config("DB_HOST"),
+          'PORT': dev_config("DB_PORT"),
+      }
+  }
+
+else:
+  DATABASES = {
+      'default': {
+          'ENGINE' : config["DB_ENGINE"],
+          'NAME': config["DB_NAME"],
+          'USER': config["DB_USER"],
+          'PASSWORD': config["DB_PASS"],
+          'HOST': config["DB_HOST"],
+          'PORT': config["DB_PORT"],
+      }
+  }
 
 
 # Password validation
@@ -131,20 +144,24 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
-AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
-AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_STORAGE_BUCKET_NAME")
+if DEBUG == True:
+
+  AWS_ACCESS_KEY_ID = dev_config("AWS_ACCESS_KEY_ID")
+  AWS_SECRET_ACCESS_KEY = dev_config("AWS_SECRET_ACCESS_KEY")
+  AWS_STORAGE_BUCKET_NAME = dev_config("AWS_STORAGE_BUCKET_NAME")
+  AWS_LOCATION = dev_config("AWS_LOCATION")
+  STATIC_ROOT = dev_config("AWS_LOCATION")
+else:
+  AWS_ACCESS_KEY_ID = config["AWS_ACCESS_KEY_ID"]
+  AWS_SECRET_ACCESS_KEY = config["AWS_SECRET_ACCESS_KEY"]
+  AWS_STORAGE_BUCKET_NAME = config["AWS_STORAGE_BUCKET_NAME"]
+  AWS_LOCATION = config["AWS_LOCATION"]
+  STATIC_ROOT = config["AWS_LOCATION"]
+
 AWS_S3_CUSTOM_DOMAIN = "%s.s3.amazonaws.com" % AWS_STORAGE_BUCKET_NAME
 AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',
 }
-AWS_LOCATION = os.environ.get("AWS_LOCATION")
-
-#STATICFILES_DIRS = [
-#    os.path.join(BASE_DIR, 'static')
-#]
-
-STATIC_ROOT = os.environ.get("AWS_LOCATION")
 
 STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
 
@@ -163,15 +180,22 @@ LOGIN_REDIRECT_URL = '/ecomm'
 # https://docs.djangoproject.com/en/4.0/topics/email/
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-SENDGRID_API_KEY = os.environ["SENDGRID_API_KEY"]
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+if DEBUG == True:
+  # stripe api keys
+  STRIPE_PUBLIC_KEY = dev_config("STRIPE_PUBLIC_KEY")
+  STRIPE_SECRET_KEY = dev_config("STRIPE_SECRET_KEY")
+  SENDGRID_API_KEY = dev_config("SENDGRID_API_KEY")
+  DEFAULT_FROM_EMAIL = dev_config("FROM_EMAIL")
+else:
+  # stripe api keys
+  STRIPE_PUBLIC_KEY = config["STRIPE_PUBLIC_KEY"]
+  STRIPE_SECRET_KEY = config["STRIPE_SECRET_KEY"]
+  SENDGRID_API_KEY = config["SENDGRID_API_KEY"]
+  DEFAULT_FROM_EMAIL = config["FROM_EMAIL"]
+
+EMAIL_BACKEND = "sendgrid_backend.SendgridBackend"
 EMAIL_HOST = 'smtp.sendgrid.net'
 EMAIL_HOST_USER = 'apikey' # Exactly that. 
 EMAIL_HOST_PASSWORD = SENDGRID_API_KEY
 EMAIL_PORT = 587 # 25 or 587 (for unencrypted/TLS connections).
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = os.getenv('FROM_EMAIL')
-
-# stripe api keys
-STRIPE_PUBLIC_KEY = os.environ.get('STRIPE_PUBLIC_KEY')
-STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')

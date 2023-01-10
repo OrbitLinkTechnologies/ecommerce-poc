@@ -3,13 +3,28 @@
 {% block content %}
 
 <!-- need to adjust our sizing here for different viewport sizes -->
-<div class="container mb-5 mx-auto" style="width: 30%;">
+<div class="container mb-5 mx-auto">
 
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-mdb-toggle="modal" data-mdb-target="#contact_us_page_modal">
+  Send Us an Email
+</button>
+<!-- Button trigger modal -->
+
+<!-- Modal -->
+<div class="modal fade" id="contact_us_page_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Contact Us</h5>
+        <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- start form for sending email -->
 <form id="contact-form" method="POST" action="/ecomm/send_customer_question/"
 class="registration_form_needs_validation"
 novalidate>
   {% csrf_token %}
-  <h2>Contact us</h2>
 
   <!-- Name input -->
   <div class="form-outline mb-4">
@@ -44,12 +59,17 @@ novalidate>
     <input type="checkbox" class="form-check-input" name="mail_customer_a_copy" id="mailCopy" value="1">
     <label for="mailCopy" class="form-check-label">Send me copy</label>
   </div>
-
-  <!-- Submit button -->
-  <button id="submit-form" type="submit" class="btn btn-primary btn-block mb-4">
-    Send
-  </button>
-</form>
+<!-- end form for sending email -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Send Email</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+<!-- Modal -->
 
 </div>
 

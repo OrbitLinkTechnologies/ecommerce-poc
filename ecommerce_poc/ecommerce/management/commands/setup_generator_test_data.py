@@ -21,7 +21,7 @@ product.generator_classification_type
 product.generator_fuel_type
 product.generator_continuous_wattage_value
 
-object_count = 5
+object_count = 100
 
 class Command(BaseCommand):
     help = "Generates generator test data"

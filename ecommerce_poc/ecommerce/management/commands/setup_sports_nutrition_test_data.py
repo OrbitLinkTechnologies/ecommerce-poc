@@ -17,7 +17,7 @@ sports_nutrition.product_quantity
 sports_nutrition.product_photos
 sports_nutrition.sports_nutrition_classification_type
 
-object_count = 5
+object_count = 100
 
 class Command(BaseCommand):
     help = "Generates Sports Nutrition test data"

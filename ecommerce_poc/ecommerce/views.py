@@ -5,7 +5,6 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.views import View
 from django.http import HttpResponse
-from decouple import config
 from django.conf import settings
 from django.views.generic import TemplateView
 from django.db.models import F
@@ -14,12 +13,25 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.mail import send_mail
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
-import os
 from django.core.exceptions import ObjectDoesNotExist
 import json
-from django.utils.safestring import SafeString
+from decouple import config as dev_config
+from decouple import config as dev_config
+from django.conf import settings
 import stripe
-stripe.api_key = config('STRIPE_SECRET_KEY')
+# NOTE: we are only going to use json config files in the future
+# this is how all configuration imports will work
+
+if settings.DEBUG == True:
+  pass
+else:
+  with open('/etc/ecommerce_config.json') as config_file:
+    config = json.load(config_file)
+
+if settings.DEBUG == True:
+  stripe.api_key = dev_config("STRIPE_SECRET_KEY")
+else:
+  stripe.api_key = config["STRIPE_SECRET_KEY"]
 
 # Create your views here.
 def base(request):
@@ -617,8 +629,8 @@ class CreateCheckoutSessionView(View):
         }
       )
     # the following domain is just a placeholder
-    domain = 'futuredomain.com'
-    if settings.DEBUG:
+    domain = 'https://sauerwebsites.com'
+    if settings.DEBUG == True:
       domain = 'http://127.0.0.1:8000'
     checkout_session = stripe.checkout.Session.create(
       expand = ['line_items'], # this is supposed to give us access to line
@@ -702,16 +714,25 @@ def contact_us_page(request):
   return render(request, 'ecommerce/contact_us_page.html')
 
 def send_customer_question(request):
+  if settings.DEBUG == True:
+    from_email= dev_config("FROM_EMAIL")
+    to_emails= dev_config("TO_EMAIL")
+  else:
+    from_email= config["FROM_EMAIL"]
+    to_emails= config["TO_EMAIL"]
   send_mail = Mail(
-    from_email= os.environ.get("FROM_EMAIL"),
-    to_emails= os.environ.get("TO_EMAIL"),
+    from_email=from_email,
+    to_emails=to_emails,
     subject=request.POST['subject'],
     html_content= 'You have a message from ' + request.POST['name'] + '!<br><br>' +
     'Please respond to them @ ' + request.POST['email'] + '!<br><br>' +
     'Message Body: <br><br>' + request.POST['message']
   )
   try:
-    sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+    if settings.DEBUG == True:
+      sg = SendGridAPIClient(dev_config("SENDGRID_API_KEY"))
+    else:
+      sg = SendGridAPIClient(config["SENDGRID_API_KEY"])
     response = sg.send(send_mail)
     print(response.status_code)
     print(response.body)
@@ -722,8 +743,12 @@ def send_customer_question(request):
   
   # if customer wants a copy, send them an email as well
   if request.POST.get('mail_customer_a_copy'):
+    if settings.DEBUG == True:
+      from_email= dev_config("FROM_EMAIL")
+    else:
+      from_email= config["FROM_EMAIL"]
     send_mail = Mail(
-      from_email= os.environ.get("FROM_EMAIL"),
+      from_email= from_email,
       to_emails= request.POST.get('email'),
       subject=request.POST['subject'],
       html_content= 'CUSTOMER COPY:<br><br>' +
@@ -732,7 +757,10 @@ def send_customer_question(request):
       'Message Body: <br><br>' + request.POST['message']
     )
     try:
-      sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+      if settings.DEBUG == True:
+        sg = SendGridAPIClient(dev_config("SENDGRID_API_KEY"))
+      else:
+        sg = SendGridAPIClient(config["SENDGRID_API_KEY"])
       response = sg.send(send_mail)
       print(response.status_code)
       print(response.body)
@@ -749,8 +777,12 @@ def contact_us_page_success(request):
     })
 
 def send_customer_invoice(request, invoice_item):
+  if settings.DEBUG == True:
+    from_email = dev_config("FROM_EMAIL")
+  else:
+    from_email = config["FROM_EMAIL"]
   send_mail = Mail(
-    from_email = os.environ.get("FROM_EMAIL"),
+    from_email = from_email,
     to_emails = invoice_item.customer_email,
     subject = 'Receipt From Sauer Websites Purchase',
     html_content = 'Here is your receipt for your recent purchase at Sauer Websites Ecommerce POC: '
@@ -760,7 +792,10 @@ def send_customer_invoice(request, invoice_item):
     ' Please feel free to utilize an open-source vulnerability scanner such as https://virustotal.com to confirm that there are no threats.'
   )
   try:
-    sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+    if settings.DEBUG == True:
+      sg = SendGridAPIClient(dev_config("SENDGRID_API_KEY"))
+    else:
+      sg = SendGridAPIClient(config["SENDGRID_API_KEY"])
     response = sg.send(send_mail)
     print(response.status_code)
     print(response.body)

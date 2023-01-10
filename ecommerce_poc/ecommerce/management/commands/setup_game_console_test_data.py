@@ -17,7 +17,7 @@ game_console.product_quantity
 game_console.product_photos
 game_console.game_console_classification_type
 
-object_count = 5
+object_count = 100
 
 class Command(BaseCommand):
     help = "Generates Game Console test data"

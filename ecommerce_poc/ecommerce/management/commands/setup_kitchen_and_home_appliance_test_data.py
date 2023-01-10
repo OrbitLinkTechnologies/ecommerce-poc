@@ -17,7 +17,7 @@ kitchen_and_home_appliance.product_quantity
 kitchen_and_home_appliance.product_photos
 kitchen_and_home_appliance.kitchen_and_home_appliance_classification_type
 
-object_count = 5
+object_count = 100
 
 class Command(BaseCommand):
     help = "Generates Kitchen and Home Appliance test data"

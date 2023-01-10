@@ -17,7 +17,7 @@ home_decor.product_quantity
 home_decor.product_photos
 home_decor.home_decor_classification_type
 
-object_count = 5
+object_count = 100
 
 class Command(BaseCommand):
     help = "Generates Home Decor test data"
