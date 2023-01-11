@@ -343,7 +343,6 @@
               <div class="d-flex align-items-center">
                 <div class="ms-3">
                   <p class="fw-bold mb-1">{{ value }}</p>
-                  <!--<p class="text-muted mb-0">michael.bale@gmail.com</p>-->
                 </div>
               </div>
             </div>
@@ -363,9 +362,10 @@
         <div class="card">
           <div class="card-body">
             <div class="ms-4 d-flex align-items-center">
-              <span class="badge rounded-pill badge-info">Product Specifications</span>
               <div class="ms-5 me-5 d-flex align-items-center">
                   <ul class="list-group list-group-light">
+                    <span class="badge rounded-pill badge-info">Product Specifications</span>
+                    <hr class="hr hr-blurry mb-8" />
                   {% for object in product_specifications %}
                   {% for key, value in object.items %}
                   {% if key != 'Package Contents' %}
@@ -385,9 +385,10 @@
         <div class="card">
           <div class="card-body">
             <div class="ms-4 d-flex align-items-center">
-              <span class="badge rounded-pill badge-info">Package Contents</span>
               <div class="ms-5 me-5 d-flex align-items-center">
                 <ul class="list-group list-group-light">
+                  <span class="badge rounded-pill badge-info">Package Contents</span>
+                  <hr class="hr hr-blurry mb-8" />
                 {% for outer_list in package_contents %}
                 {% for item in outer_list %}
                 <!-- literally the entire reason that my page was all misaligned was because

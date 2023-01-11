@@ -659,3 +659,21 @@ and it was not working! However, I used the component snippet below which is sup
   </div>
 </div>
 <!-- end leave a review component -->
+
+<!-- separator -->
+
+<div class="ms-4 d-flex align-items-center">
+  <div class="ms-5 me-5 d-flex align-items-center">
+      <ul class="list-group list-group-light">
+        {% for object in build_variables %}
+        {% for key, value in object.items %}
+        {% if key == 'item_set' or key == 'category' %}
+        {% else %}
+        <span class="badge rounded-pill badge-info">{{ key }}</span>
+      <li class="list-group-item border-0"><strong>{{ value }}</strong></li>
+        {% endif %}
+        {% endfor %}
+        {% endfor %}
+      </ul>
+  </div>
+</div>
