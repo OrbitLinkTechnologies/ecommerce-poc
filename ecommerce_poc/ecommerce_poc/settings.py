@@ -199,3 +199,5 @@ EMAIL_HOST_USER = 'apikey' # Exactly that.
 EMAIL_HOST_PASSWORD = SENDGRID_API_KEY
 EMAIL_PORT = 587 # 25 or 587 (for unencrypted/TLS connections).
 EMAIL_USE_TLS = True
+
+SENDGRID_SANDBOX_MODE_IN_DEBUG = False
