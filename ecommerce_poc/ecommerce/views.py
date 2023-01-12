@@ -16,7 +16,6 @@ from sendgrid.helpers.mail import Mail
 from django.core.exceptions import ObjectDoesNotExist
 import json
 from decouple import config as dev_config
-from decouple import config as dev_config
 from django.conf import settings
 import stripe
 # NOTE: we are only going to use json config files in the future
