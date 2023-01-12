@@ -40,7 +40,7 @@ if DEBUG == False:
 else:
   SECRET_KEY = config["DJANGO_SECRET_KEY"]
 
-ALLOWED_HOSTS = [ '3.89.21.130' ]
+ALLOWED_HOSTS = [ '3.89.21.130', 'localhost' ]
 
 # Application definition
 
