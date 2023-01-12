@@ -22,7 +22,7 @@ SECURE_SSL_REDIRECT = False
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-if DEBUG == True:
+if DEBUG == False:
   pass
 else:
   with open('/etc/ecommerce_config.json') as config_file:
@@ -35,7 +35,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-if DEBUG == True:
+if DEBUG == False:
   SECRET_KEY = dev_config("DJANGO_SECRET_KEY")
 else:
   SECRET_KEY = config["DJANGO_SECRET_KEY"]
@@ -91,7 +91,7 @@ WSGI_APPLICATION = "ecommerce_poc.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-if DEBUG == True:
+if DEBUG == False:
   DATABASES = {
       'default': {
           'ENGINE' : dev_config("DB_ENGINE"),
@@ -144,7 +144,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-if DEBUG == True:
+if DEBUG == False:
 
   AWS_ACCESS_KEY_ID = dev_config("AWS_ACCESS_KEY_ID")
   AWS_SECRET_ACCESS_KEY = dev_config("AWS_SECRET_ACCESS_KEY")
@@ -180,7 +180,7 @@ LOGIN_REDIRECT_URL = '/ecomm'
 # https://docs.djangoproject.com/en/4.0/topics/email/
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-if DEBUG == True:
+if DEBUG == False:
   # stripe api keys
   STRIPE_PUBLIC_KEY = dev_config("STRIPE_PUBLIC_KEY")
   STRIPE_SECRET_KEY = dev_config("STRIPE_SECRET_KEY")

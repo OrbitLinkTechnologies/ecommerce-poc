@@ -22,13 +22,13 @@ import stripe
 # NOTE: we are only going to use json config files in the future
 # this is how all configuration imports will work
 
-if settings.DEBUG == True:
+if settings.DEBUG == False:
   pass
 else:
   with open('/etc/ecommerce_config.json') as config_file:
     config = json.load(config_file)
 
-if settings.DEBUG == True:
+if settings.DEBUG == False:
   stripe.api_key = dev_config("STRIPE_SECRET_KEY")
 else:
   stripe.api_key = config["STRIPE_SECRET_KEY"]
@@ -630,7 +630,7 @@ class CreateCheckoutSessionView(View):
       )
     # the following domain is just a placeholder
     domain = 'https://sauerwebsites.com'
-    if settings.DEBUG == True:
+    if settings.DEBUG == False:
       domain = 'http://127.0.0.1:8000'
     checkout_session = stripe.checkout.Session.create(
       expand = ['line_items'], # this is supposed to give us access to line
@@ -714,7 +714,7 @@ def contact_us_page(request):
   return render(request, 'ecommerce/contact_us_page.html')
 
 def send_customer_question(request):
-  if settings.DEBUG == True:
+  if settings.DEBUG == False:
     from_email= dev_config("FROM_EMAIL")
     to_emails= dev_config("TO_EMAIL")
   else:
@@ -729,7 +729,7 @@ def send_customer_question(request):
     'Message Body: <br><br>' + request.POST['message']
   )
   try:
-    if settings.DEBUG == True:
+    if settings.DEBUG == False:
       sg = SendGridAPIClient(dev_config("SENDGRID_API_KEY"))
     else:
       sg = SendGridAPIClient(config["SENDGRID_API_KEY"])
@@ -743,7 +743,7 @@ def send_customer_question(request):
   
   # if customer wants a copy, send them an email as well
   if request.POST.get('mail_customer_a_copy'):
-    if settings.DEBUG == True:
+    if settings.DEBUG == False:
       from_email= dev_config("FROM_EMAIL")
     else:
       from_email= config["FROM_EMAIL"]
@@ -757,7 +757,7 @@ def send_customer_question(request):
       'Message Body: <br><br>' + request.POST['message']
     )
     try:
-      if settings.DEBUG == True:
+      if settings.DEBUG == False:
         sg = SendGridAPIClient(dev_config("SENDGRID_API_KEY"))
       else:
         sg = SendGridAPIClient(config["SENDGRID_API_KEY"])
@@ -777,7 +777,7 @@ def contact_us_page_success(request):
     })
 
 def send_customer_invoice(request, invoice_item):
-  if settings.DEBUG == True:
+  if settings.DEBUG == False:
     from_email = dev_config("FROM_EMAIL")
   else:
     from_email = config["FROM_EMAIL"]
@@ -792,7 +792,7 @@ def send_customer_invoice(request, invoice_item):
     ' Please feel free to utilize an open-source vulnerability scanner such as https://virustotal.com to confirm that there are no threats.'
   )
   try:
-    if settings.DEBUG == True:
+    if settings.DEBUG == False:
       sg = SendGridAPIClient(dev_config("SENDGRID_API_KEY"))
     else:
       sg = SendGridAPIClient(config["SENDGRID_API_KEY"])
