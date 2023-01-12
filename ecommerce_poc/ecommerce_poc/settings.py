@@ -40,7 +40,7 @@ if DEBUG == False:
 else:
   SECRET_KEY = config["DJANGO_SECRET_KEY"]
 
-ALLOWED_HOSTS = [ '3.89.21.130', 'localhost' ]
+ALLOWED_HOSTS = [ '3.89.21.130', 'localhost', 'ecommerce.sauerwebdev.com' ]
 
 # Application definition
 
