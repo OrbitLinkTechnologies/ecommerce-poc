@@ -22,7 +22,7 @@ else:
 
 class Command(BaseCommand):
 
-  help = "Generates Generator Stripe Prices for Test Data"
+  help = "Generates Game Console Stripe Prices for Test Data"
 
   @transaction.atomic
   def handle(self, *args, **kwargs):

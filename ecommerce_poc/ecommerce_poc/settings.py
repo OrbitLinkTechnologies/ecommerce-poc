@@ -40,7 +40,7 @@ if DEBUG == False:
 else:
   SECRET_KEY = config["DJANGO_SECRET_KEY"]
 
-ALLOWED_HOSTS = [ '66.228.52.101', 'sauerwebsites.com' ]
+ALLOWED_HOSTS = [ '3.89.21.130' ]
 
 # Application definition
 
