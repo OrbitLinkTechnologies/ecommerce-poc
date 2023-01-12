@@ -4,9 +4,21 @@ from faker import Faker
 fake = Faker()
 import factory.fuzzy
 from ecommerce.models import Generator, HomeDecor, GameConsole, SportsNutrition, KitchenAndHomeAppliance
-from decouple import config
+import json
+from decouple import config as dev_config
+from django.conf import settings
 import stripe
-stripe.api_key = config('STRIPE_SECRET_KEY')
+
+if settings.DEBUG == False:
+  pass
+else:
+  with open('/etc/ecommerce_config.json') as config_file:
+    config = json.load(config_file)
+
+if settings.DEBUG == False:
+  stripe.api_key = dev_config("STRIPE_SECRET_KEY")
+else:
+  stripe.api_key = config["STRIPE_SECRET_KEY"]
 
 # products overview is not working, we need to delete this for clean up in the future
 # keeping for now until we have time to see if there is a better solution that addresses
