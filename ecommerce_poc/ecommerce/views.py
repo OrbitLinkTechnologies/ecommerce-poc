@@ -628,7 +628,7 @@ class CreateCheckoutSessionView(View):
         }
       )
     # the following domain is just a placeholder
-    domain = 'https://sauerwebdev.com'
+    domain = 'https://ecommerce.sauerwebdev.com'
     if settings.DEBUG == True:
       domain = 'http://3.89.21.130:8000'
     checkout_session = stripe.checkout.Session.create(
