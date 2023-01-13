@@ -629,7 +629,7 @@ class CreateCheckoutSessionView(View):
       )
     # the following domain is just a placeholder
     domain = 'https://ecommerce.sauerwebdev.com'
-    if settings.DEBUG == True:
+    if settings.DEBUG == False:
       domain = 'http://3.89.21.130:8000'
     checkout_session = stripe.checkout.Session.create(
       expand = ['line_items'], # this is supposed to give us access to line
