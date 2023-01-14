@@ -21,14 +21,13 @@ import stripe
 # NOTE: we are only going to use json config files in the future
 # this is how all configuration imports will work
 
+settings.DEBUG = True
+
 if settings.DEBUG == True:
   pass
 else:
-  try:
-    with open('/etc/ecommerce_config.json') as config_file:
-      config = json.load(config_file)
-  except:
-    pass
+  with open('/etc/ecommerce_config.json') as config_file:
+    config = json.load(config_file)
 
 if settings.DEBUG == True:
   stripe.api_key = dev_config("STRIPE_SECRET_KEY")
