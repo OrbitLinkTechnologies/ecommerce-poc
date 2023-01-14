@@ -22,7 +22,7 @@ SECURE_SSL_REDIRECT = True
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-if DEBUG == False:
+if DEBUG == True:
   pass
 else:
   with open('/etc/ecommerce_config.json') as config_file:
