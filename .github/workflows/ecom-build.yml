@@ -110,6 +110,7 @@ jobs:
           export FROM_EMAIL=${{ secrets.FROM_EMAIL }}
           export TO_EMAIL=${{ secrets.TO_EMAIL }}
           export MY_NAME=${{ secrets.MY_NAME }}
+          export IN_TEST_MODE=${{ secreits.IN_TEST_MODE }}
           cd ecommerce_poc
           python manage.py test
       # in order to test that our django app starts and works correctly

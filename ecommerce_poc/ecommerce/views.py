@@ -21,7 +21,8 @@ import stripe
 # NOTE: we are only going to use json config files in the future
 # this is how all configuration imports will work
 
-settings.DEBUG = True
+if dev_config("IN_TEST_MODE"):
+  settings.DEBUG = True
 
 if settings.DEBUG == True:
   pass
