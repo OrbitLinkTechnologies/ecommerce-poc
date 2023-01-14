@@ -104,6 +104,12 @@ jobs:
           export AWS_LOCATION=${{ secrets.AWS_LOCATION }}
           export AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
           export AWS_STORAGE_BUCKET_NAME=${{ secrets.AWS_STORAGE_BUCKET_NAME }}
+          export STRIPE_PUBLIC_KEY=${{ secrets.STRIPE_PUBLIC_KEY }}
+          export STRIPE_SECRET_KEY=${{ secrets.STRIPE_SECRET_KEY }}
+          export SENDGRID_API_KEY=${{ secrets.SENDGRID_API_KEY }}
+          export FROM_EMAIL=${{ secrets.FROM_EMAIL }}
+          export TO_EMAIL=${{ secrets.TO_EMAIL }}
+          export MY_NAME=${{ secrets.MY_NAME }}
           cd ecommerce_poc
           python manage.py test
       # in order to test that our django app starts and works correctly
@@ -126,5 +132,11 @@ jobs:
           export AWS_LOCATION=${{ secrets.AWS_LOCATION }}
           export AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
           export AWS_STORAGE_BUCKET_NAME=${{ secrets.AWS_STORAGE_BUCKET_NAME }}
+          export STRIPE_PUBLIC_KEY=${{ secrets.STRIPE_PUBLIC_KEY }}
+          export STRIPE_SECRET_KEY=${{ secrets.STRIPE_SECRET_KEY }}
+          export SENDGRID_API_KEY=${{ secrets.SENDGRID_API_KEY }}
+          export FROM_EMAIL=${{ secrets.FROM_EMAIL }}
+          export TO_EMAIL=${{ secrets.TO_EMAIL }}
+          export MY_NAME=${{ secrets.MY_NAME }}
           cd ecommerce_poc
           python manage.py runserver &
