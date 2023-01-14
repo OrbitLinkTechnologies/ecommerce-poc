@@ -9,13 +9,13 @@ from decouple import config as dev_config
 from django.conf import settings
 import stripe
 
-if settings.DEBUG == False:
+if settings.DEBUG == True:
   pass
 else:
   with open('/etc/ecommerce_config.json') as config_file:
     config = json.load(config_file)
 
-if settings.DEBUG == False:
+if settings.DEBUG == True:
   stripe.api_key = dev_config("STRIPE_SECRET_KEY")
 else:
   stripe.api_key = config["STRIPE_SECRET_KEY"]
