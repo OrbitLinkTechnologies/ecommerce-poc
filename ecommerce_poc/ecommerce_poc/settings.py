@@ -15,12 +15,12 @@ import json
 import os
 from decouple import config as dev_config
 
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
-SECURE_SSL_REDIRECT = True
+CSRF_COOKIE_SECURE = False
+SESSION_COOKIE_SECURE = False
+SECURE_SSL_REDIRECT = False
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 if DEBUG == True:
   pass
@@ -40,7 +40,7 @@ if DEBUG == True:
 else:
   SECRET_KEY = config["DJANGO_SECRET_KEY"]
 
-ALLOWED_HOSTS = [ '3.89.21.130', 'ecommerce.sauerwebdev.com' ]
+ALLOWED_HOSTS = [ '3.89.21.130', 'ecommerce.sauerwebdev.com', '*' ]
 
 # Application definition
 
