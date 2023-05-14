@@ -12,11 +12,14 @@
 7. CREATE DATABASE factory_pure_poc;
 8. ALTER USER postgres WITH PASSWORD 'password found in .env';
 9. pip install -r requirements.txt
-10. From root directory: python -m venv venv
-11. source venv/bin/activate
-12. One directory level above root directory: sudo chmod -R 777 ecommerce-poc
-13. python manage.py createsuperuser
-14. python manage.py migrate
-15. python manage.py (for all scripts that set up test data for all products (in the actual PostgreSQL db), stripe products, and stripe prices)
-16. python manage.py runserver 0.0.0.0:8000
-17. Find eth0 ip from command "ifconfig" then from host machine you can connect
+10. Place .env file under "ecommerce_poc/ecommerce_poc/.env"
+11. Ensure you are on "main" branch
+12. From root directory: python -m venv venv
+13. source venv/bin/activate
+14. One directory level above root directory: sudo chmod -R 777 ecommerce-poc
+15. python manage.py createsuperuser
+16. python manage.py migrate
+17. python manage.py (for all scripts that set up test data for all products (in the actual PostgreSQL db), stripe products, and stripe prices)
+18. python manage.py (add features, manuals and docs, overview, and specifications to existing products)
+19. python manage.py runserver 0.0.0.0:8000
+20. Find eth0 ip from command "ifconfig" then from host machine you can connect
