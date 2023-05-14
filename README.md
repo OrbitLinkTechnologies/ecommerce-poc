@@ -21,5 +21,11 @@
 16. python manage.py migrate
 17. python manage.py (for all scripts that set up test data for all products (in the actual PostgreSQL db), stripe products, and stripe prices)
 18. python manage.py (add features, manuals and docs, overview, and specifications to existing products)
-19. python manage.py runserver 0.0.0.0:8000
-20. Find eth0 ip from command "ifconfig" then from host machine you can connect
+19. curl -s https://packages.stripe.dev/api/security/keypair/stripe-cli-gpg/public | gpg --dearmor | sudo tee /usr/share/keyrings/stripe.gpg
+20. echo "deb [signed-by=/usr/share/keyrings/stripe.gpg] https://packages.stripe.dev/stripe-cli-debian-local stable main" | sudo tee -a /etc/apt/sources.list.d/stripe.list
+21. sudo apt update
+22. sudo apt install stripe
+23. stripe login
+24. stripe listen --forward-to http://localhost:8000/send_receipt/
+25. python manage.py runserver 0.0.0.0:8000
+26. Find eth0 ip from command "ifconfig" then from host machine you can connect
