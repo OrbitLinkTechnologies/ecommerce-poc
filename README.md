@@ -29,3 +29,7 @@
 24. stripe listen --forward-to http://localhost:8000/send_receipt/
 25. python manage.py runserver 0.0.0.0:8000
 26. Find eth0 ip from command "ifconfig" then from host machine you can connect
+
+**oAuth Integration:**
+
+1. Under: venv/lib/python3.10/site-packages/social_core/backends/auth0.py, you will need to remove the line: email: "payload["email"]" from the Auth0OAuth2 Class's return statement.
