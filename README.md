@@ -1,4 +1,4 @@
-# Ecommerce POC for Sauer Websites
+# E-commerce POC for Sauer Websites
 
 ***Setup Development on Linux Environment (Ubuntu)***
 
