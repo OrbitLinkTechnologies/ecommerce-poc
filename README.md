@@ -33,3 +33,15 @@
 **oAuth Integration:**
 
 1. Under: venv/lib/python3.10/site-packages/social_core/backends/auth0.py, you will need to remove the line: email: "payload["email"]" from the Auth0OAuth2 Class's return statement.
+
+**TODO/TOADD:**
+1. Full oAuth integration
+2. SSO integration
+3. Headless CMS
+4. Kubernetes integration
+5. Write Unit Tests
+6. Write Integration Tests
+7. Build out CICD Pipeline
+8. Multiple service integration, where syncing between systems is needed
+9. Modularize code, breaking down functions into smaller functions
+10. Modularize project structure to have a Django application serve one purpose, i.e., an application for OAuth integration
