@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
 from .views import (
   CreateCheckoutSessionView,
@@ -8,6 +8,7 @@ from .views import (
 app_name = 'ecommerce'
 
 urlpatterns = [
+    path('auth/', include('social_django.urls', namespace='social')),
     path('leave_question/<int:id>/<str:category>/', views.leave_question, name='leave_question'),
     path('leave_review/<int:id>/<str:category>/', views.leave_review, name='leave_review'),
     path('send_receipt/', views.send_receipt, name='send_receipt'),
@@ -16,7 +17,10 @@ urlpatterns = [
     path('send_customer_question/', views.send_customer_question, name='send_customer_question'),
     path('contact_us/', views.contact_us_page, name='contact_us_page'),
     path('about/', views.about_page, name='about_page'),
-    path('', views.filter_results_page, name='filter_results_page_home'),
+    # auth0 related url paths, next 3 lines
+    path('', views.profile, name='profile'),
+    path('login/', views.login, name='login'),
+    path('logout/', views.logout, name='logout'),
     path('item/<int:id>/<str:category>/', views.item_page, name='item_page'),
     path('cart/', views.cart_page, name='cart_page'),
     path('remove_item_from_cart/<int:id>/', views.remove_item_from_cart, name='remove_item_from_cart'),

@@ -15,12 +15,20 @@ from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 from django.core.exceptions import ObjectDoesNotExist
 import json
+# auth0 related imports, next 3 lines
+from django.contrib.auth import logout as log_out
+from urllib.parse import urlencode
+from social_django.models import UserSocialAuth
 from decouple import config as dev_config
 from django.conf import settings
 import stripe
+# below are imports related to oAuth
+from django.contrib.auth import get_user_model
+import requests
+import jwt
+
 # NOTE: we are only going to use json config files in the future
 # this is how all configuration imports will work
-
 # NOTE: this is temporary until we find a solution for checking whether we're in
 # test mode
 settings.DEBUG = True
@@ -39,6 +47,65 @@ else:
 # Create your views here.
 def base(request):
     return render(request, 'ecommerce/base.html')
+
+def extract_google_oAuth_user_id(google_user_id):
+  extracted_user_id = str(google_user_id).split('|')[-1]
+  print('google user_id = ' + str(extract_google_oAuth_user_id))
+  return extracted_user_id
+
+def check_if_google_oAuth_user_exists_in_default_django_user(request):
+  User = get_user_model()
+
+def add_google_user_id_to_django_default_user_model(request, extracted_user_id, email):
+    User = get_user_model()
+    user, created = User.objects.get_or_create(email=email)
+    if created:
+      user.username = email.split('@')[0]
+      user.save()
+    profile, created = Customer.objects.get_or_create(user=request.user)
+    profile.oauth_user_id = extracted_user_id
+    profile.save()
+    return user
+
+# auth0 related view
+def profile(request):
+  if request.user.is_authenticated:
+    user = request.user
+    try:
+      auth0user = user.social_auth.get(provider="auth0")
+    except UserSocialAuth.DoesNotExist:
+      auth0user = None
+
+    if auth0user:
+      userdata = {
+        'user_id': auth0user.uid,
+        'name': user.first_name,
+        'picture': auth0user.extra_data['picture'],
+        'email': auth0user.extra_data['email'],
+      }
+      extracted_user_id = extract_google_oAuth_user_id(userdata["user_id"])
+      customer_updated_in_django_default_model = add_google_user_id_to_django_default_user_model(request, extracted_user_id, userdata["email"])
+    else:
+      userdata = {}
+
+    userdata = dict(userdata)
+
+    return render(request, 'ecommerce/profile.html', {
+      'auth0user': auth0user,
+      'userdata': userdata,
+    })
+  else:
+    return redirect('login')
+
+# auth0 related view
+def logout(request):
+  log_out(request)
+  return_to = urlencode({'returnTo': request.build_absolute_uri('/')})
+  logout_url = 'https://%s/v2/logout?client_id=%s&%s' % (settings.SOCIAL_AUTH_AUTH0_DOMAIN, settings.SOCIAL_AUTH_AUTH0_KEY, return_to)
+  return redirect(logout_url)
+
+def login(request):
+  return render(request, 'ecommerce/login.html')
 
 # we are adding filtration to our category results page
 # I eventually want this to replace category results page
@@ -634,7 +701,8 @@ class CreateCheckoutSessionView(View):
     # the following domain is just a placeholder
     domain = 'https://ecommerce.sauerwebdev.com'
     if settings.DEBUG == True:
-      domain = 'http://localhost:8000'
+      # domain = 'http://localhost:8000' - commenting out for development on hyper-v linux server
+      domain = 'http://172.25.87.207:8000'
     checkout_session = stripe.checkout.Session.create(
       expand = ['line_items'], # this is supposed to give us access to line
       # items in the response of this checkout session, but it doesn't persist

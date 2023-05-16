@@ -18,6 +18,7 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import path, include
 
 urlpatterns = [
+    path('auth/', include('social_django.urls', namespace='social')),
     path("admin/", admin.site.urls),
     path('', include('ecommerce.urls', namespace='ecommerce')),
     path('ecomm/', include('ecommerce.urls', namespace='ecommerce')),

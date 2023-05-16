@@ -42,6 +42,45 @@ else:
 
 ALLOWED_HOSTS = [ '3.89.21.130', 'ecommerce.sauerwebdev.com', '*' ]
 
+# oAuth config
+SOCIAL_AUTH_PIPELINE = (
+  'social_core.pipeline.social_auth.social_details',
+  'social_core.pipeline.social_auth.social_uid',
+  'social_core.pipeline.social_auth.auth_allowed',
+  'social_core.pipeline.social_auth.social_user',
+  'social_core.pipeline.user.get_username',
+  'social_core.pipeline.user.create_user',
+  'social_core.pipeline.social_auth.associate_user',
+  'social_core.pipeline.social_auth.load_extra_data',
+  'social_core.pipeline.user.user_details',
+  # custom pipeline functions are inside the ecommerce app
+  # 'ecommerce.pipeline.save_oauth_user_id',
+  # 'ecommerce.pipeline.associate_by_email',
+  # 'ecommerce.pipeline.check_email_verified'
+)
+
+if DEBUG == True:
+  SOCIAL_AUTH_AUTH0_DOMAIN = dev_config("AUTH0_DOMAIN")
+  SOCIAL_AUTH_AUTH0_KEY = dev_config("AUTH0_CLIENT_ID")
+  SOCIAL_AUTH_AUTH0_SECRET =  dev_config("AUTH0_CLIENT_SECRET")
+  SOCIAL_AUTH_TRAILING_SLASH = False
+  SOCIAL_AUTH_AUTH0_SCOPE = [
+    'openid',
+    'profile',
+    'email',
+  ]
+
+else:
+  SOCIAL_AUTH_AUTH0_DOMAIN = config["AUTH0_DOMAIN"]
+  SOCIAL_AUTH_AUTH0_KEY = config["AUTH0_CLIENT_ID"]
+  SOCIAL_AUTH_AUTH0_SECRET = config["AUTH0_CLIENT_SECRET"]
+  SOCIAL_AUTH_TRAILING_SLASH = False
+  SOCIAL_AUTH_AUTH0_SCOPE = [
+    'openid',
+    'profile',
+    'email',
+  ]
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -55,6 +94,7 @@ INSTALLED_APPS = [
     'fontawesomefree',
     'django_extensions',
     'polymorphic',
+    'social_django',
 ]
 
 MIDDLEWARE = [
@@ -80,6 +120,8 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "social_django.context_processors.backends",
+                "social_django.context_processors.login_redirect",
             ],
         },
     },
@@ -128,6 +170,11 @@ AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",},
 ]
 
+AUTHENTICATION_BACKENDS = [
+  'ecommerce.authentication_backends.GoogleOAuthBackend',
+  'django.contrib.auth.backends.ModelBackend',
+]
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
@@ -170,8 +217,13 @@ STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+# adding login_url for python-social-auth to redirect users to the following view
+LOGIN_URL = '/login/auth0'
+
 # Redirect to home URL after login (Default redirects to /accounts/profile/)
-LOGIN_REDIRECT_URL = '/ecomm'
+LOGIN_REDIRECT_URL = '/'
+
+LOGOUT_REDIRECT_URL = '/'
 
 # we are temporarily using this so that the password reset link
 # that is supposed to be sent via email is actually just printed to the

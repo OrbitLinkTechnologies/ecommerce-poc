@@ -237,6 +237,7 @@ class ProductAnswer(models.Model):
 # having done the aforementioned research
 class Customer(models.Model):
     user = models.OneToOneField(User, unique=True, on_delete=models.CASCADE)
+    oauth_user_id = models.CharField(max_length=200)
     phone_number = models.CharField(max_length=14, null=True, blank=True)
     address = models.CharField(max_length=64, null=True, blank=True)
     address_extended = models.CharField(max_length=64, null=True, blank=True)
@@ -250,6 +251,8 @@ class Customer(models.Model):
     # i.e., Generator IS a Product, Scooter IS a Product, etc
     # I would also like to re-name all foreign key references according
     # to the following: name_here_FK
+    def __str__(self):
+      return self.user.get_username()
 
 # our delivery model is going to be associated with our customer model only for now
 # it is a many to one relationship where we need a foreign key restraint in the table
