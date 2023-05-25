@@ -45,3 +45,5 @@
 8. Multiple service integration, where syncing between systems is needed
 9. Modularize code, breaking down functions into smaller functions
 10. Modularize project structure to have a Django application serve one purpose, i.e., an application for OAuth integration
+
+**Bugfixes/Enhancements**
