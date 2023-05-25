@@ -48,6 +48,6 @@
 
 **Bugfixes/Enhancements**
 <br>
-*Auth0*:
 <br>
+*Auth0*:
 1. ecommerce/views.py ---> need to properly use user_info = oauth.auth0.parse_id_token(request, token) to grab the user_info in the token because it not only destructures the user info but verifies that the expected Identity Provider signed the JWT
