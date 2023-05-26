@@ -49,6 +49,12 @@
 
             <!-- Pills content -->
             <div class="tab-content">
+                    {% for message in messages %}
+                    <div class="alert alert-dismissible fade show" role="alert" data-mdb-color="danger">
+                        <strong>{{ message }}</strong>
+                        <button type="button" class="btn-close" data-mdb-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    {% endfor %}
                   {% if form.errors %}
                   <div class="alert alert-dismissible fade show" role="alert" data-mdb-color="danger">
                     <strong>Your username and password didn't match.</strong>  Please try again.
@@ -75,7 +81,7 @@
                 role="tabpanel"
                 aria-labelledby="tab-login"
               >
-              <form action="{% url 'ecommerce:login' %}" method="post">
+              <form action="{% url 'ecommerce:auth0_login' %}" method="post">
                 {% csrf_token %}
               <div class="text-center mt-4 mb-2">
                 <p>Sign in with:</p>
@@ -116,7 +122,7 @@
               </form>
                 <form
                   method="post"
-                  action="{% url 'login' %}"
+                  action="{% url 'ecommerce:auth0_login' %}"
                   class="registration_form_needs_validation"
                   novalidate
                 >
