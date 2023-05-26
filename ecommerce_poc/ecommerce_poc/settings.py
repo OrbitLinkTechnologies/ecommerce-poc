@@ -40,8 +40,6 @@ if DEBUG == True:
 else:
   SECRET_KEY = config["DJANGO_SECRET_KEY"]
 
-ALLOWED_HOSTS = [ '3.89.21.130', 'ecommerce.sauerwebdev.com', '*' ]
-
 # oAuth config
 '''SOCIAL_AUTH_PIPELINE = (
   'social_core.pipeline.social_auth.social_details',
@@ -80,6 +78,8 @@ else:
     'profile',
     'email',
   ]
+
+ALLOWED_HOSTS = [ 'ecommerce.sauerwebdev.com' ]
 
 # Application definition
 
