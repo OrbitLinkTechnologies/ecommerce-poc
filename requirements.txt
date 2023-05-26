@@ -19,3 +19,7 @@ sendgrid
 django-polymorphic
 django-sendgrid-v5
 django-crispy-forms
+social-auth-app-django
+python-jose
+requests
+authlib
