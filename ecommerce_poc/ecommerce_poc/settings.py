@@ -43,7 +43,7 @@ else:
 ALLOWED_HOSTS = [ '3.89.21.130', 'ecommerce.sauerwebdev.com', '*' ]
 
 # oAuth config
-SOCIAL_AUTH_PIPELINE = (
+'''SOCIAL_AUTH_PIPELINE = (
   'social_core.pipeline.social_auth.social_details',
   'social_core.pipeline.social_auth.social_uid',
   'social_core.pipeline.social_auth.auth_allowed',
@@ -57,7 +57,7 @@ SOCIAL_AUTH_PIPELINE = (
   # 'ecommerce.pipeline.save_oauth_user_id',
   # 'ecommerce.pipeline.associate_by_email',
   # 'ecommerce.pipeline.check_email_verified'
-)
+)'''
 
 if DEBUG == True:
   SOCIAL_AUTH_AUTH0_DOMAIN = dev_config("AUTH0_DOMAIN")
@@ -105,6 +105,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
 ROOT_URLCONF = "ecommerce_poc.urls"
@@ -171,7 +172,8 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 AUTHENTICATION_BACKENDS = [
-  'ecommerce.authentication_backends.GoogleOAuthBackend',
+  'social_core.backends.google.GoogleOAuth2',
+  # 'ecommerce.authentication_backends.GoogleOAuthBackend',
   'django.contrib.auth.backends.ModelBackend',
 ]
 

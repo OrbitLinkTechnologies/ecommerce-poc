@@ -12,7 +12,7 @@
 							<li class="breadcrumb-item"><a href="#">Home</a></li>
 							<li class="breadcrumb-item"><a href="#">User</a></li>
 							<li class="breadcrumb-item active" aria-current="page">User Profile</li>
-                            <li class="breadcrumb-item"><a href="{% url 'logout' %}">Logout</a></li>
+                            <li class="breadcrumb-item"><a href="{% url 'ecommerce:auth0_logout' %}">Logout</a></li>
 						</ol>
 					</nav>
 				</div>
@@ -22,7 +22,7 @@
 				<div class="col-lg-4">
 					<div class="card mb-4">
 						<div class="card-body text-center">
-							<img src="{{ userdata.picture }}" alt="avatar" class="rounded-circle img-fluid" style="width: 150px;" />
+							<img src="{{ user.customer.profile_picture }}" alt="avatar" class="rounded-circle img-fluid" style="width: 150px;" />
 							<h5 class="my-3">{{ user.username }}</h5>
 							<p class="text-muted mb-1">Full Stack Developer</p>
 							<p class="text-muted mb-4">Bay Area, San Francisco, CA</p>
@@ -68,8 +68,8 @@
 								</div>
 								<div class="col-sm-9">
 									<p class="text-muted mb-0">
-                                        {% if userdata.name %}
-                                            {{ userdata.name }}
+                                        {% if user.first_name %}
+                                            {{ user.first_name }} {{ user.last_name }}
                                         {% else %}
                                             {{ user.username }}, please update your profile with your Full Name.
                                         {% endif %}
@@ -83,9 +83,7 @@
 								</div>
 								<div class="col-sm-9">
 									<p class="text-muted mb-0">
-                                        {% if userdata.email %}
-                                            {{ userdata.email }}
-                                        {% elif user.email %}
+                                        {% if user.email %}
                                             {{ user.email }}
                                         {% else %}
                                             {{ user.username }}, please update your profile with your Full Name.

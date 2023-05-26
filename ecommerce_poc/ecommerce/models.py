@@ -238,6 +238,7 @@ class ProductAnswer(models.Model):
 class Customer(models.Model):
     user = models.OneToOneField(User, unique=True, on_delete=models.CASCADE)
     oauth_user_id = models.CharField(max_length=200)
+    profile_picture = models.CharField(max_length=200)
     phone_number = models.CharField(max_length=14, null=True, blank=True)
     address = models.CharField(max_length=64, null=True, blank=True)
     address_extended = models.CharField(max_length=64, null=True, blank=True)

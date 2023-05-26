@@ -17,15 +17,20 @@ from django.core.exceptions import ObjectDoesNotExist
 import json
 # auth0 related imports, next 3 lines
 from django.contrib.auth import logout as log_out
-from urllib.parse import urlencode
+from urllib.parse import urlencode, quote_plus
 from social_django.models import UserSocialAuth
 from decouple import config as dev_config
 from django.conf import settings
 import stripe
 # below are imports related to oAuth
 from django.contrib.auth import get_user_model
+from django.contrib.auth import login as django_login
+from django.contrib.auth import authenticate as django_auth
 import requests
 import jwt
+from authlib.integrations.django_client import OAuth
+from django.urls import reverse
+from django.contrib import messages
 
 # NOTE: we are only going to use json config files in the future
 # this is how all configuration imports will work
@@ -44,68 +49,170 @@ if settings.DEBUG == True:
 else:
   stripe.api_key = config["STRIPE_SECRET_KEY"]
 
+oauth = OAuth()
+
+oauth.register(
+  "auth0",
+  client_id=settings.SOCIAL_AUTH_AUTH0_KEY,
+  client_secret=settings.SOCIAL_AUTH_AUTH0_SECRET,
+  client_kwargs={
+    "scope": "openid profile email",
+  },
+  server_metadata_url=f"https://{settings.SOCIAL_AUTH_AUTH0_DOMAIN}/.well-known/openid-configuration",
+)
+
 # Create your views here.
 def base(request):
     return render(request, 'ecommerce/base.html')
 
-def extract_google_oAuth_user_id(google_user_id):
-  extracted_user_id = str(google_user_id).split('|')[-1]
-  print('google user_id = ' + str(extract_google_oAuth_user_id))
-  return extracted_user_id
-
-def check_if_google_oAuth_user_exists_in_default_django_user(request):
-  User = get_user_model()
-
-def add_google_user_id_to_django_default_user_model(request, extracted_user_id, email):
-    User = get_user_model()
-    user, created = User.objects.get_or_create(email=email)
-    if created:
-      user.username = email.split('@')[0]
-      user.save()
-    profile, created = Customer.objects.get_or_create(user=request.user)
-    profile.oauth_user_id = extracted_user_id
-    profile.save()
-    return user
-
-# auth0 related view
 def profile(request):
-  if request.user.is_authenticated:
-    user = request.user
-    try:
-      auth0user = user.social_auth.get(provider="auth0")
-    except UserSocialAuth.DoesNotExist:
-      auth0user = None
+  return render(request, 'ecommerce/profile.html', context={
+    'userdata': {
+      'name': 'hi'
+    }
+  })
 
-    if auth0user:
-      userdata = {
-        'user_id': auth0user.uid,
-        'name': user.first_name,
-        'picture': auth0user.extra_data['picture'],
-        'email': auth0user.extra_data['email'],
-      }
-      extracted_user_id = extract_google_oAuth_user_id(userdata["user_id"])
-      customer_updated_in_django_default_model = add_google_user_id_to_django_default_user_model(request, extracted_user_id, userdata["email"])
-    else:
-      userdata = {}
-
-    userdata = dict(userdata)
-
-    return render(request, 'ecommerce/profile.html', {
-      'auth0user': auth0user,
-      'userdata': userdata,
-    })
+def check_if_user_has_oauth_id(request):
+  try:
+    user = User.objects.get(username=request.POST['username'])
+  except User.DoesNotExist:
+    raise ValueError("User does not exist. Please create an account.")
+  try:
+    customer = user.customer
+    if customer.oauth_user_id:
+        print('inside customer has oauth user id')
+        raise ValueError("User account is associated with an OAuth Id. Please use OAuth to login.")
+  except Customer.DoesNotExist:
+    # for our current flow, if a customer does not exist for this account
+    # it does not necessarily mean that this should raise an error.
+    # maybe the user does not want to authenticate with oAuth provider
+    # should we just ask them here if they want to?
+    # or show them a link to do so?
+    # actually to make this more modular, let's make another function
+    # to log in the user by django
+    pass
+  # if we hit the except block above, it just passes flow here, where we will use
+  # default django authentication
+  user_attempt_to_login = attempt_to_login_as_django_user(request)
+  return user_attempt_to_login
+  
+def attempt_to_login_as_django_user(request):
+  print('hello from attempt to login as django user')
+  user = django_auth(request, username=request.POST['username'], password=request.POST['password'])
+  if user is not None:
+    print('inside user is not none')
+    django_login(request, user)
+    print('after django login')
+    return redirect(reverse("ecommerce:profile"))
   else:
-    return redirect('login')
+    raise ValueError("Invalid credentials. Please try again.")
 
-# auth0 related view
-def logout(request):
-  log_out(request)
-  return_to = urlencode({'returnTo': request.build_absolute_uri('/')})
-  logout_url = 'https://%s/v2/logout?client_id=%s&%s' % (settings.SOCIAL_AUTH_AUTH0_DOMAIN, settings.SOCIAL_AUTH_AUTH0_KEY, return_to)
-  return redirect(logout_url)
 
-def login(request):
-  return render(request, 'ecommerce/login.html')
+def auth0_login(request):
+  if request.method == 'POST' and 'username' in request.POST:
+    try:
+      print('before check if user has oauth id')
+      user_has_oauth_id = check_if_user_has_oauth_id(request)
+      if user_has_oauth_id:
+        return user_has_oauth_id
+    except ValueError as e:
+      # if we hit the except block it's because one of our ValueErrors was raised
+      # so we use django's messaging framework to notify the user
+      messages.error(request, str(e))
+      return redirect(request.build_absolute_uri(reverse("ecommerce:index")))
+  # if there is no error raised, then we continue with the login process
+  return oauth.auth0.authorize_redirect(
+    request, request.build_absolute_uri(reverse("ecommerce:callback"))
+  )
+
+def callback(request):
+  token = oauth.auth0.authorize_access_token(request)
+  request.session["user"] = token
+
+  # insecure, we need to use user_info = oauth.auth0.parse_id_token(request, token) to verify JWT's signature
+  if "user" in request.session and "userinfo" in request.session.get("user"):
+    user_info = request.session.get("user")["userinfo"]
+  else:
+    user_info = None
+
+  try:
+    django_user = build_user_and_customer_model_and_return_django_user(user_info)
+  except ValueError as e:
+    messages.error(request, str(e))
+    return redirect(request.build_absolute_uri(reverse("ecommerce:auth0_login")))
+
+  # associate the user to the current session
+  django_login(request, django_user, backend='django.contrib.auth.backends.ModelBackend')
+
+  return redirect(request.build_absolute_uri(reverse("ecommerce:profile")))
+
+def extract_oauth_user_id(oauth_string):
+  return str(oauth_string.split("|")[-1])
+
+def check_if_user_has_oauth_profile_before_creating_new_one(extracted_user_info):
+  username = extracted_user_info.nickname
+  first_name = extracted_user_info.given_name
+  last_name = extracted_user_info.family_name
+  email_address = extracted_user_info.email
+  oauth_user_id = extract_oauth_user_id(extracted_user_info.sub)
+  User = get_user_model()
+  try:
+    # check if a user with the given username exists
+    django_user = User.objects.get(username=username)
+    try:
+      # check if a customer with the user and oauth_user_id exists
+      django_customer = Customer.objects.get(user=django_user, oauth_user_id=oauth_user_id)
+    except Customer.DoesNotExist:
+      print('inside customer does not exist')
+      # if the user exists but the customer with the given oauth_user_id does not, raise an exception
+      raise ValueError("This user is associated with another account. Please authenticate using Google Sign In.")
+  except User.DoesNotExist:
+    # if the user does not exist, then create one
+    django_user = User.objects.create(username=username, first_name=first_name, last_name=last_name, email=email_address)
+    django_user.set_unusable_password()
+    django_user.save()
+  return django_user
+
+def build_user_and_customer_model_and_return_django_user(extracted_user_info):
+  profile_picture = extracted_user_info.picture
+  oauth_user_id = extract_oauth_user_id(extracted_user_info.sub)
+  # Check if a user with the given OAuth profile already exists or needs to be created
+  django_user = check_if_user_has_oauth_profile_before_creating_new_one(extracted_user_info)
+  # at this point the user either exists with the right OAuth profile or a new User has been created
+  django_customer, customer_created = Customer.objects.get_or_create(
+    user=django_user,
+    defaults={
+      "oauth_user_id": oauth_user_id,
+      "profile_picture": profile_picture
+    }
+  )
+  
+  # return the django user to be associated with the current session
+  return django_user
+
+def auth0_logout(request):
+  request.session.clear()
+
+  return redirect(
+    f"https://{settings.SOCIAL_AUTH_AUTH0_DOMAIN}/v2/logout?"
+    + urlencode(
+      {
+        "returnTo": request.build_absolute_uri(reverse("ecommerce:index")),
+        "client_id": settings.SOCIAL_AUTH_AUTH0_KEY
+      },
+      quote_via=quote_plus
+    ),
+  )
+
+def index(request):
+  return render(
+    request,
+    "ecommerce/index.html",
+    context={
+      "session": request.session.get("user"),
+      "pretty": json.dumps(request.session.get("user"), indent=4),
+    }
+  )
 
 # we are adding filtration to our category results page
 # I eventually want this to replace category results page

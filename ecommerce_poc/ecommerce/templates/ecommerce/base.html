@@ -69,7 +69,7 @@
     <!-- Collapsible wrapper -->
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <!-- Navbar brand -->
-      <a class="navbar-brand mt-2 mt-lg-0" href="https://tscompsci.com">
+      <a class="navbar-brand mt-2 mt-lg-0" href="https://sauerwebdev.com">
         <img
           src="{% static 'images/sauer_web_dev_new.png' %}"
           height="70"
@@ -109,6 +109,8 @@
 
     <!-- Right elements -->
     <div class="d-flex align-items-center">
+      <!-- {% url 'ecommerce:profile' %} -->
+      <a class="nav-link me-5" href="{% url 'ecommerce:profile' %}">My Profile</a>
       <!-- Icon -->
       <a class="text-reset" href="/ecomm/cart/">
         <i class="fas fa-shopping-cart fa-2x me-3" style="color: dodgerblue"></i>
@@ -174,22 +176,22 @@
         {% if user.is_authenticated %}
         <li>
           {% if next %}
-          <a class="dropdown-item" href="{% url 'logout' %}?next={{ request.path }}">Logout</a>
+          <a class="dropdown-item" href="{% url 'ecommerce:auth0_logout' %}?next={{ request.path }}">Logout</a>
           {% else %}
-          <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+          <a class="dropdown-item" href="{% url 'ecommerce:auth0_logout' %}">Logout</a>
           {% endif %}
         </li>
         {% else %}
         <li>
           {% if next %}
-          <a class="dropdown-item" href="{% url 'login' %}?next={{ request.path }}">Login</a>
+          <a class="dropdown-item" href="{% url 'ecommerce:index' %}?next={{ request.path }}">Login</a>
           {% else %}
-          <a class="dropdown-item" href="{% url 'login' %}">Login</a>
+          <a class="dropdown-item" href="{% url 'ecommerce:index' %}">Login</a>
           {% endif %}
         </li>
         {% endif %}
           <li>
-            <a class="dropdown-item" href="{% url 'ecommerce:profile' %}">My profile</a>
+            <a class="dropdown-item" href="{% url 'ecommerce:profile' %}">My Profile</a>
           </li>
           <li>
             <a class="dropdown-item" href="#">Settings</a>
@@ -556,55 +558,55 @@
         © 2022 Copyright:
         <a
           class="text-reset me-5"
-          href="https://tscompsci.com"
+          href="https://sauerwebdev.com"
           >Travis e-commerce POC</a
         >
         <i class="fa-solid fa-house"></i>
         <a
           class="text-reset fw-bold me-2"
-          href="https://tscompsci.com"
+          href="https://sauerwebdev.com"
           >Home</a
         >
         <i class="fa-solid fa-address-book"></i>
         <a
           class="text-reset fw-bold me-2"
-          href="https://tscompsci.com"
+          href="https://sauerwebdev.com"
           >Contact Us</a
         >
         <i class="fa-solid fa-address-card"></i>
         <a
           class="text-reset fw-bold me-2"
-          href="https://tscompsci.com"
+          href="https://sauerwebdev.com"
           >About</a
         >
         <i class="fa-solid fa-truck-fast"></i>
         <a
           class="text-reset fw-bold me-2"
-          href="https://tscompsci.com"
+          href="https://sauerwebdev.com"
           >Shipping & Returns</a
         >
         <i class="fa-solid fa-clipboard-list"></i>
         <a
           class="text-reset fw-bold me-2"
-          href="https://tscompsci.com"
+          href="https://sauerwebdev.com"
           >Terms of Use</a
         >
         <i class="fa-solid fa-lock"></i>
         <a
           class="text-reset fw-bold me-2"
-          href="https://tscompsci.com"
+          href="https://sauerwebdev.com"
           >Privacy Policy</a
         >
         <i class="fa-solid fa-shield"></i>
         <a
           class="text-reset fw-bold me-2"
-          href="https://tscompsci.com"
+          href="https://sauerwebdev.com"
           >Warranty</a
         >
         <i class="fa-solid fa-hotel"></i>
         <a
           class="text-reset fw-bold me-2"
-          href="https://tscompsci.com"
+          href="https://sauerwebdev.com"
           >Resource Center</a
         >
       </div>
