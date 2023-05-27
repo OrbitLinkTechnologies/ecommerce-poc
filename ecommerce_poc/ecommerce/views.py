@@ -65,6 +65,7 @@ oauth.register(
 def base(request):
     return render(request, 'ecommerce/base.html')
 
+@login_required
 def profile(request):
   return render(request, 'ecommerce/profile.html', context={
     'userdata': {
