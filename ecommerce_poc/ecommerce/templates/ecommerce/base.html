@@ -110,7 +110,9 @@
     <!-- Right elements -->
     <div class="d-flex align-items-center">
       <!-- {% url 'ecommerce:profile' %} -->
+      {% if user.is_authenticated %}
       <a class="nav-link me-5" href="{% url 'ecommerce:profile' %}">My Profile</a>
+      {% endif %}
       <!-- Icon -->
       <a class="text-reset" href="/ecomm/cart/">
         <i class="fas fa-shopping-cart fa-2x me-3" style="color: dodgerblue"></i>
