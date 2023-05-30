@@ -45,6 +45,7 @@
 8. Multiple service integration, where syncing between systems is needed
 9. Modularize code, breaking down functions into smaller functions
 10. Modularize project structure to have a Django application serve one purpose, i.e., an application for OAuth integration
+11. Integrate JIRA to track project work and create custom automations and integrations around feature/bugfix/release work, as well as enforce branch naming conventions for workflows.
 
 **Bugfixes/Enhancements**
 <br>
