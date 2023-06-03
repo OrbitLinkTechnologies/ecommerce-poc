@@ -1,8 +1,8 @@
 # E-commerce POC for Sauer Websites
 
-***Setup Development on Linux Environment (Ubuntu)***
+**Setup Development on Linux Environment (Ubuntu)**
 
-**Run the following commands:**
+*Run the following commands:*
 1. sudo apt-get update
 2. sudo apt-get upgrade
 3. sudo apt-get install libpq-dev
